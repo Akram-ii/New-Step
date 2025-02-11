@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         int test =1111;
+
+        String t1="hello world";
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
