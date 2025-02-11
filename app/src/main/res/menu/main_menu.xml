@@ -24,7 +24,7 @@
         <item android:title="">
             <menu>
                 <item
-                    android:icon="@drawable/default_pfp"
+                    android:icon="@drawable/icon_settings"
                     android:id="@+id/nav_settings"
                     android:title="Settings" />
 

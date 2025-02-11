@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+
+    android:background="@drawable/textview_background"
+    android:elevation="2dp">
+
+    <include layout="@layout/pfp"
+        android:layout_height="52dp"
+        android:layout_width="52dp"
+
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/purple"
+                android:layout_width="wrap_content"
+                android:id="@+id/usernameTextView"
+                android:layout_height="wrap_content"
+                android:text="Loading..."
+                android:textSize="24sp"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:textColor="@color/darkGray"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:id="@+id/lastMsg_timestampTextView"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_marginBottom="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/notif_chat"
+                android:id="@+id/unseenMsg"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:layout_alignParentTop="true"
+                android:padding="5dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/lavender"
+                />
+            <TextView
+                android:layout_centerVertical="true"
+                android:id="@+id/lastMsgSentTextView"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="55dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/darkGray"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
