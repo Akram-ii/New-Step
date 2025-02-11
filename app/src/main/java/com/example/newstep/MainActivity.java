@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView userName;
     Toolbar toolbar;
     View headerView;
-
+int test;
     BottomNavigationView bottomView;
     static Boolean isMediaInit=false;
     @Override
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+test=1;
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
