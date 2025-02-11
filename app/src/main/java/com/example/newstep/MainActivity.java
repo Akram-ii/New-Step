@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+int var=534;
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
