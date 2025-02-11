@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:title="Home"
+        android:icon="@drawable/icon_home"
+        android:iconTint="@color/purple"
+        />
+    <item
+        android:icon="@drawable/icon_my_habits"
+        android:id="@+id/nav_my_habits"
+        android:title="My Habits"
+android:iconTint="@color/purple"
+        />
+
+    <item
+        android:icon="@drawable/icon_community"
+        android:id="@+id/nav_community"
+        android:title="Community"
+android:iconTint="@color/purple"
+        />
+    <item
+        android:icon="@drawable/icon_chats"
+        android:id="@+id/nav_chats"
+        android:iconTint="@color/purple"
+        android:title="Chats"
+/>
+
+
+</menu>

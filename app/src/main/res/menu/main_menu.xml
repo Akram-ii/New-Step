@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Home"
+            android:icon="@drawable/icon_home"
+            />
+        <item
+            android:icon="@drawable/icon_my_habits"
+            android:id="@+id/nav_my_habits"
+            android:title="My Habits"
+        />
+        <item
+            android:icon="@drawable/icon_community"
+            android:id="@+id/nav_community"
+            android:title="Community"/>
+        <item
+            android:icon="@drawable/icon_chats"
+            android:id="@+id/nav_chats"
+            android:title="Chats"
+        />
+
+        <item android:title="">
+            <menu>
+                <item
+                    android:icon="@drawable/default_pfp"
+                    android:id="@+id/nav_settings"
+                    android:title="Settings" />
+
+            </menu>
+        </item>
+
+
+    </group>
+
+    <item
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:title="About us"
+                android:icon="@drawable/icon_about"
+                />
+
+        </menu>
+    </item>
+</menu>
