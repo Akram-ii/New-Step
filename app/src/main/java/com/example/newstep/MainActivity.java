@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 user=FirebaseAuth.getInstance().getCurrentUser();
             }
         });
+
+        int test =1111;
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
