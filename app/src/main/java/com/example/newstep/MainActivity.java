@@ -53,6 +53,7 @@ int test;
             return insets;
         });
         int test=77;
+        int a=00;
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
