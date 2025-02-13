@@ -23,16 +23,13 @@ import com.example.newstep.Fragments.AboutFragment;
 import com.example.newstep.Fragments.ChatsFragment;
 import com.example.newstep.Fragments.CommunityFragment;
 import com.example.newstep.Fragments.HomeFragment;
-import com.example.newstep.Fragments.LoginFragment;
 import com.example.newstep.Fragments.MyHabitsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
-import com.example.newstep.Util.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -42,8 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView userName;
     Toolbar toolbar;
     View headerView;
-    FirebaseUser user;
-
+int test;
     BottomNavigationView bottomView;
     static Boolean isMediaInit=false;
     @Override
@@ -56,16 +52,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user=FirebaseAuth.getInstance().getCurrentUser();
-            }
-        });
-
-        int test =1111;
-
-        String t1="hello world";
+        int test=77;
+        int a=00;
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
@@ -87,22 +75,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_home);
             }else if(item.getItemId()==R.id.nav_chats){
-                if(user==null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
-                }
-                else {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ChatsFragment()).commit();
-                    navigationView.setCheckedItem(R.id.nav_chats);
-                }}else if(item.getItemId()==R.id.nav_my_habits){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyHabitsFragment()).commit();
-                    navigationView.setCheckedItem(R.id.nav_my_habits);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
+                navigationView.setCheckedItem(R.id.nav_chats);
+            }else if(item.getItemId()==R.id.nav_my_habits){
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MyHabitsFragment()).commit();
+                navigationView.setCheckedItem(R.id.nav_my_habits);
             }else if(item.getItemId()== R.id.nav_community){
-                if(user==null){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LoginFragment()).commit();
-                }else{
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CommunityFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_community);
-            }}
+            }
             return true;
         });
     }
@@ -113,18 +94,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }else if(item.getItemId()==R.id.nav_community){
-            if(user==null){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LoginFragment()).commit();
-            }else{
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CommunityFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_community);
-        }}else if(item.getItemId()==R.id.nav_chats){
-            if(user==null){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LoginFragment()).commit();
-            }else{
+        }else if(item.getItemId()==R.id.nav_chats){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_chats);
-        }}else if(item.getItemId()==R.id.nav_settings){
+        }else if(item.getItemId()==R.id.nav_settings){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_settings);
         }else if(item.getItemId()==R.id.nav_about){
