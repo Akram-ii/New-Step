@@ -31,7 +31,7 @@
         android:layout_height="40dp"
         android:id="@+id/pfp"
         android:layout_marginLeft="80dp"
-        android:src="@drawable/default_pfp"
+        android:src="@drawable/pfp_blue"
 
         android:layout_marginTop="10dp"
         />
@@ -88,9 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edittext_onblue"
-            android:elevation="4dp"
+            android:elevation="8dp"
             android:hint="Message..."
-            android:textColor="@color/blue"
+            android:textColor="@color/black"
             android:textColorHint="@color/darkGray"
             android:padding="10dp"
             android:layout_marginLeft="10dp"
@@ -98,6 +98,7 @@
 
 
         <ImageButton
+            android:elevation="8dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="@dimen/_1sdp"

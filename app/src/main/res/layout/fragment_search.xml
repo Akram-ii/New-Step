@@ -7,12 +7,14 @@
     android:layout_height="match_parent"
     android:background="@color/offWhite"
     tools:context=".Fragments.SearchFragment">
-<ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<ImageButton
+    android:layout_width="50dp"
+    android:background="@color/transparent"
+    android:id="@+id/reset_ImageButton"
+    android:layout_height="50dp"
     android:src="@drawable/icon_cancel"
-    android:layout_alignStart="@+id/user_EditText"
-    android:layout_marginTop="50dp"
+   android:layout_marginLeft="10dp"
+    android:layout_marginTop="35dp"
 
     />
     <EditText
@@ -20,17 +22,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="80dp"
-        android:paddingLeft="30dp"
-        android:layout_marginLeft="30dp"
+        android:backgroundTint="@color/black"
+        android:layout_marginLeft="60dp"
         android:textSize="18sp"
         android:maxLines="1"
 
         android:inputType="textCapSentences"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:hint="Username"
-        android:textColorHint="@color/darkGray"
+        android:textColorHint="@color/gray"
         android:id="@+id/user_EditText"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="37dp"
         />
     <ImageButton
         android:layout_width="50dp"

@@ -12,7 +12,7 @@
         android:id="@+id/pfp"
 
         android:layout_alignBottom="@id/left_chat_layout"
-        android:src="@drawable/purple_pfp"
+        android:src="@drawable/pfp_purple"
 
         />
     <LinearLayout

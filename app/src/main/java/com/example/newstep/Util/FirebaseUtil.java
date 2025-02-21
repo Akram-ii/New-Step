@@ -74,7 +74,7 @@ public class FirebaseUtil {
                             Log.d("Firestore", "Profile picture URI: " + uri.toString());
                             Picasso.get().load(uri).transform(new CircleTransform()).into(pfp);
                         } else {
-                            pfp.setImageResource(R.drawable.default_pfp);
+                            pfp.setImageResource(R.drawable.pfp_blue);
                             Log.d("Firestore", "No profile picture");
                         }
                     } else {

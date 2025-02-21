@@ -3,6 +3,7 @@ package com.example.newstep;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,11 +19,13 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.newstep.Fragments.AboutFragment;
 import com.example.newstep.Fragments.ChatsFragment;
 import com.example.newstep.Fragments.CommunityFragment;
 import com.example.newstep.Fragments.HomeFragment;
+import com.example.newstep.Fragments.LoginFragment;
 import com.example.newstep.Fragments.MyHabitsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -30,6 +33,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -38,8 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView pfp;
     TextView userName;
     Toolbar toolbar;
+    FirebaseAuth.AuthStateListener authStateListener;
+    FirebaseUser user;
     View headerView;
 int test;
+FirebaseAuth firebaseAuth;
     BottomNavigationView bottomView;
     static Boolean isMediaInit=false;
     @Override
@@ -52,6 +59,8 @@ int test;
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+firebaseAuth=FirebaseAuth.getInstance();
+
         int test=77;
         int a=00;
         toolbar = findViewById(R.id.toolbar);
@@ -69,23 +78,37 @@ int test;
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
+        authStateListener = firebaseAuth -> {
+            user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+                Log.d("Auth Check", "User not logged in - Redirecting to LoginFragment");
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+            }
+        };
+        firebaseAuth.addAuthStateListener(authStateListener);
         bottomView.setOnItemSelectedListener(item -> {
             if(item.getItemId()==R.id.nav_home){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_home);
             }else if(item.getItemId()==R.id.nav_chats){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
+               checkUserAuthentication(new ChatsFragment());
                 navigationView.setCheckedItem(R.id.nav_chats);
             }else if(item.getItemId()==R.id.nav_my_habits){
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MyHabitsFragment()).commit();
                 navigationView.setCheckedItem(R.id.nav_my_habits);
             }else if(item.getItemId()== R.id.nav_community){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CommunityFragment()).commit();
+               checkUserAuthentication(new CommunityFragment());
                 navigationView.setCheckedItem(R.id.nav_community);
             }
             return true;
         });
+    }
+    private void checkUserAuthentication(Fragment fragment) {
+        if (firebaseAuth.getCurrentUser() != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+        }
     }
 
     @Override
@@ -94,10 +117,10 @@ int test;
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }else if(item.getItemId()==R.id.nav_community){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CommunityFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_community);
+            checkUserAuthentication(new CommunityFragment());
+navigationView.setCheckedItem(R.id.nav_community);
         }else if(item.getItemId()==R.id.nav_chats){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
+            checkUserAuthentication(new ChatsFragment());
             navigationView.setCheckedItem(R.id.nav_chats);
         }else if(item.getItemId()==R.id.nav_settings){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();

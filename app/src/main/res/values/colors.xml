@@ -2,13 +2,14 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="offWhite">#E0E0E0</color>
+    <color name="offWhite">#E7E7E7</color>
     <color name="transparent">#00000000</color>
     <color name="darkGray">#696969</color>
+    <color name="gray">#9B9A9A</color>
 
 
     <color name="blue">#6A96E6</color>
-    <color name="green">#84BBD0</color>
+    <color name="green">#A2D2E9</color>
     <color name="light_blue">#E0DEFE</color>
     <color name="lavender">#DFC7FB</color>
     <color name="purple">#877DE0</color>

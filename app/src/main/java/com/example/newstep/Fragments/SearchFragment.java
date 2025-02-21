@@ -24,7 +24,7 @@ import com.google.firebase.firestore.Query;
 public class SearchFragment extends Fragment {
 
     EditText username;
-    ImageButton search;
+    ImageButton search,reset;
     RecyclerView searchResults;
     SearchUserRecyclerAdapter adapter;
 
@@ -35,6 +35,10 @@ public class SearchFragment extends Fragment {
         search=rootView.findViewById(R.id.search_icon);
         username=rootView.findViewById(R.id.user_EditText);
         searchResults=rootView.findViewById(R.id.search_RecyclerView);
+        reset=rootView.findViewById(R.id.reset_ImageButton);
+        reset.setOnClickListener(v->{
+            username.setText("");
+        });
         username.requestFocus();
         search.setOnClickListener(v->{
             String txtUsername=username.getText().toString();

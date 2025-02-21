@@ -10,6 +10,13 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     >
+    <FrameLayout
+        android:id="@+id/dim_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+    android:visibility="gone"
+    android:clickable="true"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

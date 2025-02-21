@@ -1,11 +1,17 @@
 package com.example.newstep.Util;
 
+import android.os.Build;
+
 import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Utilities {
     public static String getMonthFormat(int month) {
@@ -55,7 +61,7 @@ public class Utilities {
         String day=s.substring(8,10);
         return getMonthFormat(month)+" "+day+" "+year;
     }
-    public static Timestamp convertToTimestamp(String dateString) {
+    public static Timestamp stringToTimestamp(String dateString) {
         try {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());

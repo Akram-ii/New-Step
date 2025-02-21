@@ -21,7 +21,7 @@ android:background="@color/blue"
         />
     <ImageView
         android:scaleType="centerCrop"
-        android:src="@drawable/default_pfp"
+        android:src="@drawable/pfp_light_blue"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginBottom="10dp"
