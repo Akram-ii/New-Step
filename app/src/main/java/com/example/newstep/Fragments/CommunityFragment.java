@@ -103,6 +103,7 @@ public class CommunityFragment extends Fragment {
 
             if (!postContent.isEmpty()) {
                 createPost(postContent, popupWindow); // Créer le post
+                popupWindow.dismiss();
             } else {
                 // Afficher un message d'erreur si le post est vide
                 Toast.makeText(requireContext(), "Post cannot be empty", Toast.LENGTH_SHORT).show();

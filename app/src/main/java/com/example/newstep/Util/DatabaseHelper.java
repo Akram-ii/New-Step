@@ -179,17 +179,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 HabitModel habit = new HabitModel(
-                        cursor.getInt(0), cursor.getString(1), cursor.getString(2),
-                        cursor.getString(3), cursor.getInt(5)
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("category")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("emergency_message")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("days_resisted"))
                 );
                 habits.add(habit);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
         db.close();
         return habits;
     }
+
     public void deleteHabit(int habitId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("habits", "id = ?", new String[]{String.valueOf(habitId)});
