@@ -12,13 +12,13 @@ import com.example.newstep.R;
 
 
 public class CommunityFragment extends Fragment {
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_community, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_about, container, false);
 
 
-        return rootView; }
+        return rootView;
+
+    }
 }
