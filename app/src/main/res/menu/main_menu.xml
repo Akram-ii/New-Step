@@ -21,7 +21,7 @@
             android:title="Chats"
         />
 
-        <item android:title="">
+        <item android:title=" ">
             <menu>
                 <item
                     android:icon="@drawable/icon_settings"

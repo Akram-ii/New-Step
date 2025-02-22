@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Project Manager"
+        android:text="New Step"
         android:textSize="30dp"
         android:textColor="@color/offWhite"
         android:gravity="center"/>

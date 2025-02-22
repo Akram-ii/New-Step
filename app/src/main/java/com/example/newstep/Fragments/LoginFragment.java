@@ -126,7 +126,7 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
-    return rootView;
+        return rootView;
     }
     private void loginUser(String email, String password) {
         p.setMessage("Please wait");
@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment {
                     HomeFragment homeFragment = new HomeFragment();
                     transaction.replace(R.id.fragment_container, homeFragment, HomeFragment.class.getSimpleName());
                     transaction.addToBackStack(null);
-                    transaction.commitAllowingStateLoss();    
+                    transaction.commitAllowingStateLoss();
                 }else{
                     showAlertDialog();
                 }
@@ -209,5 +209,5 @@ public class LoginFragment extends Fragment {
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
     }
 
-  
+
 }
