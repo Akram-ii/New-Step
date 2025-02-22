@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CommunityFragment">
+    tools:context=".Fragments.CommunityFragment">
 
     <!-- FloatingActionButton positionné en bas à droite -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
