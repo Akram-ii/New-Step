@@ -63,6 +63,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(createNotesTable);
     }
 
+    public void updateEmergencyMsg(int habitId,String newMsg){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_HABIT_EMERGENCY_MSG, newMsg);
+        db.update(TABLE_HABITS, values, COLUMN_HABIT_ID + " = ?", new String[]{String.valueOf(habitId)});
+        db.close();
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_HABITS);

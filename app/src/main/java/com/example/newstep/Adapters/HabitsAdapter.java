@@ -66,6 +66,7 @@ SQLiteDatabase notifDB;
                 Intent intent=new Intent(context, HabitDetailsActivity.class);
                 intent.putExtra("habit_id",habitModel.getId());
                 intent.putExtra("habitName",habitModel.getHabit_name());
+                intent.putExtra("habitEmergency",habitModel.getEmergencyMsg());
                 context.startActivity(intent);
             }
         });

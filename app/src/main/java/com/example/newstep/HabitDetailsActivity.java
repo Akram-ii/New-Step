@@ -15,6 +15,7 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
     int habitId;
     DatabaseHelper db;
     DailyNotesAdapter adapter;
-    Button log;
+    Button log,emergency;
     ImageButton back;
     TextView name;
 
@@ -55,6 +56,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        emergency=findViewById(R.id.emergncyBtn);
         layout=findViewById(R.id.main);
         name=findViewById(R.id.name);
         back=findViewById(R.id.back_ImageButton);
@@ -80,8 +82,74 @@ public class HabitDetailsActivity extends AppCompatActivity {
                popUpWindow();
             }
         });
+        emergency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                popUpWindowEmergency();
+            }
+        });
+   emergency.setOnLongClickListener(new View.OnLongClickListener() {
+       @Override
+       public boolean onLongClick(View view) {
+           popUpWindowEmergencyEdit();
+           return true;
+       }
+   });
     }
- 
+
+    private void popUpWindowEmergencyEdit() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.edit_text_popup, null);
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f;
+        getWindow().setAttributes(layoutParams);
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f;
+            getWindow().setAttributes(originalParams);
+        });
+        TextView title=popUpView.findViewById(R.id.title);
+        title.setText("Edit the emergency message");
+        EditText inputE=popUpView.findViewById(R.id.userInput);
+        inputE.setText(getIntent().getStringExtra("habitEmergency"));
+        Button save=popUpView.findViewById(R.id.save);
+        Button cancel=popUpView.findViewById(R.id.cancel);
+        cancel.setOnClickListener(v->{
+            popupWindow.dismiss();
+        });
+        save.setOnClickListener(v->{
+            db.updateEmergencyMsg(habitId,inputE.getText().toString());
+            popupWindow.dismiss();
+            Toast.makeText(this,"Emergency message updated",Toast.LENGTH_SHORT).show();
+        });
+
+    }
+
+    private void popUpWindowEmergency() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.emergency_popup, null);
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f;
+        getWindow().setAttributes(layoutParams);
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f;
+            getWindow().setAttributes(originalParams);
+        });
+TextView emergencyMsg=popUpView.findViewById(R.id.emergency_msg);
+        emergencyMsg.setText(getIntent().getStringExtra("habitEmergency"));
+    }
     private void popUpWindow() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popUpView = inflater.inflate(R.layout.log_day, null);
