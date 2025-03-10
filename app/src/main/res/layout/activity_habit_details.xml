@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HabitDetailsActivity"
-    android:background="@color/offWhite">
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
         android:id="@+id/details"
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/blue">
+        android:background="@drawable/habits_details_shape">
         <Button
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
@@ -53,7 +53,8 @@
             android:id="@+id/logBtn"
             android:layout_centerHorizontal="true"
             android:text="Log Today"
-            android:backgroundTint="@color/purple"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/lavender2"
             />
     </RelativeLayout>
 </RelativeLayout>

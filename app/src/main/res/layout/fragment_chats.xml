@@ -20,7 +20,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
         android:background="@drawable/textview_background"
-        android:backgroundTint="@color/purple"
+        android:backgroundTint="@color/lavender2"
         android:layout_marginBottom="30dp">
         <TextView
             android:layout_width="wrap_content"
@@ -29,13 +29,13 @@
             android:padding="14dp"
             android:layout_marginLeft="30dp"
             android:textSize="18sp"
-            android:textColor="@color/lavender"
+            android:textColor="@color/blue"
             />
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:background="@drawable/icon_add"
-            android:backgroundTint="@color/lavender"
+            android:backgroundTint="@color/blue"
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"/>
     </RelativeLayout>
