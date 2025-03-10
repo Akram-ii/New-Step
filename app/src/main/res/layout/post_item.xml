@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lavender2"
+        android:padding="12dp">
+
+
+        <ImageView
+            android:id="@+id/userPicture"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/pfp_blue"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/userPicture"
+            app:layout_constraintTop_toTopOf="@id/userPicture"
+            app:layout_constraintBottom_toBottomOf="@id/userPicture"/>
+
+
+        <TextView
+            android:id="@+id/postContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="content"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+
+            android:ellipsize="end"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/userPicture"/>
+
+
+        <TextView
+            android:id="@+id/postDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4 min ago"
+            android:textSize="12sp"
+            android:textColor="@color/gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postContent"
+            android:layout_marginTop="4dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/like_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postDate"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:id="@+id/btnLike"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/like_icon"
+
+                />
+
+            <TextView
+                android:id="@+id/likeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="14sp"
+                android:textColor="@color/gray"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="12dp"/>
+
+            <ImageView
+                android:id="@+id/btnDislike"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/dislike"
+              />
+
+            <TextView
+                android:id="@+id/dislikeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textSize="14sp"
+                android:textColor="@color/gray"
+                android:layout_marginStart="6dp"
+                android:layout_marginEnd="16dp"/>
+
+
+            <ImageView
+                android:id="@+id/comment_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/comment"
+
+                />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+

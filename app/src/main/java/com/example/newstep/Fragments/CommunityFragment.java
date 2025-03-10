@@ -1,9 +1,14 @@
+
+
+
+
 package com.example.newstep.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +22,36 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newstep.Adapters.PostAdapter;
+import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CommunityFragment extends Fragment {
 
-    // Référence à Firestore pour interagir avec la base de données
     private FirebaseFirestore firestore;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+    private List<PostModel> postList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate le layout du fragment (fragment_community.xml)
         return inflater.inflate(R.layout.fragment_community, container, false);
     }
 
@@ -44,17 +59,69 @@ public class CommunityFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialisation de Firestore
+        // Initialize Firestore
         firestore = FirebaseFirestore.getInstance();
 
-        // Trouver le bouton pour ouvrir la pop-up dans le layout du fragment
-        FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
+        recyclerView = view.findViewById(R.id.post_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(getContext(), postList);
+        recyclerView.setAdapter(postAdapter);
 
-        // Définir un écouteur de clic pour le bouton
+
+        loadPosts();
+
+        // Set up the "Add Post" button
+        FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
         buttonOpenPopup.setOnClickListener(v -> showPopupWindow());
     }
 
-    // Méthode pour afficher la fenêtre pop-up
+
+    private void loadPosts() {
+
+        firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e("FirestoreError", "Error loading posts: ", error);
+                        return;
+                    }
+
+                    postList.clear();
+                    if (value != null) {
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            String postId = doc.getId();
+                            String content = doc.getString("content");
+                            String userId = doc.getString("userId");
+                            String userName = doc.getString("username");
+                            Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
+                            Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
+                            Timestamp timestampPost = doc.getTimestamp("timestamp");
+
+
+                            List<String> likedBy = (List<String>) doc.get("likedBy");
+                            List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+
+                            if (content != null && userId != null && userName != null && timestampPost != null) {
+                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost);
+
+
+                                post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                                post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+
+                                postList.add(post);
+                            }
+                        }
+                        postAdapter.notifyDataSetChanged();
+                    }
+
+                });
+    }
+
+
+
+
+
+
     private void showPopupWindow() {
         // Vérifier que l'activité est toujours en cours d'exécution
         if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {
@@ -117,6 +184,7 @@ public class CommunityFragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
+
         // Vérifier si l'utilisateur est connecté
         if (currentUser == null) {
             Toast.makeText(requireContext(), "You need to log in", Toast.LENGTH_SHORT).show();
@@ -140,7 +208,10 @@ public class CommunityFragment extends Fragment {
                         post.put("content", content); // Contenu du post
                         post.put("userId", userId); // ID de l'utilisateur
                         post.put("username", username); // Nom d'utilisateur
-                        post.put("timestamp", Timestamp.now()); // Horodatage du post
+
+                        // Horodatage du post
+                        post.put("timestamp", Timestamp.now());
+
 
                         // Ajouter le post à la collection "posts" dans Firestore
                         firestore.collection("posts")
@@ -164,4 +235,14 @@ public class CommunityFragment extends Fragment {
                         Toast.makeText(requireContext(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
+
+
+    // Rest of your code (showPopupWindow, createPost, etc.)
 }
+
+
+
+
+
+
+

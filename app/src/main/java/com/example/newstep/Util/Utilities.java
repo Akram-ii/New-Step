@@ -1,6 +1,7 @@
 package com.example.newstep.Util;
 
 import android.os.Build;
+import android.text.format.DateUtils;
 
 import com.google.firebase.Timestamp;
 
@@ -61,16 +62,12 @@ public class Utilities {
         String day=s.substring(8,10);
         return getMonthFormat(month)+" "+day+" "+year;
     }
-    public static Timestamp stringToTimestamp(String dateString) {
-        try {
+    
+    public static String getRelativeTime(Timestamp timestamp) {
+        if (timestamp == null) return "Unknown";
 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
-
-            Date date = sdf.parse(dateString);
-            return new Timestamp(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+        long time = timestamp.getSeconds() * 1000;
+        return DateUtils.getRelativeTimeSpanString(time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS).toString();
     }
+
 }

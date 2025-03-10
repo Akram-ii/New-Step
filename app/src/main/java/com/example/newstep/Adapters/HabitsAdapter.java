@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -77,7 +78,9 @@ SQLiteDatabase notifDB;
                 return true;
             }
         });
+
     }
+
 
     private void showDialog(int adapterPosition, HabitModel habitModel) {
         new AlertDialog.Builder(context).setMessage("What do you want to do ?")
