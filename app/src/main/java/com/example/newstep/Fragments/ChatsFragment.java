@@ -8,9 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.example.newstep.Adapters.RecentChatRecyclerAdapter;
@@ -23,11 +25,11 @@ import com.google.firebase.firestore.Query;
 
 public class ChatsFragment extends Fragment {
 
-    RelativeLayout addPerson;
+    Button group;
+    private RelativeLayout addPerson;
     Fragment secondFragment;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     FragmentTransaction transaction;
-
 
     RecentChatRecyclerAdapter adapter;
 
@@ -36,7 +38,13 @@ public class ChatsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_chats, container, false);
 
-
+        group=rootView.findViewById(R.id.groupsBtn);
+        if (group == null) {
+            Log.e("GroupsFragment", "Error: groupsBtn not found in fragment_chats.xml!");
+        } else {
+            Log.d("GroupsFragment", "groupsBtn found! Setting click listener.");
+            group.setOnClickListener(v -> setupGroupBtn());
+        }
         addPerson = rootView.findViewById(R.id.addPerson);
         transaction = getParentFragmentManager().beginTransaction();
         recyclerView = rootView.findViewById(R.id.recyclerViewChats);
@@ -64,6 +72,20 @@ public class ChatsFragment extends Fragment {
 
     }
 
+    private void setupGroupBtn() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+        Fragment existingFragment = fragmentManager.findFragmentByTag(GroupsFragment.class.getSimpleName());
+        if (existingFragment != null) {
+            fragmentManager.beginTransaction().remove(existingFragment).commit();
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        GroupsFragment searchFragment = new GroupsFragment();
+        transaction.replace(R.id.fragment_container, searchFragment, GroupsFragment.class.getSimpleName());
+        transaction.addToBackStack(null);
+        transaction.commitAllowingStateLoss();
+    }
     private void SetupRecyclerView() {
 
         Query query = FirebaseUtil.allChatroomCollectionRef()

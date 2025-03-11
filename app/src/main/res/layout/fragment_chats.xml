@@ -5,11 +5,43 @@
     android:layout_height="match_parent"
 
     tools:context=".Fragments.ChatsFragment">
+<RelativeLayout
+    android:layout_width="300dp"
+    android:layout_centerHorizontal="true"
+    android:layout_height="wrap_content"
+    >
+    <Button
+        android:elevation="5dp"
 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textColor="@color/light_blue"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginEnd="5dp"
+
+        android:backgroundTint="@color/blue"
+        android:text="My chats" />
+
+    <Button
+        android:elevation="5dp"
+        android:backgroundTint="@color/light_blue"
+        android:layout_width="wrap_content"
+        android:text="Explore Groups"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:id="@+id/groupsBtn"
+        android:textColor="@color/blue"
+       android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        />
+</RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:layout_marginTop="50dp"
         android:id="@+id/recyclerViewChats"
         />
     <RelativeLayout
