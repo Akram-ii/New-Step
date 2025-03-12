@@ -47,6 +47,22 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftMsg.setText(model.getMessage());
         }
+holder.rightChatLayout.setOnLongClickListener(new View.OnLongClickListener() {
+    @Override
+    public boolean onLongClick(View view) {
+        Utilities.vibratePhone(context);
+        new AlertDialog.Builder(context).setMessage("Delete message ?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    Log.d("test message id ",model.getMessageId());
+                   FirebaseUtil.allChatroomCollectionRef().document(chatroomId).collection("chats").document(model.getMessageId()).delete();
+                   notifyDataSetChanged();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                })
+                .show();
+        return true;
+    }
+});
 
     }
     @NonNull
