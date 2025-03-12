@@ -1,5 +1,6 @@
 package com.example.newstep;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,7 +61,8 @@ FirebaseAuth firebaseAuth;
             return insets;
         });
 firebaseAuth=FirebaseAuth.getInstance();
-
+        SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String lastFragment = sharedPreferences.getString("lastFragment", "default_value");
         int test=77;
         int a=00;
         toolbar = findViewById(R.id.toolbar);
@@ -102,6 +104,10 @@ firebaseAuth=FirebaseAuth.getInstance();
             }
             return true;
         });
+    if(lastFragment.equals("ChatsFragment")){
+        checkUserAuthentication(new ChatsFragment());
+        navigationView.setCheckedItem(R.id.nav_chats);
+    }
     }
     private void checkUserAuthentication(Fragment fragment) {
         if (firebaseAuth.getCurrentUser() != null) {
