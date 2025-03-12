@@ -225,10 +225,7 @@ public class ConvActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
                 if (task.isSuccessful() && task.getResult() != null) {
-                    String generatedId = task.getResult().getId();
-                    task.getResult().update("messageId", generatedId)
-                            .addOnSuccessListener(aVoid -> Log.d("Firestore", "Message ID added successfully"))
-                            .addOnFailureListener(e -> Log.e("Firestore", "Failed to add message ID", e));
+                 
                     msg.setText("");
 
                 }
