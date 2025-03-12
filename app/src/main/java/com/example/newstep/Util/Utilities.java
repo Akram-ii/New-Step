@@ -1,6 +1,9 @@
 package com.example.newstep.Util;
 
+import android.content.Context;
 import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.format.DateUtils;
 
 import com.google.firebase.Timestamp;
@@ -69,5 +72,13 @@ public class Utilities {
         long time = timestamp.getSeconds() * 1000;
         return DateUtils.getRelativeTimeSpanString(time, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS).toString();
     }
+    public static void vibratePhone(Context context) {
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
+        if (vibrator != null && vibrator.hasVibrator()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+            }
+        }
+    }
 }

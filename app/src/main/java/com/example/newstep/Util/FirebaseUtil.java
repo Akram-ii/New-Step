@@ -30,9 +30,6 @@ public class FirebaseUtil {
     public static CollectionReference allUserCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Users");
     }
-    public static CollectionReference allProjectCollectionRef(){
-        return FirebaseFirestore.getInstance().collection("Project");
-    }
     public static DocumentReference getChatroomRef(String chatroomId){
         return FirebaseFirestore.getInstance().collection("Chatrooms").document(chatroomId);
     }

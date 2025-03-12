@@ -90,7 +90,7 @@ public class ChatsFragment extends Fragment {
 
         Query query = FirebaseUtil.allChatroomCollectionRef()
                 .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId())
-                .orderBy("lastMsgTimeStamp", Query.Direction.DESCENDING);
+              ;
 
         FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>().setQuery(query, ChatroomModel.class).build();
         adapter = new RecentChatRecyclerAdapter(options, requireContext());

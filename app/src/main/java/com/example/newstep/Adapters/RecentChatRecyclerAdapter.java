@@ -43,6 +43,8 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
 
     protected void onBindViewHolder(@NonNull ChatroomModelViewHolder holder, int position, @NonNull ChatroomModel model) {
         Log.d("Chatroom", "userIds: " + model.getUserIds().toString());
+        if (model.getIsGroup() == 0) {
+
         FirebaseUtil.getOtherUserFromChatroom(model.getUserIds()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -53,7 +55,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
 
 
                     holder.username.setText(otherUser.getUsername());
-
+                    holder.pfp.setImageResource(R.drawable.pfp_purple);
                     if (lastMsgSentByMe) {
                         holder.mostRecentMsg.setText("Me: " + model.getLastMsgSent());
                     } else {
@@ -63,9 +65,9 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                     FirebaseUtil.loadPfp(otherUser.getId(), holder.pfp);
 
 
-                    if(model.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId()) || model.getUnseenMsg()==0){
+                    if (model.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId()) || model.getUnseenMsg() == 0) {
                         holder.unseenMsg.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         holder.mostRecentMsg.setTextColor(Color.parseColor("#8578A8"));
                         holder.mostRecentMsg.setTypeface(null, Typeface.BOLD);
                         holder.unseenMsg.setVisibility(View.VISIBLE);
@@ -96,20 +98,20 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                         }
                     });
 
-                    holder.unseenMsg.setText("+ "+model.getUnseenMsg());
+                    holder.unseenMsg.setText("+ " + model.getUnseenMsg());
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(model.getLastMsgSenderId()!=FirebaseUtil.getCurrentUserId()){
-                                Log.d( "unseenMsg: ","");
+                            if (model.getLastMsgSenderId() != FirebaseUtil.getCurrentUserId()) {
+                                Log.d("unseenMsg: ", "");
                                 model.setUnseenMsg(0);
                             }
                             Intent intent = new Intent(context.getApplicationContext(), ConvActivity.class);
                             intent.putExtra("username", otherUser.getUsername());
                             intent.putExtra("userId", otherUser.getId());
-                            intent.putExtra("availability",otherUser.getAvailability());
-                            intent.putExtra("token",otherUser.getToken());
-                            intent.putExtra("lastMsgId",model.getLastMsgSenderId());
+                            intent.putExtra("availability", otherUser.getAvailability());
+                            intent.putExtra("token", otherUser.getToken());
+                            intent.putExtra("lastMsgId", model.getLastMsgSenderId());
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
                         }
@@ -120,6 +122,26 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                 }
             }
         });
+    }else{ //group chat
+            holder.pfp.setImageResource(R.drawable.icon_group);
+       holder.username.setText(model.getGroupName());
+        holder.activity.setVisibility(View.GONE);
+        holder.timestampRecentMsg.setText(Utilities.getRelativeTime(model.getLastMsgTimeStamp()));
+        if(model.getLastMsgSenderId()==FirebaseUtil.getCurrentUserId()){
+            holder.mostRecentMsg.setText("Me: "+model.getLastMsgSent());
+        }else{
+            FirebaseUtil.allUserCollectionRef().document(model.getLastMsgSenderId()).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                        holder.mostRecentMsg.setText(documentSnapshot.getString("username")+": "+model.getLastMsgSent());
+                        } else {
+                            Log.d("Firestore", "User not found");
+                        }
+                    })
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error getting user", e));
+        }
+
+    }
     }
     @NonNull
     @Override

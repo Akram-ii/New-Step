@@ -5,8 +5,8 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class ChatroomModel {
-    String chatroomId,lastMsgSenderId,lastMsgSent;
-    int unseenMsg;
+    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName;
+    int unseenMsg,number_members,isGroup;
     List<String> userIds;
     com.google.firebase.Timestamp lastMsgTimeStamp;
     public ChatroomModel(){}
@@ -18,6 +18,44 @@ public class ChatroomModel {
         this.unseenMsg=unseenMsg;
         this.lastMsgTimeStamp = lastMsgTimeStamp;
         this.lastMsgSent=lastMsgSent;
+    }
+
+    public int getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(int isGroup) {
+        this.isGroup = isGroup;
+    }
+
+    public int getNumber_members() {
+        return number_members;
+    }
+
+    public void setNumber_members(int number_members) {
+        this.number_members = number_members;
+    }
+
+    public boolean checkUser(String userId){
+    if (userIds.contains(userId)) {
+        return true;
+    }
+    return false;
+}
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getChatroomId() {

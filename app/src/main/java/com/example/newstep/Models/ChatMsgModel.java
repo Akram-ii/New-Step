@@ -3,11 +3,20 @@ package com.example.newstep.Models;
 import com.google.firebase.Timestamp;
 
 public class ChatMsgModel {
+    private String messageId;
     private String message;
     private String  senderId;
     private Timestamp timestamp;
 
     ChatMsgModel(){}
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 
     public ChatMsgModel(String message, String senderId, Timestamp timestamp) {
         this.message = message;
