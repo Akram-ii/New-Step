@@ -118,6 +118,14 @@
                 android:src="@drawable/comment"
 
                 />
+
+            <TextView
+                android:id="@+id/commentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="14sp"
+                android:textColor="@color/darkGray"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

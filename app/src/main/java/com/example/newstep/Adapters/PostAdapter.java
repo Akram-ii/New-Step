@@ -25,12 +25,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private final List<PostModel> postList;
     private final FirebaseFirestore firestore;
     private final String userId;
+    private final OnCommentClickListener  commentClickListener;
+    public interface OnCommentClickListener {
+        void onCommentClick(String postId);
+    }
 
-    public PostAdapter(Context context, List<PostModel> postList) {
+
+
+    public PostAdapter(Context context, List<PostModel> postList,OnCommentClickListener commentClickListener) {
         this.context = context;
         this.postList = postList;
         this.firestore = FirebaseFirestore.getInstance();
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.commentClickListener = commentClickListener;
     }
 
     @NonNull
@@ -61,6 +68,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.btnLike.setColorFilter(isLiked ? Color.RED : Color.DKGRAY);
         holder.btnDislike.setColorFilter(isDisliked ? Color.BLUE : Color.DKGRAY);
 
+        firestore.collection("posts").document(postId).collection("comments")
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) return;
+                    if (value != null) {
+                        int commentCount = value.size();
+                        holder.commentCount.setText(String.valueOf(commentCount));
+                    }
+                });
         holder.btnLike.setOnClickListener(v -> {
             if (isLiked) {
                 likedBy.remove(userId);
@@ -90,6 +105,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
             updateFirestore(postId, post, likedBy, dislikedBy, holder, position);
         });
+
+        holder.comment_btn.setOnClickListener(v -> {
+            if (commentClickListener != null) {
+                commentClickListener.onCommentClick(post.getId());
+            }
+        });
     }
 
     private void updateFirestore(String postId, PostModel post, List<String> likedBy, List<String> dislikedBy, PostViewHolder holder, int position) {
@@ -111,8 +132,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
-        TextView postContent, likeCount, dislikeCount, username, timestampPost;
-        ImageView btnLike, btnDislike;
+        TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount;
+        ImageView btnLike, btnDislike,comment_btn;
 
         public PostViewHolder(View itemView) {
             super(itemView);
@@ -123,6 +144,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             dislikeCount = itemView.findViewById(R.id.dislikeCount);
             btnLike = itemView.findViewById(R.id.btnLike);
             btnDislike = itemView.findViewById(R.id.btnDislike);
+            comment_btn = itemView.findViewById(R.id.comment_btn);
+            commentCount = itemView.findViewById(R.id.commentCount);
         }
     }
 }
