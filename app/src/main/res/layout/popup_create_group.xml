@@ -1,112 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:cardCornerRadius="16dp"
-    android:cardElevation="8dp"
     android:padding="20dp"
-    android:layout_margin="20dp"
-    app:cardBackgroundColor="@color/white">
+    android:background="@android:color/white">
 
-    <LinearLayout
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Group"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/groupNameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:hint="Group Name"
+        app:boxBackgroundMode="outlined"
+        app:boxStrokeColor="@color/blue"
+        app:boxCornerRadiusTopStart="8dp"
+        app:boxCornerRadiusTopEnd="8dp"
+        app:boxCornerRadiusBottomStart="8dp"
+        app:boxCornerRadiusBottomEnd="8dp"
+        app:endIconMode="clear_text"
+        android:layout_below="@id/titleText"
+        android:layout_marginTop="12dp">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/groupNameInput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create New Group"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:inputType="text"
             android:textColor="@color/black"
-            android:layout_gravity="center"
-            android:paddingBottom="10dp" />
+            android:textSize="16sp"
+            android:minHeight="48dp"
+            android:padding="10dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/gray"
+        app:strokeColor="@color/black"
+        app:strokeWidth="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/groupNameLayout"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Group Name"
-            app:boxBackgroundMode="outlined"
-            app:boxStrokeColor="@color/blue"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:endIconMode="clear_text">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAddGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Group"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/blue"
+        app:strokeColor="@color/white"
+        app:strokeWidth="1dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/groupNameLayout"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/groupNameInput"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:minHeight="48dp"
-                android:padding="10dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="Select Category"
-            app:boxBackgroundMode="outlined"
-            app:boxStrokeColor="@color/blue"
-            app:endIconMode="dropdown">
-
-            <AutoCompleteTextView
-                android:id="@+id/groupCategoryDropdown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:minHeight="48dp"
-                android:padding="10dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:gravity="center">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCancel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:cornerRadius="10dp"
-                app:backgroundTint="@color/gray"
-                app:strokeColor="@color/black"
-                app:strokeWidth="1dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnAddGroup"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Add Group"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:cornerRadius="10dp"
-                app:backgroundTint="@color/blue"
-                app:strokeColor="@color/white"
-                app:strokeWidth="1dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
-
+</RelativeLayout>

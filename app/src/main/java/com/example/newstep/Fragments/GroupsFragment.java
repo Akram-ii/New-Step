@@ -1,21 +1,20 @@
 package com.example.newstep.Fragments;
 
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,35 +23,39 @@ import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class GroupsFragment extends Fragment {
 
+    private MaterialButton createGroupBtn;
     private RecyclerView recyclerView;
     private AllGroupsAdapter adapter;
-    private FloatingActionButton addGroupBtn;
-    private Button chatBtn;
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_groups, container, false);
 
         recyclerView = rootView.findViewById(R.id.groupsRecycler);
-        addGroupBtn = rootView.findViewById(R.id.addGroupBtn);
-        chatBtn = rootView.findViewById(R.id.chatsBtn);
+        createGroupBtn = rootView.findViewById(R.id.createGroupBtn);
 
-        chatBtn.setOnClickListener(v -> navigateToChatsFragment());
-        addGroupBtn.setOnClickListener(v -> showCreateGroupPopup());
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+
+        createGroupBtn.setOnClickListener(v -> showCreateGroupPopup(v));
 
         setupRecycler();
+
         return rootView;
     }
 
@@ -70,79 +73,88 @@ public class GroupsFragment extends Fragment {
         adapter = new AllGroupsAdapter(options, requireContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-        adapter.startListening();
-    }
 
-    private void navigateToChatsFragment() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-
-        if (currentFragment instanceof ChatsFragment) {
-            return;
+        // Vérifie si l'adapter n'est pas null avant de démarrer
+        if (adapter != null) {
+            adapter.startListening();
         }
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, new ChatsFragment(), ChatsFragment.class.getSimpleName());
-        transaction.addToBackStack(null);
-        transaction.commitAllowingStateLoss();
     }
 
-    private void showCreateGroupPopup() {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(getContext().LAYOUT_INFLATER_SERVICE);
+    private void showCreateGroupPopup(View anchorView) {
+        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_create_group, null);
 
-        PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.showAtLocation(getView(), Gravity.CENTER, 0, 0);
+        final PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
 
-        EditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
-        AutoCompleteTextView categoryDropdown = popupView.findViewById(R.id.groupCategoryDropdown);
-        Button addGroupButton = popupView.findViewById(R.id.btnAddGroup);
-        Button cancelBtn = popupView.findViewById(R.id.btnCancel);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        popupWindow.setElevation(10);
+        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
 
-        String[] categories = {"My Health", "My Money", "Everything", "Something Else"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, categories);
-        categoryDropdown.setAdapter(adapter);
+        TextInputEditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
+        MaterialButton btnCancel = popupView.findViewById(R.id.btnCancel);
+        MaterialButton btnAddGroup = popupView.findViewById(R.id.btnAddGroup);
 
-        cancelBtn.setOnClickListener(v -> popupWindow.dismiss());
+        btnCancel.setOnClickListener(v -> popupWindow.dismiss());
 
-        addGroupButton.setOnClickListener(v -> {
+        btnAddGroup.setOnClickListener(v -> {
             String groupName = groupNameInput.getText().toString().trim();
-            String category = categoryDropdown.getText().toString().trim();
 
             if (groupName.isEmpty()) {
-                Toast.makeText(getContext(), "Enter Group Name", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (category.isEmpty()) {
-                Toast.makeText(getContext(), "Select Category", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Le nom du groupe ne peut pas être vide", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            addGroupToFirebase(groupName, category, popupWindow);
+            createGroupInFirestore(groupName, popupWindow);
+        });
+
+        popupView.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                popupWindow.dismiss();
+                return true;
+            }
+            return false;
         });
     }
 
-    private void addGroupToFirebase(String groupName, String category, PopupWindow popupWindow) {
-        String chatroomId = UUID.randomUUID().toString();
+    private void createGroupInFirestore(String groupName, PopupWindow popupWindow) {
+        // Vérification si l'utilisateur est connecté
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(getContext(), "Utilisateur non authentifié", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String ownerId = auth.getCurrentUser().getUid();
+
+        // Génération de l'ID du groupe
+        DocumentReference newGroupRef = db.collection("Chatroom").document();
+        String chatroomId = newGroupRef.getId(); // Récupération de l'ID généré
 
         Map<String, Object> groupData = new HashMap<>();
         groupData.put("chatroomId", chatroomId);
-        groupData.put("groupName", groupName);
-        groupData.put("category", category);
+        groupData.put("name", groupName);  // Correction: "name" au lieu de "groupName"
         groupData.put("isGroup", 1);
-        groupData.put("ownerId", FirebaseUtil.getCurrentUserId());
         groupData.put("number_members", 1);
-        groupData.put("userIds", Collections.singletonList(FirebaseUtil.getCurrentUserId()));
-        groupData.put("lastMsgTimeStamp", System.currentTimeMillis());
+        groupData.put("ownerId", ownerId);
+        groupData.put("lastMsgSenderId", "");
+        groupData.put("lastMsgSent", "");
+        groupData.put("lastMsgTimeStamp", null);
+        groupData.put("unseenMsg", 0);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("chatrooms").document(chatroomId).set(groupData)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(getContext(), "Group added successfully!", Toast.LENGTH_SHORT).show();
+        newGroupRef.set(groupData)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("CreateGroup", "Groupe ajouté avec ID: " + chatroomId);
+                    Toast.makeText(getContext(), "Groupe créé avec succès", Toast.LENGTH_SHORT).show();
                     popupWindow.dismiss();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Failed to add group", Toast.LENGTH_SHORT).show();
+                    Log.e("CreateGroup", "Erreur lors de l'ajout du groupe", e);
+                    Toast.makeText(getContext(), "Erreur lors de la création du groupe", Toast.LENGTH_SHORT).show();
                 });
     }
 }
+
