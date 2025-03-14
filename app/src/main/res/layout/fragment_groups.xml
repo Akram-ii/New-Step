@@ -4,22 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
-    tools:context=".Fragments.GroupsFragment">
+    tools:context=".Fragments.CommunityFragment">
+
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
-        android:id="@+id/Rlayout"
-        >
+        android:id="@+id/Rlayout">
+
         <Button
             android:elevation="5dp"
             android:id="@+id/chatsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginEnd="5dp"
             android:textColor="@color/blue"
             android:backgroundTint="@color/light_blue"
             android:text="My chats" />
@@ -33,15 +31,27 @@
             android:layout_margin="5dp"
             android:textColor="@color/light_blue"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="50dp"
             />
     </RelativeLayout>
-<androidx.recyclerview.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@+id/Rlayout"
-    android:layout_margin="5dp"
-android:id="@+id/groupsRecycler"
-    />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/Rlayout"
+        android:layout_margin="5dp"
+        android:id="@+id/groupsRecycler"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addGroupBtn"
+        app:backgroundTint="@color/blue"
+        app:tint="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:contentDescription="Add Group"
+        android:src="@drawable/ic_add" />
 
 </RelativeLayout>

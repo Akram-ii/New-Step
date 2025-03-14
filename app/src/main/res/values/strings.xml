@@ -4,4 +4,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+
+        <string-array name="group_categories">
+            <item>My Health</item>
+            <item>My Money</item>
+            <item>Everything</item>
+            <item>Something Else</item>
+        </string-array>
+
 </resources>
