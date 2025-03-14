@@ -46,19 +46,22 @@ Context context;
     holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(model.checkUser(model.getOwnerId())){
+            if(model.checkUser(FirebaseUtil.getCurrentUserId())){
                 Toast.makeText(context,"You are already member of this group",Toast.LENGTH_SHORT).show();
             }
             else {
                 new AlertDialog.Builder(context).setMessage("Do you want to join this group chat ?")
                         .setPositiveButton("Join", (dialog, which) -> {
                             FirebaseUtil.allChatroomCollectionRef().document(model.getChatroomId())
-                                    .update("userIds", FieldValue.arrayUnion(FirebaseUtil.getCurrentUserId()))
-                                    .addOnSuccessListener(aVoid -> Log.d( "added user to group: ",""))
+                                    .update("userIds", FieldValue.arrayUnion(FirebaseUtil.getCurrentUserId()),"number_members",FieldValue.increment(1))
+                                    .addOnSuccessListener(v->{
+                                        Toast.makeText(context,"Joined "+model.getGroupName()+",check My Chats",Toast.LENGTH_SHORT).show();
+                                        notifyDataSetChanged();
+                                    })
                                     .addOnFailureListener(e -> Log.d("error adding user: " , e.getMessage()));
+
                         })
                         .setNegativeButton("Cancel", (dialog, which) -> {
-                            dialog.dismiss();
                         })
                         .show();
 

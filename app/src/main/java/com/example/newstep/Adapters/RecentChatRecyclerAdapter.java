@@ -130,6 +130,10 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
         if(model.getLastMsgSenderId()==FirebaseUtil.getCurrentUserId()){
             holder.mostRecentMsg.setText("Me: "+model.getLastMsgSent());
         }else{
+            if (model.getLastMsgSenderId() == null) {
+                holder.mostRecentMsg.setText("Unknown: " + model.getLastMsgSent());
+            }
+            else{
             FirebaseUtil.allUserCollectionRef().document(model.getLastMsgSenderId()).get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
@@ -139,7 +143,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                         }
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error getting user", e));
-        }
+        }}
 
     }
     }
