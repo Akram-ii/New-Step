@@ -1,6 +1,7 @@
 package com.example.newstep.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -8,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -51,7 +54,9 @@ import com.google.firebase.firestore.Query;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class GroupsFragment extends Fragment {
@@ -114,15 +119,27 @@ public class GroupsFragment extends Fragment {
         final PopupWindow popupWindow = new PopupWindow(
                 popupView,
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 true
         );
 
-        popupWindow.setBackgroundDrawable(new ColorDrawable());
-        popupWindow.setElevation(10);
-        popupWindow.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextInputEditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
+        // Diminuer l'opacité de l'arrière-plan de l'activité lorsque la pop-up est ouverte
+        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
+        layoutParams.alpha = 0.5f; // Réduire l'opacité à 50%
+        requireActivity().getWindow().setAttributes(layoutParams);
+
+        // Afficher la pop-up au centre de l'écran
+        popupWindow.showAtLocation(requireView(), Gravity.CENTER, 0, 0);
+
+        // Restaurer l'opacité de l'arrière-plan après la fermeture de la pop-up
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = requireActivity().getWindow().getAttributes();
+            originalParams.alpha = 1.0f; // Rétablir l'opacité à 100%
+            requireActivity().getWindow().setAttributes(originalParams);
+        });
+        EditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
         Button btnCancel = popupView.findViewById(R.id.btnCancel);
         Button btnAddGroup = popupView.findViewById(R.id.btnAddGroup);
 
@@ -132,7 +149,7 @@ public class GroupsFragment extends Fragment {
             String groupName = groupNameInput.getText().toString().trim();
 
             if (groupName.isEmpty()) {
-                Toast.makeText(getContext(), "Le nom du groupe ne peut pas être vide", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Group name cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -160,11 +177,14 @@ public class GroupsFragment extends Fragment {
 
         Map<String, Object> groupData = new HashMap<>();
         groupData.put("chatroomId", chatroomId);
+        List<String> userIds=new ArrayList<>();
+        userIds.add(FirebaseUtil.getCurrentUserId());
+        groupData.put("userIds",userIds);
         groupData.put("groupName", groupName);
         groupData.put("isGroup", 1);
         groupData.put("number_members", 1);
         groupData.put("ownerId", ownerId);
-        groupData.put("lastMsgSenderId", "");
+        groupData.put("lastMsgSenderId",FirebaseUtil.getCurrentUserId());
         groupData.put("lastMsgSent", "");
         groupData.put("lastMsgTimeStamp", null);
         groupData.put("unseenMsg", 0);
