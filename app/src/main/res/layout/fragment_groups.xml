@@ -1,61 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
     tools:context=".Fragments.GroupsFragment">
-    <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        android:id="@+id/Rlayout"
-        >
-        <Button
-            android:elevation="5dp"
-            android:id="@+id/chatsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginEnd="5dp"
-            android:textColor="@color/blue"
-            android:backgroundTint="@color/light_blue"
-            android:text="My chats" />
 
-        <Button
-            android:elevation="5dp"
-            android:backgroundTint="@color/blue"
-            android:layout_width="wrap_content"
-            android:text="Explore Groups"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textColor="@color/light_blue"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="50dp"
-            />
-    </RelativeLayout>
-    <androidx.recyclerview.widget.RecyclerView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/Rlayout"
-        android:layout_margin="5dp"
-        android:id="@+id/groupsRecycler"
-        />
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/Rlayout">
+
+            <Button
+                android:elevation="5dp"
+                android:id="@+id/chatsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/blue"
+                android:backgroundTint="@color/light_blue"
+                android:text="My Chats" />
+
+            <Button
+                android:elevation="5dp"
+                android:backgroundTint="@color/blue"
+                android:layout_width="wrap_content"
+                android:text="Explore Groups"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textColor="@color/light_blue"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="50dp" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/Rlayout"
+            android:layout_margin="5dp"
+            android:id="@+id/groupsRecycler" />
+    </RelativeLayout>
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/createGroupBtn"
+        android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="Créer un groupe"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/primaryColor"
-        app:tint="@color/white"
-        app:fabSize="normal"/>
+        android:layout_gravity="bottom|end"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/blue"
+        android:contentDescription="Add"
+        app:srcCompat="@android:drawable/ic_input_add" />
 
-
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
