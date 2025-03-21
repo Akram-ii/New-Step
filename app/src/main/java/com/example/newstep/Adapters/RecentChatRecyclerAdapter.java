@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.util.Util;
 import com.example.newstep.ConvActivity;
+import com.example.newstep.ConvGroupActivity;
 import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.R;
@@ -144,6 +145,17 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Error getting user", e));
         }}
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), ConvGroupActivity.class);
+                intent.putExtra("groupName", model.getGroupName());
+                intent.putExtra("chatroomId", model.getChatroomId());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+            }
+        });
 
     }
     }

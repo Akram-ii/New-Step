@@ -42,6 +42,9 @@ public class FirebaseUtil {
         } else {
             return userid2  +"_"+userid1;
         }}
+
+
+
     public static CollectionReference allChatroomCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Chatrooms");
     }
@@ -82,4 +85,10 @@ public class FirebaseUtil {
                     Log.e("Firestore", "Error getting document: " + e.getMessage());
                 });
     }
+
+
+
+
+
+
 }

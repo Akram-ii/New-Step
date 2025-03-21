@@ -29,7 +29,7 @@
         android:elevation="5dp"
         android:backgroundTint="@color/light_blue"
         android:layout_width="wrap_content"
-        android:text="Explore Groups"
+        android:text="Groups"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:id="@+id/groupsBtn"
