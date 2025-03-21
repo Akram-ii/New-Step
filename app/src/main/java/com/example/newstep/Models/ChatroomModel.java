@@ -5,11 +5,19 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class ChatroomModel {
-    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName;
+    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName,desc;
     int unseenMsg,number_members,isGroup;
     List<String> userIds;
     com.google.firebase.Timestamp lastMsgTimeStamp;
     public ChatroomModel(){}
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public ChatroomModel(String chatroomId, List<String> userIds, Timestamp lastMsgTimeStamp, String lastMsgSenderId, String lastMsgSent, int unseenMsg) {
         this.chatroomId = chatroomId;

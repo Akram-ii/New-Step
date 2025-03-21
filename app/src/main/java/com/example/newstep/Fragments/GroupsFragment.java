@@ -140,6 +140,7 @@ public class GroupsFragment extends Fragment {
             requireActivity().getWindow().setAttributes(originalParams);
         });
         EditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
+        EditText groupDescInput=popupView.findViewById(R.id.group_desc);
         Button btnCancel = popupView.findViewById(R.id.btnCancel);
         Button btnAddGroup = popupView.findViewById(R.id.btnAddGroup);
 
@@ -147,13 +148,20 @@ public class GroupsFragment extends Fragment {
 
         btnAddGroup.setOnClickListener(v -> {
             String groupName = groupNameInput.getText().toString().trim();
-
+            String groupDesc = groupDescInput.getText().toString().trim();
             if (groupName.isEmpty()) {
                 Toast.makeText(getContext(), "Group name cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
+            }else if (groupName.length()>25) {
+                Toast.makeText(getContext(), "Group name is too long", Toast.LENGTH_SHORT).show();
+                return;
+            }else
+                if(groupDesc.isEmpty()){
+                Toast.makeText(getContext(), "Group description cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            createGroupInFirestore(groupName, popupWindow);
+            createGroupInFirestore(groupName,groupDesc, popupWindow);
         });
 
         popupView.setOnTouchListener((v, event) -> {
@@ -165,11 +173,7 @@ public class GroupsFragment extends Fragment {
         });
     }
 
-    private void createGroupInFirestore(String groupName, PopupWindow popupWindow) {
-        if (auth.getCurrentUser() == null) {
-            Toast.makeText(getContext(), "Utilisateur non authentifié", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void createGroupInFirestore(String groupName,String desc, PopupWindow popupWindow) {
 
         String ownerId = auth.getCurrentUser().getUid();
         DocumentReference newGroupRef = db.collection("Chatrooms").document();
@@ -180,6 +184,7 @@ public class GroupsFragment extends Fragment {
         List<String> userIds=new ArrayList<>();
         userIds.add(FirebaseUtil.getCurrentUserId());
         groupData.put("userIds",userIds);
+        groupData.put("desc",desc);
         groupData.put("groupName", groupName);
         groupData.put("isGroup", 1);
         groupData.put("number_members", 1);
@@ -191,11 +196,11 @@ public class GroupsFragment extends Fragment {
 
         newGroupRef.set(groupData)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(getContext(), "Groupe créé avec succès", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Group created !", Toast.LENGTH_SHORT).show();
                     popupWindow.dismiss();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Erreur lors de la création du groupe", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error:"+e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 

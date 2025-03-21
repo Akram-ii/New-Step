@@ -1,12 +1,17 @@
 package com.example.newstep.Adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +73,38 @@ Context context;
             }
         }
     });
+holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+    @Override
+    public boolean onLongClick(View view) {
+        viewGroupDetails(model.getGroupName(),model.getDesc());
+        return true;
+    }
+});
+    }
 
+    private void viewGroupDetails(String grpName, String grpDesc) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View popUpView = inflater.inflate(R.layout.popup_view_group, null);
+        dimBackground(0.5f);
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        View rootLayout = ((Activity) context).findViewById(android.R.id.content);
+        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
+            layoutParams.alpha = 1.0f;
+            ((Activity) context).getWindow().setAttributes(layoutParams);
+        });
+        popupWindow.setOnDismissListener(() -> dimBackground(1.0f));
+        TextView name=popUpView.findViewById(R.id.group_name);
+        TextView desc=popUpView.findViewById(R.id.group_desc);
+        ImageButton back=popUpView.findViewById(R.id.back);
+        back.setOnClickListener(v->{popupWindow.dismiss();});
+        name.setText(grpName);
+        desc.setText(grpDesc);
     }
 
     @NonNull
@@ -89,5 +125,9 @@ Context context;
         }
 
     }
-
+    private void dimBackground(float alpha) {
+        WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
+        layoutParams.alpha = alpha;
+        ((Activity) context).getWindow().setAttributes(layoutParams);
+    }
 }

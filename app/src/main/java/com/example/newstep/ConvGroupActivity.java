@@ -30,13 +30,13 @@ import com.example.newstep.Models.UserModel;
 import com.example.newstep.Util.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
-
-
-
-
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import java.util.Objects;
@@ -224,26 +224,55 @@ public class ConvGroupActivity extends AppCompatActivity {
 
 
     private void openAddMemberDialog() {
-        FirebaseUtil.allUserCollectionRef().get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                List<UserModel> usersList = task.getResult().toObjects(UserModel.class);
-                for(int i=0;i<usersList.size();i++){
-                    if(Objects.equals(usersList.get(i).getId(), currentUser)) {
-                        usersList.remove(i);
+        FirebaseUtil.allChatroomCollectionRef()
+                .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId())
+                .whereEqualTo("isGroup", 0)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<String> talkedToUserIds = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        List<String> userIds = (List<String>) document.get("userIds");
+                        if (userIds != null) {
+                            for (String userId : userIds) {
+                                if (!userId.equals(FirebaseUtil.getCurrentUserId()) && !talkedToUserIds.contains(userId) ) {
+                                    talkedToUserIds.add(userId);
+                                }
+                            }
+                        }
+
+                            }
+                    if(talkedToUserIds.isEmpty()){
+                        Toast.makeText(this,"You have no one to add",Toast.LENGTH_SHORT).show();
+                    }else{
+                        fetchUsers(talkedToUserIds);
                     }
+                });
+    };
+
+private void fetchUsers(List<String> userIds){
+    FirebaseUtil.allUserCollectionRef()
+            .whereIn("id", userIds)
+            .get()
+            .addOnSuccessListener(queryDocumentSnapshots -> {
+                List<UserModel> talkedToUsers = new ArrayList<>();
+                for (DocumentSnapshot document : queryDocumentSnapshots) {
+                    UserModel user = document.toObject(UserModel.class);
+                    talkedToUsers.add(user);
                 }
+                Log.d("UserFetch", "Retrieved users: " + talkedToUsers.size());
+
                 ContextThemeWrapper themedContext = new ContextThemeWrapper(this, R.style.add_rmove_Dialog);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(themedContext);
                 builder.setTitle("Add Members");
 
-                String[] usersNames = new String[usersList.size()];
-                for (int i = 0; i < usersList.size(); i++) {
-                    usersNames[i] = usersList.get(i).getUsername();
+                String[] usersNames = new String[talkedToUsers.size()];
+                for (int i = 0; i < talkedToUsers.size(); i++) {
+                    usersNames[i] = talkedToUsers.get(i).getUsername();
                 }
 
                 builder.setMultiChoiceItems(usersNames, null, (dialog, which, isChecked) -> {
-                    UserModel selectedFriend = usersList.get(which);
+                    UserModel selectedFriend = talkedToUsers.get(which);
                     if (isChecked) {
                         addMemberToGroup(selectedFriend.getId());
                     }
@@ -253,12 +282,8 @@ public class ConvGroupActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-            } else {
-                Log.e("Firestore", "Failed to fetch friends list", task.getException());
-            }
-        });
-    }
-
+            });
+}
     private void openRemoveMemberDialog() {
         FirebaseUtil.getChatroomRef(chatroomId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
