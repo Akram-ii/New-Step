@@ -1,9 +1,11 @@
+
 package com.example.newstep.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +19,44 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newstep.Adapters.CommentAdapter;
+import com.example.newstep.Adapters.PostAdapter;
+import com.example.newstep.Models.Comment;
+import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class CommunityFragment extends Fragment {
 
-    // Référence à Firestore pour interagir avec la base de données
     private FirebaseFirestore firestore;
+    private RecyclerView recyclerView;
+    private PostAdapter postAdapter;
+    private List<PostModel> postList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate le layout du fragment (fragment_community.xml)
         return inflater.inflate(R.layout.fragment_community, container, false);
     }
 
@@ -44,17 +64,67 @@ public class CommunityFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialisation de Firestore
+        // Initialize Firestore
         firestore = FirebaseFirestore.getInstance();
 
-        // Trouver le bouton pour ouvrir la pop-up dans le layout du fragment
-        FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
+        recyclerView = view.findViewById(R.id.post_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(getContext(), postList, this::showCommentDialog);
 
-        // Définir un écouteur de clic pour le bouton
+        recyclerView.setAdapter(postAdapter);
+        ;
+
+
+        loadPosts();
+
+        // Set up the "Add Post" button
+        FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
         buttonOpenPopup.setOnClickListener(v -> showPopupWindow());
     }
 
-    // Méthode pour afficher la fenêtre pop-up
+
+    private void loadPosts() {
+
+        firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e("FirestoreError", "Error loading posts: ", error);
+                        return;
+                    }
+
+                    postList.clear();
+                    if (value != null) {
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            String postId = doc.getId();
+                            String content = doc.getString("content");
+                            String userId = doc.getString("userId");
+                            String userName = doc.getString("username");
+                            Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
+                            Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
+                            Timestamp timestampPost = doc.getTimestamp("timestamp");
+
+
+                            List<String> likedBy = (List<String>) doc.get("likedBy");
+                            List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+
+                            if (content != null && userId != null && userName != null && timestampPost != null) {
+                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost);
+
+
+                                post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                                post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+
+                                postList.add(post);
+                            }
+                        }
+                        postAdapter.notifyDataSetChanged();
+                    }
+
+                });
+    }
+
+
     private void showPopupWindow() {
         // Vérifier que l'activité est toujours en cours d'exécution
         if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {
@@ -111,57 +181,146 @@ public class CommunityFragment extends Fragment {
         });
     }
 
-    // Méthode pour créer un post et l'ajouter à Firestore
+
     private void createPost(String content, PopupWindow popupWindow) {
         // Obtenir l'utilisateur actuel via Firebase Authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
 
-        // Vérifier si l'utilisateur est connecté
+
         if (currentUser == null) {
             Toast.makeText(requireContext(), "You need to log in", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Récupérer l'ID de l'utilisateur actuel
+
         String userId = currentUser.getUid();
 
-        // Récupérer le username depuis la collection "Users" dans Firestore
+
         firestore.collection("Users").document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    // Vérifier si le document utilisateur existe
+
                     if (documentSnapshot.exists()) {
-                        // Récupérer le champ "username" du document utilisateur
+
                         String username = documentSnapshot.getString("username");
 
-                        // Créer une structure de données pour le post
-                        Map<String, Object> post = new HashMap<>();
-                        post.put("content", content); // Contenu du post
-                        post.put("userId", userId); // ID de l'utilisateur
-                        post.put("username", username); // Nom d'utilisateur
-                        post.put("timestamp", Timestamp.now()); // Horodatage du post
 
-                        // Ajouter le post à la collection "posts" dans Firestore
+                        Map<String, Object> post = new HashMap<>();
+                        post.put("content", content);
+                        post.put("userId", userId);
+                        post.put("username", username);
+
+
+                        post.put("timestamp", Timestamp.now());
+
+
                         firestore.collection("posts")
                                 .add(post)
                                 .addOnSuccessListener(documentReference -> {
-                                    // Afficher un message de succès
+
                                     Toast.makeText(requireContext(), "Post created successfully!", Toast.LENGTH_SHORT).show();
-                                    popupWindow.dismiss(); // Fermer la pop-up après succès
+                                    popupWindow.dismiss();
                                 })
                                 .addOnFailureListener(e ->
-                                        // Afficher un message d'erreur en cas d'échec
+
                                         Toast.makeText(requireContext(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                                 );
                     } else {
-                        // Afficher un message d'erreur si le document utilisateur n'existe pas
+
                         Toast.makeText(requireContext(), "user not found", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e ->
-                        // Afficher un message d'erreur en cas d'échec de la récupération du document
+
                         Toast.makeText(requireContext(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
+
+    private void showCommentDialog(String postId) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        if (currentUser == null) {
+            Toast.makeText(requireContext(), "you need to log in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_comments, null);
+        dialog.setContentView(view);
+        view.setBackgroundResource(R.drawable.popupbg);
+
+        dialog.show();
+
+        RecyclerView recyclerViewComments = view.findViewById(R.id.recyclerViewComments);
+        EditText editTextComment = view.findViewById(R.id.editTextComment);
+        Button buttonSendComment = view.findViewById(R.id.buttonSendComment);
+
+        recyclerViewComments.setLayoutManager(new LinearLayoutManager(requireContext()));
+        List<Comment> commentList = new ArrayList<>();
+        CommentAdapter commentAdapter = new CommentAdapter(requireContext(), commentList);
+        recyclerViewComments.setAdapter(commentAdapter);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        editTextComment.setEnabled(false);
+        buttonSendComment.setEnabled(false);
+
+
+        if (currentUser != null) {
+            editTextComment.setEnabled(true);
+            buttonSendComment.setEnabled(true);
+        }
+
+
+        db.collection("posts").document(postId).collection("comments")
+                .orderBy("timestamp", Query.Direction.ASCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || value == null) return;
+                    commentList.clear();
+                    for (DocumentSnapshot doc : value.getDocuments()) {
+                        Comment comment = doc.toObject(Comment.class);
+                        if (comment != null) {
+                            commentList.add(comment);
+                        }
+                    }
+                    commentList.sort((c1, c2) -> Integer.compare(c2.getLikes().size(), c1.getLikes().size()));
+                    commentAdapter.notifyDataSetChanged();
+                });
+
+
+        buttonSendComment.setOnClickListener(v -> {
+            String text = editTextComment.getText().toString().trim();
+            if (!text.isEmpty()) {
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String commentId = UUID.randomUUID().toString();
+
+
+                db.collection("Users").document(userId).get()
+                        .addOnSuccessListener(userDoc -> {
+                            String username = userDoc.exists() ? userDoc.getString("username") : "unknown user";
+
+
+                            Comment comment = new Comment(commentId, userId, postId, text, System.currentTimeMillis(), username);
+
+
+
+                            db.collection("posts").document(postId).collection("comments")
+                                    .document(commentId).set(comment)
+                                    .addOnSuccessListener(aVoid -> {
+                                        editTextComment.setText("");
+                                    });
+                        });
+            }
+        });
+
+        dialog.show();
+    }
 }
+
+
+
+
+
+
+
