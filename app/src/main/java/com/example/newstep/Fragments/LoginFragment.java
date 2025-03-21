@@ -21,7 +21,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newstep.MainActivity;
 import com.example.newstep.R;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +31,17 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import repository.UserRepository;
 
 
 public class LoginFragment extends Fragment {
@@ -38,6 +51,11 @@ public class LoginFragment extends Fragment {
     TextView forgot,register;
     FirebaseAuth auth= FirebaseAuth.getInstance();
     ProgressDialog p;
+
+    private GoogleSignInClient googleSignInClient;
+    private FirebaseAuth firebaseAuth;
+    private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 100;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,12 +69,30 @@ public class LoginFragment extends Fragment {
         forgot=rootView.findViewById(R.id.forgotPassword);
         register=rootView.findViewById(R.id.registerTextView);
 
+        SignInButton googleSignInButton = rootView.findViewById(R.id.btnGoogleSignIn);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
+
+        googleSignInButton.setOnClickListener(v -> signInWithGoogle());
+
+
+
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 Fragment existingFragment = fragmentManager.findFragmentByTag(RegisterFragment.class.getSimpleName());
+
+
                 if (existingFragment != null) {
                     fragmentManager.beginTransaction().remove(existingFragment).commit();
                 }
@@ -68,6 +104,8 @@ public class LoginFragment extends Fragment {
                 transaction.commitAllowingStateLoss();
             }
         });
+
+
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +176,16 @@ public class LoginFragment extends Fragment {
                 FirebaseUser user =FirebaseAuth.getInstance().getCurrentUser();
                 if(user.isEmailVerified()){
                     Toast.makeText(getContext(),"Welcome!",Toast.LENGTH_SHORT).show();
+
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("updateDrawer", true);
+                    startActivity(intent);
+                    getActivity().finish();
+
+
+
+
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                     Fragment existingFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
@@ -208,6 +256,65 @@ public class LoginFragment extends Fragment {
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
     }
+
+
+
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                Toast.makeText(getContext(), "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(getActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                        UserRepository userRepository = new UserRepository();
+                        userRepository.saveGoogleUserToFirestore();
+
+                        Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
+
+
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        getActivity().finish();
+                    } else {
+                        Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

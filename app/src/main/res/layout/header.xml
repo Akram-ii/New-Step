@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-
-android:background="@color/blue"
+    android:background="@drawable/ripple_background"
     android:gravity="bottom"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/Profile_button"
     >
 
     <TextView
@@ -17,26 +23,29 @@ android:background="@color/blue"
         android:layout_marginLeft="95dp"
         android:textColor="@color/light_blue"
 
-
         />
+
     <ImageView
-        android:scaleType="centerCrop"
-        android:src="@drawable/pfp_light_blue"
+        android:id="@+id/drawerpfp"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/drawerpfp"
-        android:layout_alignParentBottom="true"
         android:layout_above="@+id/drawerUsername"
-        android:layout_marginLeft="17dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginBottom="46dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pfp_light_blue" />
+
     <TextView
-        android:layout_alignStart="@+id/drawerEmail"
         android:id="@+id/drawerUsername"
         android:layout_width="wrap_content"
-        android:layout_above="@+id/drawerEmail"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/drawerEmail"
+        android:layout_alignStart="@+id/drawerEmail"
 
-        android:text="Loading..."
+        android:layout_marginStart="-84dp"
+        android:layout_marginBottom="-27dp"
+        android:text="Log in..."
         android:textColor="@color/light_blue"
         android:textSize="24sp" />
 

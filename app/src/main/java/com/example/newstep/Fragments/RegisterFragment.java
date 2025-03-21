@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import repository.UserRepository;
+
 
 public class RegisterFragment extends Fragment {
 
@@ -52,6 +55,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
 
 
@@ -62,6 +67,9 @@ public class RegisterFragment extends Fragment {
         Password=rootView.findViewById(R.id.password);
         confirm=rootView.findViewById(R.id.confirm);
         login=rootView.findViewById(R.id.loginTextView);
+
+
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,13 +87,22 @@ public class RegisterFragment extends Fragment {
                 transaction.commitAllowingStateLoss();
             }
         });
+
+
+
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 String txtEmail = Email.getText().toString();
                 String txtPassword = Password.getText().toString();
                 String txtConfirm = confirm.getText().toString();
                 String txtUserName = userName.getText().toString();
+
+
+
                 if (txtUserName.length()<3 ) {
                     userName.setError("Too short");
                 } else if (txtUserName.length()>15 ) {
@@ -105,23 +122,37 @@ public class RegisterFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<String> task) {
                             if(task.isSuccessful()){
+
                                 token=task.getResult();
                                 Log.d("token user here ","   :::"+task.getResult());
                                 registerUser(txtEmail,txtPassword,txtUserName, task.getResult());
                             }
                         }
+
+
+
+
                     });
                 }
             }
         });
-    return rootView;
+        return rootView;
+
     }
+
+
+
+
+
     private void registerUser(String email,String password,String username,String token1) {
+
+
         p.setMessage("Please wait");
         p.show();
         auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
+
 
                 Map<String, Object> userInfo = new HashMap<>();
                 userInfo.put("username", username);
@@ -130,11 +161,16 @@ public class RegisterFragment extends Fragment {
                 userInfo.put("registerDate",currentDate);
                 userInfo.put("token",token1);
 
+
+
                 db.collection("Users").document(auth.getCurrentUser().getUid()).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         p.dismiss();
                         if (task.isSuccessful()) {
+
+
                             auth.getCurrentUser().sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {

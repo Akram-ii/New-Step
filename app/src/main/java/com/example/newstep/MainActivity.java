@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -34,7 +35,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import repository.UserRepository;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -45,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
     View headerView;
+    TextView userNameTextView;
+    ImageView profileImageView;
 int test;
 FirebaseAuth firebaseAuth;
     BottomNavigationView bottomView;
@@ -52,14 +59,19 @@ FirebaseAuth firebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+
+
         });
-firebaseAuth=FirebaseAuth.getInstance();
+
+        firebaseAuth=FirebaseAuth.getInstance();
 
         int test=77;
         int a=00;
@@ -102,7 +114,63 @@ firebaseAuth=FirebaseAuth.getInstance();
             }
             return true;
         });
+
+
+        View headerView = navigationView.getHeaderView(0);
+        RelativeLayout profileButton = headerView.findViewById(R.id.Profile_button);
+
+        profileButton.setOnClickListener(v -> {
+            if(userIsLoggedIn()){
+
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+
+            }else{
+
+                LoginFragment loginFragment = new LoginFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, loginFragment).addToBackStack(null).commit();
+
+            }
+
+        });
+
+
+        NavigationView navigationView = findViewById(R.id.navView);
+
+        userNameTextView = headerView.findViewById(R.id.drawerUsername);
+        profileImageView = headerView.findViewById(R.id.drawerpfp);
+
+        UserRepository userRepository = new UserRepository();
+
+
+        userRepository.getUserData((name, profileImage) -> {
+            userNameTextView.setText(name);
+
+            Glide.with(this).load(profileImage).placeholder(R.drawable.pfp_purple).circleCrop().into(profileImageView);
+        });
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            userRepository.getUserFromUsersCollection(userId, (name, profileImage) -> {
+                userNameTextView.setText(name);
+                Glide.with(this).load(profileImage).placeholder(R.drawable.pfp_purple).into(profileImageView);
+            });
+        }
+
+
     }
+
+
+
+    private boolean userIsLoggedIn() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        return currentUser != null;
+    }
+
+
     private void checkUserAuthentication(Fragment fragment) {
         if (firebaseAuth.getCurrentUser() != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
@@ -134,7 +202,7 @@ navigationView.setCheckedItem(R.id.nav_community);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
-    }
+    } // idafat profile fragmant min agal wad3iha fi hadihi al dala li ana al fragment la touda3 mitl activity
 
     @Override
     public void onBackPressed() {
