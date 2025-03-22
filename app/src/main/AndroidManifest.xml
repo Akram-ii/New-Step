@@ -17,7 +17,9 @@
         <activity
             android:name=".AdminActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".ConvGroupActivity"
+            android:exported="false" />
         <receiver
             android:name=".Util.NotifReceiver"
             android:exported="false">
