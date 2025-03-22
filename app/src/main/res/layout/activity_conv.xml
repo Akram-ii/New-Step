@@ -32,7 +32,7 @@
         android:layout_height="40dp"
         android:id="@+id/pfp"
         android:layout_marginLeft="80dp"
-        android:src="@drawable/pfp_blue"
+        android:src="@drawable/pfp_light_blue"
 
         android:layout_marginTop="10dp"
         />

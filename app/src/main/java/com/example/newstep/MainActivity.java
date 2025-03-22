@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -29,18 +32,22 @@ import com.example.newstep.Fragments.HomeFragment;
 import com.example.newstep.Fragments.LoginFragment;
 import com.example.newstep.Fragments.MyHabitsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
+import com.example.newstep.Util.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageView pfp;
+    ImageButton admin;
     TextView userName;
     Toolbar toolbar;
     FirebaseAuth.AuthStateListener authStateListener;
@@ -60,16 +67,16 @@ FirebaseAuth firebaseAuth;
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 firebaseAuth=FirebaseAuth.getInstance();
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String lastFragment = sharedPreferences.getString("lastFragment", "default_value");
-        int test=77;
-        int a=00;
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
-        navigationView = findViewById(R.id.navView);
+        navigationView=findViewById(R.id.navView);
         headerView = navigationView.getHeaderView(0);
+        admin=headerView.findViewById(R.id.admin);
         userName = headerView.findViewById(R.id.drawerUsername);
         pfp = headerView.findViewById(R.id.drawerpfp);
         drawerLayout = findViewById(R.id.main);
@@ -87,6 +94,26 @@ firebaseAuth=FirebaseAuth.getInstance();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
             }
         };
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+               if(documentSnapshot.exists()){
+                   if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
+                       admin.setVisibility(View.VISIBLE);
+                   }
+               }
+                }
+            });
+        }
+admin.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Intent intent=new Intent(MainActivity.this, AdminActivity.class);
+        startActivity(intent);
+    }
+});
         firebaseAuth.addAuthStateListener(authStateListener);
         bottomView.setOnItemSelectedListener(item -> {
             if(item.getItemId()==R.id.nav_home){
