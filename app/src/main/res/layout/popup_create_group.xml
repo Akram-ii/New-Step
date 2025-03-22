@@ -68,6 +68,18 @@ android:imeOptions="actionDone"
         android:background="@drawable/textview_background"
         />
 
+
+    <ImageView
+        android:id="@+id/delete_group_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/delete_group_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/btns"
         android:layout_width="match_parent"
@@ -77,6 +89,7 @@ android:imeOptions="actionDone"
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="10dp"
         android:layout_marginTop="10dp">
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
@@ -100,6 +113,7 @@ android:imeOptions="actionDone"
             app:cornerRadius="20dp"
             android:backgroundTint="@color/purple"
             android:textColor="@android:color/white"/>
+
     </LinearLayout>
 </RelativeLayout>
 </LinearLayout>

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.util.Util;
@@ -40,6 +41,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
+
+import kotlin.reflect.KVisibility;
 
 public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomModel, RecentChatRecyclerAdapter.ChatroomModelViewHolder> {
     Context context;
@@ -170,8 +175,10 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     public boolean onLongClick(View view) {
         if(model.getOwnerId().equals(FirebaseUtil.getCurrentUserId())){
             editGroup(model.getChatroomId(),model.getGroupName(), model.getDesc());
+
         }else{
-            viewGroupDetails(model.getGroupName(),model.getDesc());
+            viewGroupDetails(model.getGroupName(),model.getDesc(),model.getChatroomId());
+
         }
         return true;
     }
@@ -179,10 +186,11 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     }
     }
 
-    private void viewGroupDetails(String grpName,String grpDesc) {
+    private void viewGroupDetails(String grpName,String grpDesc,String id) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View popUpView = inflater.inflate(R.layout.popup_view_group, null);
         dimBackground(0.5f);
+
         int width = ViewGroup.LayoutParams.WRAP_CONTENT;
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
@@ -199,6 +207,15 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
         TextView name=popUpView.findViewById(R.id.group_name);
         TextView desc=popUpView.findViewById(R.id.group_desc);
         ImageButton back=popUpView.findViewById(R.id.back);
+        ImageView leave=popUpView.findViewById(R.id.leave_btn);
+        leave.setVisibility(View.VISIBLE);
+        leave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leaveGroup(id );
+                popupWindow.dismiss();
+            }
+        });
         back.setOnClickListener(v->{popupWindow.dismiss();});
 name.setText(grpName);
 desc.setText(grpDesc);
@@ -228,11 +245,21 @@ desc.setText(grpDesc);
         EditText groupDescInput=popUpView.findViewById(R.id.group_desc);
         Button btnCancel = popUpView.findViewById(R.id.btnCancel);
         Button btnSave= popUpView.findViewById(R.id.btnAddGroup);
+        ImageView delete_group=popUpView.findViewById(R.id.delete_group_btn);
+        delete_group.setVisibility(View.VISIBLE);
 btnSave.setText("Save");
 title.setText("Edit your group");
 btnCancel.setOnClickListener(v -> popupWindow.dismiss());
 groupDescInput.setText(grpDesc);
 groupNameInput.setText(grpName);
+delete_group.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+
+        deleteGroup(id);
+        popupWindow.dismiss();
+    }
+});
 
 btnSave.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -263,13 +290,71 @@ btnSave.setOnClickListener(new View.OnClickListener() {
 btnCancel.setOnClickListener(v->{popupWindow.dismiss();});
 
     }
+    private void leaveGroup(String chatroomId) {
+        if (chatroomId == null || chatroomId.isEmpty()) {
+            Toast.makeText(context, "Invalid group ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        new AlertDialog.Builder(context)
+                .setTitle("Leave Group")
+                .setMessage("Are you sure you want to leave this group?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    FirebaseUtil.getChatroomRef(chatroomId).get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            ChatroomModel chatroomModel = task.getResult().toObject(ChatroomModel.class);
+                            if (chatroomModel != null) {
+                                List<String> userIds = chatroomModel.getUserIds();
+                                if (userIds != null && userIds.contains(FirebaseUtil.getCurrentUserId())) {
+                                    userIds.remove(FirebaseUtil.getCurrentUserId());
+
+                                        FirebaseUtil.getChatroomRef(chatroomId).update("userIds", userIds)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    Toast.makeText(context, "You have left the group", Toast.LENGTH_SHORT).show();
+                                                    notifyDataSetChanged();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    Toast.makeText(context, "Failed to leave group", Toast.LENGTH_SHORT).show();
+                                                });
+
+                                }
+                            }
+                        } else {
+                            Toast.makeText(context, "Failed to fetch group data", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+    private void deleteGroup(String chatroomId) {
+        if (chatroomId == null || chatroomId.isEmpty()) {
+            Toast.makeText(context, "Invalid group ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        new AlertDialog.Builder(context)
+                .setTitle("Delete Group")
+                .setMessage("Are you sure you want to delete this group?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    FirebaseUtil.allChatroomCollectionRef().document(chatroomId)
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(context, "Group deleted successfully", Toast.LENGTH_SHORT).show();
+                                notifyDataSetChanged();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(context, "Failed to delete group", Toast.LENGTH_SHORT).show();
+                            });
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
     private void dimBackground(float alpha) {
         WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
         layoutParams.alpha = alpha;
         ((Activity) context).getWindow().setAttributes(layoutParams);
     }
-
 
     @NonNull
     @Override
