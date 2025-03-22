@@ -166,7 +166,7 @@ public class ConvActivity extends AppCompatActivity {
 
         Query query =FirebaseUtil.getChatroomMsgRef(chatroomId).orderBy("timestamp", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<ChatMsgModel> options=new FirestoreRecyclerOptions.Builder<ChatMsgModel>().setQuery(query,ChatMsgModel.class).build();
-        adapter=new ChatRecyclerAdapter(options,getApplicationContext());
+        adapter=new ChatRecyclerAdapter(options,this,chatroomId);
         LinearLayoutManager manager=new LinearLayoutManager(this);
         manager.setReverseLayout(true);
 
@@ -224,10 +224,12 @@ public class ConvActivity extends AppCompatActivity {
         FirebaseUtil.getChatroomMsgRef(chatroomId).add(chatMsgModel).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful() && task.getResult() != null) {
+                    String generatedId = task.getResult().getId();
+                    task.getResult().update("messageId", generatedId)
+                            .addOnSuccessListener(aVoid -> Log.d("Firestore", "Message ID added successfully"))
+                            .addOnFailureListener(e -> Log.e("Firestore", "Failed to add message ID", e));
                     msg.setText("");
-
-
 
                 }
             }

@@ -38,6 +38,9 @@ public class SearchFragment extends Fragment {
         reset=rootView.findViewById(R.id.reset_ImageButton);
         reset.setOnClickListener(v->{
             username.setText("");
+            setupSearchRecyclerView("jedmnfo9wm.atqZ");
+            //hedi ghir 3ajal UI beh ndirou clear lel recycler view ki yros 3la reset
+            //ki ydir query mch 7a ylga 7ata wa7d esmou ybda kimak psq random, la probabilite enou 3abd ydir username ada hia 1/(26^15)=0.0000000000000000000000596 :)
         });
         username.requestFocus();
         search.setOnClickListener(v->{
@@ -45,18 +48,17 @@ public class SearchFragment extends Fragment {
             if(txtUsername.isEmpty()){
                 Toast.makeText(getContext(),"Enter a username",Toast.LENGTH_SHORT).show();
             }else{
-                setupSearchRecyclerView(username);}
+                setupSearchRecyclerView(username.getText().toString());}
         });
 
         return rootView;
     }
 
-    private void setupSearchRecyclerView(EditText username) {
-        String textUsername=username.getText().toString();
+    private void setupSearchRecyclerView(String username) {
         Query query = FirebaseFirestore.getInstance().collection("Users")
                 .orderBy("username")
-                .whereGreaterThanOrEqualTo("username", textUsername)
-                .whereLessThan("username", textUsername + "\uf8ff");
+                .whereGreaterThanOrEqualTo("username", username)
+                .whereLessThan("username", username + "\uf8ff");
         FirestoreRecyclerOptions<UserModel> options=new FirestoreRecyclerOptions.Builder<UserModel>().setQuery(query,UserModel.class).build();
         adapter=new SearchUserRecyclerAdapter(options,requireContext());
         searchResults.setLayoutManager(new LinearLayoutManager(getContext()));
