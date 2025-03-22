@@ -27,6 +27,10 @@
         </receiver>
 
         <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".HabitDetailsActivity"
             android:exported="false" />
         <activity
