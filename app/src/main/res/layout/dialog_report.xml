@@ -74,7 +74,7 @@ android:gravity="center">
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             app:cornerRadius="20dp"
-            android:text="Cancel"
+            android:text="no"
             android:textColor="@color/white" />
 
         <com.google.android.material.button.MaterialButton
@@ -83,8 +83,8 @@ android:gravity="center">
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
-            android:backgroundTint="#673AB7"
-            android:text="Report"
+            android:backgroundTint="#b7251a"
+            android:text="yes"
             android:textColor="@android:color/white"
             app:cornerRadius="20dp" />
 
