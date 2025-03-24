@@ -25,7 +25,7 @@ public class AdminCommentsFragment extends Fragment {
     private FirebaseFirestore firestore;
 
     public AdminCommentsFragment() {
-
+        // Constructeur vide requis
     }
 
     @Nullable
@@ -38,7 +38,7 @@ public class AdminCommentsFragment extends Fragment {
 
         firestore = FirebaseFirestore.getInstance();
 
-
+        // 🔥 Charge les reports
         loadReports();
 
         return view;
@@ -53,17 +53,34 @@ public class AdminCommentsFragment extends Fragment {
                         .setQuery(query, ReportComment.class)
                         .build();
 
+        // 🔥 Vérifie si l'adaptateur existe déjà et arrête l'écoute
+        if (adapter != null) {
+            adapter.stopListening();
+            recyclerViewReports.setAdapter(null);
+        }
+
         adapter = new ReportCommentAdapter(options, getContext());
         recyclerViewReports.setAdapter(adapter);
+        recyclerViewReports.setItemAnimator(null);
+
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
+
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
+        if (adapter != null && recyclerViewReports.getAdapter() == null) {
+            recyclerViewReports.setAdapter(adapter);
+        }
         if (adapter != null) {
             adapter.startListening();
+            adapter.notifyDataSetChanged();
         }
     }
+
 
     @Override
     public void onStop() {
@@ -72,4 +89,5 @@ public class AdminCommentsFragment extends Fragment {
             adapter.stopListening();
         }
     }
+
 }
