@@ -4,37 +4,44 @@
     android:orientation="vertical"
     android:layout_margin="10dp"
     android:padding="5dp"
-    android:background="@color/light_blue"
+    android:background="@drawable/textview_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-<include layout="@layout/item_post_report" />
+<include layout="@layout/item_post_report"
+    />
     <include layout="@layout/item_comment_report"/>
-<TextView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="10dp"
+
     android:id="@+id/nb_reports"
-    android:textSize="18sp"
+    android:textSize="15sp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Reported by:"
+    android:text="Reported by 555 users"
+        android:layout_alignRight="@+id/ref"
     android:textStyle="bold"
     android:gravity="center"
     />
 
     <TextView
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:textSize="13sp"
+        android:layout_alignLeft="@+id/ref"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="last report was 2min ago"
         android:id="@+id/last_report_time"
         android:gravity="center"
         />
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        >
+
         <Button
+            android:elevation="15dp"
+            android:layout_below="@+id/nb_reports"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete comment"
@@ -51,9 +58,12 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"/>
         <Button
+            android:elevation="15dp"
+            android:layout_below="@+id/nb_reports"
             android:layout_marginHorizontal="5dp"
             android:layout_alignLeft="@+id/ref"
             app:cornerRadius="20dp"
+            android:id="@+id/disable_user_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Disable account"

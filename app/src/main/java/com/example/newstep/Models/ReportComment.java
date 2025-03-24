@@ -13,7 +13,9 @@ public class ReportComment {
     public String getcUsername() {
         return cUsername;
     }
+public ReportComment(){
 
+}
     public void setcUsername(String cUsername) {
         this.cUsername = cUsername;
     }

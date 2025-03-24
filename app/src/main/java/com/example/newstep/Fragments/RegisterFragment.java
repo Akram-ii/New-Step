@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newstep.R;
+import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.Utilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,6 +32,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
@@ -86,6 +88,7 @@ public class RegisterFragment extends Fragment {
                 String txtPassword = Password.getText().toString();
                 String txtConfirm = confirm.getText().toString();
                 String txtUserName = userName.getText().toString();
+                Log.d("FirestoreDebug", "usrnae: " + txtUserName);
                 if (txtUserName.length()<3 ) {
                     userName.setError("Too short");
                 } else if (txtUserName.length()>15 ) {
@@ -107,7 +110,7 @@ public class RegisterFragment extends Fragment {
                             if(task.isSuccessful()){
                                 token=task.getResult();
                                 Log.d("token user here ","   :::"+task.getResult());
-                                registerUser(txtEmail,txtPassword,txtUserName, task.getResult());
+                                checkUsernameExists(txtEmail,txtPassword,txtUserName, task.getResult());
                             }
                         }
                     });
@@ -116,6 +119,24 @@ public class RegisterFragment extends Fragment {
         });
     return rootView;
     }
+
+    private void checkUsernameExists(String email,String pwd,String username,String token) {
+     FirebaseUtil.allUserCollectionRef()
+                .whereEqualTo("username", username.trim())
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    Log.d("FirestoreDebug", "Documents found: " + querySnapshot.size());
+                    if (!querySnapshot.isEmpty()) {
+                        userName.setError("Username is already taken");
+                    } else {
+                       registerUser(email,pwd,username,token);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Error checking username", Toast.LENGTH_SHORT).show();
+                });
+    }
+
     private void registerUser(String email,String password,String username,String token1) {
         p.setMessage("Please wait");
         p.show();
@@ -128,6 +149,9 @@ public class RegisterFragment extends Fragment {
                 userInfo.put("id", Objects.requireNonNull(auth.getCurrentUser()).getUid());
                 String currentDate = Utilities.timestampToStringNoDetail(Timestamp.now());
                 userInfo.put("registerDate",currentDate);
+                userInfo.put("isBanned",false);
+                userInfo.put("nb_reports",0);
+                userInfo.put("isAdmin",true);
                 userInfo.put("token",token1);
 
                 db.collection("Users").document(auth.getCurrentUser().getUid()).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
