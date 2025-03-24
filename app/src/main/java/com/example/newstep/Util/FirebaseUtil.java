@@ -48,6 +48,16 @@ public class FirebaseUtil {
     public static CollectionReference allChatroomCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Chatrooms");
     }
+    public static CollectionReference allCommentReportCollectionRef(){
+        return FirebaseFirestore.getInstance().collection("ReportComments");
+    }
+    public static CollectionReference allPostsCollectionRef(){
+        return FirebaseFirestore.getInstance().collection("posts");
+    }
+    public static CollectionReference CommentsCollectionRef(String postId){
+        return FirebaseFirestore.getInstance().collection("posts").document(postId).collection("comments");
+
+    }
     public static DocumentReference getOtherUserFromChatroom(List<String> userIds){
 
 
