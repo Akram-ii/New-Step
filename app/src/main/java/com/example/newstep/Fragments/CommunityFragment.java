@@ -301,7 +301,7 @@ public class CommunityFragment extends Fragment {
                             String username = userDoc.exists() ? userDoc.getString("username") : "unknown user";
 
 
-                            Comment comment = new Comment(commentId, userId, postId, text, System.currentTimeMillis(), username);
+                            Comment comment = new Comment(commentId, userId, postId, text, System.currentTimeMillis(), username , null, null);
 
 
 

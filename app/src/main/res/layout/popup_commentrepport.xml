@@ -45,7 +45,7 @@
             android:id="@+id/textMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure you want to report this post? This action cannot be undone."
+            android:text="Are you sure you want to report this comment? This action cannot be undone."
             android:textSize="14sp"
             android:textColor="@color/black"
             android:layout_below="@id/title"

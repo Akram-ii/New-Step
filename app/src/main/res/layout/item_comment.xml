@@ -60,7 +60,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 🚨 Bouton Report ajouté en haut à droite -->
+
     <ImageButton
         android:id="@+id/btn_report"
         android:layout_width="48dp"
@@ -68,7 +68,6 @@
         android:src="@drawable/warning"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Report this post"
-
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="4dp"/>
