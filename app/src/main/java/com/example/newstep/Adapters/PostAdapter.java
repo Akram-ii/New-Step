@@ -25,19 +25,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private final List<PostModel> postList;
     private final FirebaseFirestore firestore;
     private final String userId;
-    private final OnCommentClickListener  commentClickListener;
+    private final OnCommentClickListener commentClickListener;
+    private final OnReportClickListener reportClickListener;
+
     public interface OnCommentClickListener {
         void onCommentClick(String postId);
     }
 
+    public interface OnReportClickListener {
+        void onReportClick(String postId, String pUsername, String pContent);
+    }
 
-
-    public PostAdapter(Context context, List<PostModel> postList,OnCommentClickListener commentClickListener) {
+    public PostAdapter(Context context, List<PostModel> postList, OnCommentClickListener commentClickListener, OnReportClickListener reportClickListener) {
         this.context = context;
         this.postList = postList;
         this.firestore = FirebaseFirestore.getInstance();
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.commentClickListener = commentClickListener;
+        this.reportClickListener = reportClickListener;
     }
 
     @NonNull
@@ -64,7 +69,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         boolean isLiked = likedBy.contains(userId);
         boolean isDisliked = dislikedBy.contains(userId);
 
-
         holder.btnLike.setColorFilter(isLiked ? Color.RED : Color.DKGRAY);
         holder.btnDislike.setColorFilter(isDisliked ? Color.BLUE : Color.DKGRAY);
 
@@ -76,6 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                         holder.commentCount.setText(String.valueOf(commentCount));
                     }
                 });
+
         holder.btnLike.setOnClickListener(v -> {
             if (isLiked) {
                 likedBy.remove(userId);
@@ -111,6 +116,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 commentClickListener.onCommentClick(post.getId());
             }
         });
+
+        holder.btnReport.setOnClickListener(v -> {
+            if (reportClickListener != null) {
+                reportClickListener.onReportClick(postId, post.getUserName(), post.getContent());
+            }
+        });
     }
 
     private void updateFirestore(String postId, PostModel post, List<String> likedBy, List<String> dislikedBy, PostViewHolder holder, int position) {
@@ -133,7 +144,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
         TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount;
-        ImageView btnLike, btnDislike,comment_btn;
+        ImageView btnLike, btnDislike, comment_btn, btnReport;
 
         public PostViewHolder(View itemView) {
             super(itemView);
@@ -146,6 +157,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             btnDislike = itemView.findViewById(R.id.btnDislike);
             comment_btn = itemView.findViewById(R.id.comment_btn);
             commentCount = itemView.findViewById(R.id.commentCount);
+            btnReport = itemView.findViewById(R.id.btn_report);
         }
     }
 }
