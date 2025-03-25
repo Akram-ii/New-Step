@@ -14,6 +14,7 @@
         android:background="@color/lavender2"
         android:padding="12dp">
 
+
         <!-- Image utilisateur -->
         <ImageView
             android:id="@+id/userPicture"
@@ -36,7 +37,8 @@
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@id/userPicture"
             app:layout_constraintTop_toTopOf="@id/userPicture"
-            app:layout_constraintBottom_toBottomOf="@id/userPicture"/>
+            app:layout_constraintBottom_toBottomOf="@id/userPicture"
+            android:visibility="gone"/>
         <!-- Contenu du post -->
         <TextView
             android:id="@+id/pContent"
@@ -50,7 +52,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/userPicture"/>
-
+        <ImageView
+            android:id="@+id/infoIconPost"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icon_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

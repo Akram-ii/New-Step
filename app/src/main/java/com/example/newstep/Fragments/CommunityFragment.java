@@ -40,14 +40,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.SetOptions;
 
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+
 import java.util.Map;
-import java.util.TimeZone;
+
 import java.util.UUID;
 
 public class CommunityFragment extends Fragment {
@@ -357,15 +357,18 @@ public class CommunityFragment extends Fragment {
         DocumentReference reportRef = firestore.collection("reportPosts").document(postId);
 
         Map<String, Object> reportData = new HashMap<>();
+        String reportId = UUID.randomUUID().toString();
+        reportData.put("reportPostId", reportId);
         reportData.put("postId", postId);
         reportData.put("usersId", FieldValue.arrayUnion(userId));
-        reportData.put("username", pUsername);
-        reportData.put("content", pContent);
-        reportData.put("timestamp", Timestamp.now());
+        reportData.put("pusername", pUsername);
+        reportData.put("pcontent", pContent);
+        reportData.put("lastReportPostTime", Timestamp.now());
+        reportData.put("reportCount", FieldValue.increment(1));
 
         reportRef.set(reportData, SetOptions.merge())
                 .addOnSuccessListener(aVoid ->
-                        Toast.makeText(requireContext(), "Report submitted successfully.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Report submitted successfully", Toast.LENGTH_SHORT).show()
                 )
                 .addOnFailureListener(e ->
                         Log.e("FirestoreError", "Error submitting report", e)

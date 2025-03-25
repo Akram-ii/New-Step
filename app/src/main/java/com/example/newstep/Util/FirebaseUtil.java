@@ -51,6 +51,9 @@ public class FirebaseUtil {
     public static CollectionReference allCommentReportCollectionRef(){
         return FirebaseFirestore.getInstance().collection("ReportComments");
     }
+    public static CollectionReference allPostsReportCollectionRef(){
+        return FirebaseFirestore.getInstance().collection("reportPosts");
+    }
     public static CollectionReference allPostsCollectionRef(){
         return FirebaseFirestore.getInstance().collection("posts");
     }

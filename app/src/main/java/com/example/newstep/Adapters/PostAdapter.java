@@ -1,19 +1,26 @@
 package com.example.newstep.Adapters;
 
+
+
 import android.content.Context;
 import android.graphics.Color;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newstep.Models.PostModel;
+
 import com.example.newstep.R;
 import com.example.newstep.Util.Utilities;
+
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -160,4 +167,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             btnReport = itemView.findViewById(R.id.btn_report);
         }
     }
+
+
 }
