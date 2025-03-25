@@ -39,6 +39,10 @@ public class AdminPostsFragment extends Fragment {
         return rootView;
     }
     private void SetUpRecyclerView() {
+        if (adapter != null) {
+            adapter.stopListening();
+            reportPostsRecyclerView.setAdapter(null);
+        }
         Query query = db.collection("reportPosts").orderBy("lastReportPostTime", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<ReportPost> options = new FirestoreRecyclerOptions.Builder<ReportPost>()
@@ -48,6 +52,7 @@ public class AdminPostsFragment extends Fragment {
 
         adapter = new ReportPostAdapter(options, getContext());
         reportPostsRecyclerView.setAdapter(adapter);
+        adapter.startListening();
     }
 
     @Override
@@ -55,6 +60,10 @@ public class AdminPostsFragment extends Fragment {
         super.onStart();
         if (adapter != null) {
             adapter.startListening();
+            if (reportPostsRecyclerView.getAdapter() == null) {
+                reportPostsRecyclerView.setAdapter(adapter);
+            }
+            adapter.notifyDataSetChanged();
         }
     }
 
