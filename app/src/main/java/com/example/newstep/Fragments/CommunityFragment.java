@@ -1,5 +1,6 @@
 package com.example.newstep.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,7 +13,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +30,8 @@ import com.example.newstep.Adapters.PostAdapter;
 import com.example.newstep.Models.Comment;
 import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
+import com.example.newstep.Util.FirebaseUtil;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -267,29 +272,74 @@ public class CommunityFragment extends Fragment {
                 });
 
         buttonSendComment.setOnClickListener(v -> {
-            String text = editTextComment.getText().toString().trim();
-            if (!text.isEmpty()) {
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                String commentId = UUID.randomUUID().toString();
+            FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+               if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBannedComments"))){
+                   dialog.dismiss();
+                 showPopupBanned();
+               }
+               else{
+                   String text = editTextComment.getText().toString().trim();
+                   if (!text.isEmpty()) {
+                       String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                       String commentId = UUID.randomUUID().toString();
 
-                db.collection("Users").document(userId).get()
-                        .addOnSuccessListener(userDoc -> {
-                            String username = userDoc.exists() ? userDoc.getString("username") : "unknown user";
+                       db.collection("Users").document(userId).get()
+                               .addOnSuccessListener(userDoc -> {
+                                   String username = userDoc.exists() ? userDoc.getString("username") : "unknown user";
 
-                            Comment comment = new Comment(commentId, userId, postId, text, System.currentTimeMillis(), username, null, null);
+                                   Comment comment = new Comment(commentId, userId, postId, text, System.currentTimeMillis(), username, null, null);
 
-                            db.collection("posts").document(postId).collection("comments")
-                                    .document(commentId).set(comment)
-                                    .addOnSuccessListener(aVoid -> {
-                                        editTextComment.setText("");
-                                    });
-                        });
-            }
+                                   db.collection("posts").document(postId).collection("comments")
+                                           .document(commentId).set(comment)
+                                           .addOnSuccessListener(aVoid -> {
+                                               editTextComment.setText("");
+                                           });
+                               });
+                   }
+               }
+                }
+            });
+
         });
 
         dialog.show();
     }
 
+    private void showPopupBanned() {
+
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
+        dimBackground(0.5f);
+
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        View rootLayout = requireActivity().findViewById(android.R.id.content);
+        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams layoutParams = (getActivity()).getWindow().getAttributes();
+            layoutParams.alpha = 1.0f;
+            (getActivity()).getWindow().setAttributes(layoutParams);
+        });
+        ImageView back=popUpView.findViewById(R.id.back_imageView);
+        ImageView imageView=popUpView.findViewById(R.id.warningIcon);
+        TextView textView=popUpView.findViewById(R.id.textMessage1);
+        TextView title=popUpView.findViewById(R.id.title);
+        back.setOnClickListener(v->{popupWindow.dismiss();});
+        textView.setText("You have been temporarily suspended from commenting due to a violation of our community guidelines. This action was taken after a thorough review of your activity.");
+        title.setText("Commenting Restricted");
+        imageView.setImageResource(R.drawable.icon_restriction_red);
+    }
+
+    private void dimBackground(float alpha) {
+        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
+        layoutParams.alpha = alpha;
+        requireActivity().getWindow().setAttributes(layoutParams);
+    }
     public void showReportPopup(String postId, String pUsername, String pContent) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         View view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_report, null);
