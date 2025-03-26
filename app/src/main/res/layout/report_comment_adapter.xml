@@ -14,24 +14,44 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <TextView
-    android:layout_marginTop="5dp"
-
-    android:id="@+id/nb_reports"
-    android:textSize="15sp"
-    android:layout_width="match_parent"
+<LinearLayout
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="Reported by 555 users"
-        android:layout_alignRight="@+id/ref"
+    android:orientation="horizontal"
+    android:layout_marginRight="20dp"
+    android:layout_alignRight="@+id/ref"
+    android:layout_marginTop="5dp"
+    >
+        <TextView
+            android:textColor="@color/black"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Reported by "
     android:textStyle="bold"
-    android:gravity="center"
     />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="555 "
+        android:id="@+id/nb_reports"
+        android:textColor="@color/red_for_buttons"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Users"
+        android:id="@+id/users_textview"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+</LinearLayout>
     <TextView
         android:layout_marginTop="5dp"
         android:textSize="13sp"
         android:layout_alignLeft="@+id/ref"
-
+        android:textColor="@android:color/darker_gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="last report was 2min ago"
@@ -40,35 +60,58 @@
         />
 
 
-        <Button
-            android:elevation="15dp"
-            android:layout_below="@+id/nb_reports"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delete comment"
-            android:id="@+id/delete_comment_btn"
-            android:backgroundTint="@color/darkGray"
-            android:layout_alignRight="@+id/ref"
-            app:cornerRadius="20dp"
-            android:layout_marginHorizontal="5dp"
-            />
+
         <TextView
 
             android:id="@+id/ref"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"/>
-        <Button
-            android:elevation="15dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/last_report_time"
+            android:layout_marginVertical="5dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+            <ImageView
+                android:src="@drawable/delete_post"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_below="@+id/nb_reports"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:text="Delete comment"
+                android:id="@+id/delete_comment_btn"
+                android:backgroundTint="@color/darkGray"
+                android:layout_alignRight="@+id/ref"
+                app:cornerRadius="20dp"
+                android:layout_marginHorizontal="5dp"
+                />
+            <ImageView
+                android:src="@drawable/block_icon"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_below="@+id/nb_reports"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:text="Delete comment"
+                android:id="@+id/ban_from_comments"
+                android:backgroundTint="@color/darkGray"
+                android:layout_alignRight="@+id/ref"
+                app:cornerRadius="20dp"
+                android:layout_marginHorizontal="5dp"
+                />
+        <ImageView
+            android:src="@drawable/icon_banned"
             android:layout_below="@+id/nb_reports"
             android:layout_marginHorizontal="5dp"
             android:layout_alignLeft="@+id/ref"
             app:cornerRadius="20dp"
             android:id="@+id/disable_user_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:text="Disable account"
-            android:backgroundTint="#b7251a"
-            />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/red_for_buttons" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

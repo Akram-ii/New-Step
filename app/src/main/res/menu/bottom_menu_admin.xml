@@ -13,4 +13,10 @@
         android:title="Comments"
         android:iconTint="@color/purple"
         />
+    <item
+        android:icon="@drawable/icon_restrict"
+        android:id="@+id/nav_restricted"
+        android:title="Restricted accounts"
+        android:iconTint="@color/purple"
+        />
 </menu>

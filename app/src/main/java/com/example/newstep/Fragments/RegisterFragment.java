@@ -151,6 +151,13 @@ public class RegisterFragment extends Fragment {
                 userInfo.put("registerDate",currentDate);
                 userInfo.put("isBanned",false);
                 userInfo.put("nb_reports",0);
+                userInfo.put("isBanned",false);
+                userInfo.put("whenBannedComments",Timestamp.now());
+                userInfo.put("whenBannedPosts",Timestamp.now());
+
+                userInfo.put("isBannedComments",false);
+                userInfo.put("isBannedPosts",false);
+                userInfo.put("isRestricted",false);
                 userInfo.put("isAdmin",true);
                 userInfo.put("token",token1);
 

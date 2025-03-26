@@ -33,6 +33,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,7 +41,6 @@ import com.google.firebase.firestore.Query;
 
 public class ReportCommentAdapter extends FirestoreRecyclerAdapter<ReportComment,ReportCommentAdapter.ReportCommentViewHolder> {
   private Context context;
-  private SearchUserRecyclerAdapter adapter;
 
     public ReportCommentAdapter(@NonNull FirestoreRecyclerOptions<ReportComment> options,Context context) {
         super(options);
@@ -60,11 +60,12 @@ public class ReportCommentAdapter extends FirestoreRecyclerAdapter<ReportComment
 
        holder.pUsername.setText(model.getpUsername());
        holder.pContent.setText(model.getpContent());
+        holder.reportCount.setText(""+model.getNbReports());
        if(model.getNbReports()==1){
-           holder.reportCount.setText("Reported by one user");
+       holder.userTextView.setText(" user");
        }
        else{
-           holder.reportCount.setText("Reported by "+model.getNbReports()+" users");
+           holder.userTextView.setText(" users");
        }
         holder.cUsername.setText(model.getcUsername());
         holder.cContent.setText(model.getcContent());
@@ -82,9 +83,9 @@ public class ReportCommentAdapter extends FirestoreRecyclerAdapter<ReportComment
                 @Override
                 public void onClick(View view) {
                     new AlertDialog.Builder(context)
-                            .setTitle("Disable account")
+                            .setTitle("Ban user")
                             .setMessage("This action cannot be undone")
-                            .setPositiveButton("Disable", (dialog, which) -> {
+                            .setPositiveButton("Ban", (dialog, which) -> {
                                 disableAccount(model.getcUsername(),model.getCommentId());
                                 dialog.dismiss();
                             })
@@ -92,7 +93,7 @@ public class ReportCommentAdapter extends FirestoreRecyclerAdapter<ReportComment
                             .show();
                 }
             });
-        holder.lastReportTime.setText("last report  was "+Utilities.getRelativeTime(model.getLastReportTime()));
+        holder.lastReportTime.setText("Last report was "+Utilities.getRelativeTime(model.getLastReportTime()));
 holder.dComment.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -100,13 +101,55 @@ holder.dComment.setOnClickListener(new View.OnClickListener() {
                 .setTitle("Delete comment")
                 .setMessage("This action cannot be undone")
                 .setPositiveButton("Delete", (dialog, which) -> {
-                   deleteComment(model.getPostId(),model.getCommentId(),model.getCommentId());
+                   deleteComment(model.getPostId(),model.getCommentId());
                    dialog.dismiss();
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 });
+holder.dFromComment.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        new AlertDialog.Builder(context)
+                .setTitle("Ban user from commenting")
+                .setMessage("This action cannot be undone")
+                .setPositiveButton("Ban", (dialog, which) -> {
+                    banFromCommenting(model.getcUsername(),model.getCommentId());
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+});
+    }
+
+    private void banFromCommenting(String userName, String commentId) {
+        FirebaseUtil.allUserCollectionRef()
+                .whereEqualTo("username", userName.trim())
+                .limit(1)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        DocumentSnapshot userDoc = querySnapshot.getDocuments().get(0);
+                        String userId = userDoc.getId();
+
+                        FirebaseUtil.allUserCollectionRef().document(userId)
+                                .update("isRestricted",true,"isBannedComments", true,"whenBannedComments", Timestamp.now())
+                                .addOnSuccessListener(aVoid -> {Toast.makeText(context, "Account disabled", Toast.LENGTH_SHORT).show();
+                                    FirebaseUtil.allCommentReportCollectionRef().document(commentId).delete().addOnSuccessListener(v->{
+                                        notifyDataSetChanged();
+                                    }).addOnFailureListener(v->{Toast.makeText(context,"Error"+v.getMessage(),Toast.LENGTH_LONG).show();});
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(context, "Error :"+e.getMessage(), Toast.LENGTH_SHORT).show());
+
+                    } else {
+                        Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void disableAccount(String userName,String reportId) {
@@ -120,7 +163,7 @@ holder.dComment.setOnClickListener(new View.OnClickListener() {
                         String userId = userDoc.getId();
 
                         FirebaseUtil.allUserCollectionRef().document(userId)
-                                .update("isBanned", true)
+                                .update("isBanned", true,"isRestricted",false,"isBannedComments",false,"isBannedPosts",false,"whenBanned", Timestamp.now())
                                 .addOnSuccessListener(aVoid -> {Toast.makeText(context, "Account disabled", Toast.LENGTH_SHORT).show();
                                     FirebaseUtil.allCommentReportCollectionRef().document(reportId).delete().addOnSuccessListener(v->{
                                        notifyDataSetChanged();
@@ -137,13 +180,13 @@ holder.dComment.setOnClickListener(new View.OnClickListener() {
                 });
     }
 
-    private void deleteComment(String postId, String commentId,String reportId) {
+    private void deleteComment(String postId, String commentId) {
         FirebaseUtil.allPostsCollectionRef().document(postId).collection("comments").document(commentId)
                 .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         Toast.makeText(context,"Comment deleted",Toast.LENGTH_SHORT).show();
-                        FirebaseUtil.allCommentReportCollectionRef().document(reportId).delete().addOnSuccessListener(v->{
+                        FirebaseUtil.allCommentReportCollectionRef().document(commentId).delete().addOnSuccessListener(v->{
                         notifyDataSetChanged();
                         }).addOnFailureListener(v->{});
                     }
@@ -209,8 +252,8 @@ holder.dComment.setOnClickListener(new View.OnClickListener() {
     class ReportCommentViewHolder extends RecyclerView.ViewHolder{
 TextView pContent,pUsername;
 TextView cContent,cUsername;
-TextView lastReportTime,reportCount;
-Button dComment,dUser;
+TextView lastReportTime,reportCount,userTextView;
+ImageView dComment,dUser,dFromComment;
 ImageButton infoUser;
         public ReportCommentViewHolder(@NonNull View itemView){
             super(itemView);
@@ -227,6 +270,8 @@ ImageButton infoUser;
             dUser=itemView.findViewById(R.id.disable_user_btn);
             dComment=itemView.findViewById(R.id.delete_comment_btn);
             infoUser=itemView.findViewById(R.id.user_info_btn);
+            dFromComment=itemView.findViewById(R.id.ban_from_comments);
+            userTextView=itemView.findViewById(R.id.users_textview);
         }
     }
     private void dimBackground(float alpha) {

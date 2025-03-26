@@ -1,20 +1,15 @@
 package com.example.newstep.Models;
 
 
+import com.google.firebase.Timestamp;
+
 public class UserModel {
     private String username;
     private String token;
     private String  cat;
+    private Timestamp whenBanned,whenBannedPosts,whenBannedComments;
 
-    public boolean isBanned() {
-        return isBanned;
-    }
-
-    public void setBanned(boolean banned) {
-        isBanned = banned;
-    }
-
-    boolean isBanned;
+    private boolean isBanned,isBannedPosts,isBannedComments,isRestricted;
 
     private String registerDate;
     private String id;
@@ -28,7 +23,62 @@ public class UserModel {
     public void setNb_reports(int nb_reports) {
         this.nb_reports = nb_reports;
     }
+    public boolean getIsBanned() {
+        return isBanned;
+    }
 
+
+    public Timestamp getWhenBanned() {
+        return whenBanned;
+    }
+
+    public boolean getIsBannedPosts() {
+        return isBannedPosts;
+    }
+
+    public void setBannedPosts(boolean bannedPosts) {
+        isBannedPosts = bannedPosts;
+    }
+
+    public boolean getIsBannedComments() {
+        return isBannedComments;
+    }
+
+    public void setBannedComments(boolean bannedComments) {
+        isBannedComments = bannedComments;
+    }
+
+    public void setWhenBanned(Timestamp whenBanned) {
+        this.whenBanned = whenBanned;
+    }
+
+    public Timestamp getWhenBannedPosts() {
+        return whenBannedPosts;
+    }
+
+    public void setWhenBannedPosts(Timestamp whenBannedPosts) {
+        this.whenBannedPosts = whenBannedPosts;
+    }
+
+    public Timestamp getWhenBannedComments() {
+        return whenBannedComments;
+    }
+
+    public void setWhenBannedComments(Timestamp whenBannedComments) {
+        this.whenBannedComments = whenBannedComments;
+    }
+
+    public boolean isRestricted() {
+        return isRestricted;
+    }
+
+    public void setRestricted(boolean restricted) {
+        isRestricted = restricted;
+    }
+
+    public void setBanned(boolean banned) {
+        isBanned = banned;
+    }
     private int nb_reports;
 
     public String getCat() {
