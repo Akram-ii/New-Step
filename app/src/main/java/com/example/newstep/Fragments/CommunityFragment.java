@@ -86,7 +86,23 @@ public class CommunityFragment extends Fragment {
 
         // Set up the "Add Post" button
         FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
-        buttonOpenPopup.setOnClickListener(v -> showPopupWindow());
+        buttonOpenPopup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBannedPosts"))){
+
+                            showPopupBannedFromPosting();
+                        }
+                        else {
+                           showPopupWindow();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void loadPosts() {
@@ -332,6 +348,34 @@ public class CommunityFragment extends Fragment {
         back.setOnClickListener(v->{popupWindow.dismiss();});
         textView.setText("You have been temporarily suspended from commenting due to a violation of our community guidelines. This action was taken after a thorough review of your activity.");
         title.setText("Commenting Restricted");
+        imageView.setImageResource(R.drawable.icon_restriction_red);
+    }
+
+    private void showPopupBannedFromPosting() {
+
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
+        dimBackground(0.5f);
+
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        View rootLayout = requireActivity().findViewById(android.R.id.content);
+        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams layoutParams = (getActivity()).getWindow().getAttributes();
+            layoutParams.alpha = 1.0f;
+            (getActivity()).getWindow().setAttributes(layoutParams);
+        });
+        ImageView back=popUpView.findViewById(R.id.back_imageView);
+        ImageView imageView=popUpView.findViewById(R.id.warningIcon);
+        TextView textView=popUpView.findViewById(R.id.textMessage1);
+        TextView title=popUpView.findViewById(R.id.title);
+        back.setOnClickListener(v->{popupWindow.dismiss();});
+        textView.setText("You have been temporarily suspended from Posting due to a violation of our community guidelines. This action was taken after a thorough review of your activity.");
+        title.setText("Posting Restricted");
         imageView.setImageResource(R.drawable.icon_restriction_red);
     }
 

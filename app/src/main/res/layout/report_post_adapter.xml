@@ -74,11 +74,20 @@
 
 
         <ImageView
-            android:id="@+id/btn_block_user"
+            android:id="@+id/ban_user_from_post"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/block_icon"
+            android:layout_marginEnd="12dp"
          />
+        <ImageView
+            android:id="@+id/disable_user_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/icon_banned"
+            app:tint="@color/red_for_buttons"
+
+            />
     </LinearLayout>
 
 </LinearLayout>

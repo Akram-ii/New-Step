@@ -24,6 +24,7 @@ import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.Utilities;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -79,13 +80,27 @@ public class ReportPostAdapter extends FirestoreRecyclerAdapter<ReportPost,Repor
             }
         });
 
+        holder.BanFP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Ban user from Posting ")
+                        .setMessage("This action cannot be undone")
+                        .setPositiveButton("Ban", (dialog, which) -> {
+                            banUserFromPosting(model.getPusername(),model.getPostId());
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        });
         holder.DisableUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new AlertDialog.Builder(context)
-                        .setTitle("Disable account")
+                        .setTitle("Ban account")
                         .setMessage("This action cannot be undone")
-                        .setPositiveButton("Disable", (dialog, which) -> {
+                        .setPositiveButton("Ban", (dialog, which) -> {
                             disableAccount(model.getPusername(),model.getPostId());
                             dialog.dismiss();
                         })
@@ -101,7 +116,7 @@ public class ReportPostAdapter extends FirestoreRecyclerAdapter<ReportPost,Repor
 
     class ReportPostViewHolder extends RecyclerView.ViewHolder{
         private TextView PostUserName,Content,reportCount,lastReportTime;
-        private ImageView deletePost,DisableUser,infoUser;
+        private ImageView deletePost,BanFP,DisableUser,infoUser;
 
 
 
@@ -112,8 +127,9 @@ public class ReportPostAdapter extends FirestoreRecyclerAdapter<ReportPost,Repor
             reportCount=itemView.findViewById(R.id.nb_reports);
             lastReportTime=itemView.findViewById(R.id.last_report_time_OfPosts);
             deletePost=itemView.findViewById(R.id.btn_delete_post);
-            DisableUser=itemView.findViewById(R.id.btn_block_user);
+            BanFP=itemView.findViewById(R.id.ban_user_from_post);
             infoUser=itemView.findViewById(R.id.infoIconPost);
+            DisableUser=itemView.findViewById(R.id.disable_user_icon);
 
 
 
@@ -217,11 +233,38 @@ public class ReportPostAdapter extends FirestoreRecyclerAdapter<ReportPost,Repor
                         String userId = userDoc.getId();
 
                         FirebaseUtil.allUserCollectionRef().document(userId)
-                                .update("isBanned", true)
+                                .update("isBanned", true,"whenBanned",Timestamp.now(),"isRestricted",false,"isBannedComments",false,"isBannedPosts",false)
                                 .addOnSuccessListener(aVoid -> {Toast.makeText(context, "Account disabled", Toast.LENGTH_SHORT).show();
                                     FirebaseUtil.allPostsReportCollectionRef().document(PostId).delete().addOnSuccessListener(v->{
                                         notifyDataSetChanged();
                                     }).addOnFailureListener(v->{});
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(context, "Error :"+e.getMessage(), Toast.LENGTH_SHORT).show());
+
+                    } else {
+                        Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+    private void banUserFromPosting(String userName, String PostId) {
+        FirebaseUtil.allUserCollectionRef()
+                .whereEqualTo("username", userName.trim())
+                .limit(1)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        DocumentSnapshot userDoc = querySnapshot.getDocuments().get(0);
+                        String userId = userDoc.getId();
+
+                        FirebaseUtil.allUserCollectionRef().document(userId)
+                                .update("isRestricted",true,"isBannedPosts", true,"whenBannedPosts", Timestamp.now())
+                                .addOnSuccessListener(aVoid -> {Toast.makeText(context, "Posting disabled", Toast.LENGTH_SHORT).show();
+                                    FirebaseUtil.allPostsReportCollectionRef().document(PostId).delete().addOnSuccessListener(v->{
+                                        notifyDataSetChanged();
+                                    }).addOnFailureListener(v->{Toast.makeText(context,"Error"+v.getMessage(),Toast.LENGTH_LONG).show();});
                                 })
                                 .addOnFailureListener(e -> Toast.makeText(context, "Error :"+e.getMessage(), Toast.LENGTH_SHORT).show());
 
