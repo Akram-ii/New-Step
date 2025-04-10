@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +26,13 @@ public class FirebaseUtil {
         return userModel;
     }
     public static String getCurrentUserId(){
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser UserId=FirebaseAuth.getInstance().getCurrentUser();
+        if(UserId!=null){
+            return UserId.getUid();
+        }
+        else{
+            return null;
+        }
     }
     public static CollectionReference allUserCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Users");
