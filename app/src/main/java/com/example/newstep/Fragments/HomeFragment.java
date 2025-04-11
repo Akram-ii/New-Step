@@ -3,7 +3,7 @@ package com.example.newstep.Fragments;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -126,8 +126,18 @@ public class HomeFragment extends Fragment {
         ProgressCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(requireActivity(), ProgressActivity.class);
-                startActivity(intent);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                Fragment existingFragment = fragmentManager.findFragmentByTag(GoalsFragment.class.getSimpleName());
+                if (existingFragment != null) {
+                    fragmentManager.beginTransaction().remove(existingFragment).commit();
+                }
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                ProgressFragment progressFragment= new ProgressFragment();
+                transaction.replace(R.id.fragment_container, progressFragment, ProgressFragment.class.getSimpleName());
+                transaction.addToBackStack(null);
+                transaction.commitAllowingStateLoss();
             }
         });
         return rootView;
