@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:elevation="10dp"
+    android:layout_margin="20dp"
+    android:backgroundTint="@color/light_blue"
+    android:background="@drawable/goal_background_item"
+    >
+ <ImageView
+     android:layout_marginTop="5dp"
+     android:layout_marginLeft="10dp"
+     android:layout_width="30dp"
+     android:layout_height="30dp"
+     android:background="?attr/selectableItemBackgroundBorderless"
+     android:id="@+id/back"
+     android:src="@drawable/back_ic"
+     app:tint="@color/blue"
+
+     />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set a Goal"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:id="@+id/title"
+            android:textColor="@color/blue"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+        <EditText
+            android:inputType="textCapWords"
+android:backgroundTint="@color/light_blue"
+            android:layout_below="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/goal_name"
+            android:layout_centerHorizontal="true"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:hint="Goal Name"
+            android:textColorHint="@color/gray"
+            android:padding="15dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginHorizontal="50dp"
+            android:textColor="@color/black"
+            android:elevation="4dp"
+            android:background="@drawable/button_background"
+            
+            />
+
+        <EditText
+            android:imeOptions="actionDone"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:elevation="4dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/goal_desc"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:layout_below="@+id/goal_name"
+            android:layout_centerHorizontal="true"
+            android:hint="Give a description to the Goal"
+            android:maxLines="4"
+            android:text=""
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:padding="15dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background"
+            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/goal_desc"
+        android:id="@+id/t1"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="13dp"
+        android:text="What's your progress so far? "
+        />
+
+<SeekBar
+    android:max="100"
+    android:layout_marginTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/t1"
+    android:id="@+id/progress"
+    android:layout_marginHorizontal="10dp"
+    android:backgroundTint="@color/blue"
+    android:indeterminateTint="@color/blue"
+    android:progressTint="@color/blue"
+    android:foregroundTint="@color/blue"
+    android:thumbTint="@color/blue"
+    />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/progress_text_view"
+    android:textSize="18sp"
+    android:textColor="@color/blue"
+    android:textStyle="bold"
+    android:layout_below="@+id/progress"
+    android:text="55%"
+    android:visibility="gone"
+
+    />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_goal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Finish"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="5dp"
+                app:cornerRadius="20dp"
+                android:layout_below="@id/progress_text_view"
+                android:backgroundTint="@color/blue"
+                android:textColor="@android:color/white"/>
+    
+    </RelativeLayout>

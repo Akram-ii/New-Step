@@ -1,36 +1,25 @@
 package com.example.newstep.Adapters;
 
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.newstep.HabitDetailsActivity;
-import com.example.newstep.MainActivity;
 import com.example.newstep.Models.HabitModel;
 import com.example.newstep.R;
-import com.example.newstep.Util.DatabaseHelper;
-import com.example.newstep.Util.NotifReceiver;
+import com.example.newstep.Databases.MyHabitsDatabaseHelper;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class HabitsAdapter extends RecyclerView.Adapter<HabitsAdapter.HabitsViewHolder> {
     Context context;
@@ -111,7 +100,7 @@ SQLiteDatabase notifDB;
         }
     }
     private void deleteHabit(int position) {
-        DatabaseHelper db = new DatabaseHelper(context);
+        MyHabitsDatabaseHelper db = new MyHabitsDatabaseHelper(context);
         HabitModel habit = list.get(position);
         db.deleteHabit(habit.getId());
         list.remove(position);

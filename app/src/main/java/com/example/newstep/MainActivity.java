@@ -134,6 +134,10 @@ admin.setOnClickListener(new View.OnClickListener() {
     if(lastFragment.equals("ChatsFragment")){
         checkUserAuthentication(new ChatsFragment());
         navigationView.setCheckedItem(R.id.nav_chats);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
+    }else{
+        navigationView.setCheckedItem(R.id.nav_home);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
     }
     }
     private void checkUserAuthentication(Fragment fragment) {

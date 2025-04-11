@@ -1,12 +1,18 @@
 package com.example.newstep.Fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.newstep.GoalsDetailsActivity;
 import com.example.newstep.ProgressActivity;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
@@ -103,8 +108,18 @@ public class HomeFragment extends Fragment {
         g.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(requireActivity(), GoalsDetailsActivity.class);
-                startActivity(intent);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                Fragment existingFragment = fragmentManager.findFragmentByTag(GoalsFragment.class.getSimpleName());
+                if (existingFragment != null) {
+                    fragmentManager.beginTransaction().remove(existingFragment).commit();
+                }
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                GoalsFragment goalsFragment=new GoalsFragment();
+                transaction.replace(R.id.fragment_container, goalsFragment, GoalsFragment.class.getSimpleName());
+                transaction.addToBackStack(null);
+                transaction.commitAllowingStateLoss();
             }
         });
 
@@ -148,5 +163,12 @@ public class HomeFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        prefs.edit().putString("lastFragment", "HomeFragment").apply();
     }
 }

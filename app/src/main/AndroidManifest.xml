@@ -21,9 +21,6 @@
             android:name=".ProgressActivity"
             android:exported="false" />
         <activity
-            android:name=".GoalsDetailsActivity"
-            android:exported="false" />
-        <activity
             android:name=".AdminActivity"
             android:exported="false" />
         <activity

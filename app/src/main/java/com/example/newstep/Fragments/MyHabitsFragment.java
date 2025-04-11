@@ -1,10 +1,7 @@
 package com.example.newstep.Fragments;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,33 +12,22 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.newstep.Adapters.HabitsAdapter;
-import com.example.newstep.MainActivity;
 import com.example.newstep.Models.HabitModel;
 import com.example.newstep.R;
-import com.example.newstep.Util.DatabaseHelper;
-import com.google.firebase.Timestamp;
+import com.example.newstep.Databases.MyHabitsDatabaseHelper;
 
 import java.util.List;
 
 
 public class MyHabitsFragment extends Fragment {
     Button addBtn;
-    DatabaseHelper db;
+    MyHabitsDatabaseHelper db;
     RecyclerView habitsRecyclerView;
     List<HabitModel> list;
     HabitsAdapter adapter;
@@ -51,7 +37,7 @@ public class MyHabitsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_habits, container, false);
-        db=new DatabaseHelper(getContext());
+        db=new MyHabitsDatabaseHelper(getContext());
         list=db.getAllHabits();
         habitsRecyclerView=rootView.findViewById(R.id.habits_recyclerView);
         addBtn=rootView.findViewById(R.id.addBtn);
