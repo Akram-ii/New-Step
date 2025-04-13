@@ -39,7 +39,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import repository.UserRepository;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -50,15 +49,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
     View headerView;
-    TextView userNameTextView;
-    ImageView profileImageView;
+
 int test;
 FirebaseAuth firebaseAuth;
     BottomNavigationView bottomView;
     static Boolean isMediaInit=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String lastFragment = sharedPreferences.getString("lastFragment", "default_value");
 
 
         EdgeToEdge.enable(this);
@@ -115,6 +118,12 @@ FirebaseAuth firebaseAuth;
             return true;
         });
 
+        if(lastFragment.equals("ChatsFragment")){
+            checkUserAuthentication(new ChatsFragment());
+            navigationView.setCheckedItem(R.id.nav_chats);
+        }
+
+        loadUserProfile();
 
         View headerView = navigationView.getHeaderView(0);
         RelativeLayout profileButton = headerView.findViewById(R.id.Profile_button);
@@ -134,30 +143,6 @@ FirebaseAuth firebaseAuth;
 
         });
 
-
-        NavigationView navigationView = findViewById(R.id.navView);
-
-        userNameTextView = headerView.findViewById(R.id.drawerUsername);
-        profileImageView = headerView.findViewById(R.id.drawerpfp);
-
-        UserRepository userRepository = new UserRepository();
-
-
-        userRepository.getUserData((name, profileImage) -> {
-            userNameTextView.setText(name);
-
-            Glide.with(this).load(profileImage).placeholder(R.drawable.pfp_purple).circleCrop().into(profileImageView);
-        });
-
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String userId = currentUser.getUid();
-
-            userRepository.getUserFromUsersCollection(userId, (name, profileImage) -> {
-                userNameTextView.setText(name);
-                Glide.with(this).load(profileImage).placeholder(R.drawable.pfp_purple).into(profileImageView);
-            });
-        }
 
 
     }
@@ -210,4 +195,54 @@ navigationView.setCheckedItem(R.id.nav_community);
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {super.onBackPressed();}
     }
+
+
+
+
+
+
+
+    public void loadUserProfile() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
+        if (auth.getCurrentUser() == null) {
+            Log.e("Firestore", "User is not logged in");
+            return;
+        }
+
+        String userId = auth.getCurrentUser().getUid();
+
+
+        db.collection("Users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+
+                        String userName1 = documentSnapshot.getString("username");
+                        String profileImageUrl = documentSnapshot.getString("profileImage");
+
+                        if (userName1 == null || userName1.trim().isEmpty()) {
+                            userName1 = "Unknown user";
+                        }
+                        userName.setText(userName1);
+
+
+                        Glide.with(pfp.getContext())
+                                .load(profileImageUrl)
+                                .circleCrop()
+                                .placeholder(R.drawable.pfp_purple)
+                                .error(R.drawable.pfp_purple)
+                                .into(pfp);
+                    } else {
+                        Log.e("Firestore", "Document not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Failed to fetch user data", e);
+                });
+    }
+
+
+
 }

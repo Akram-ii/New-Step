@@ -73,5 +73,14 @@ dependencies {
     androidTestImplementation libs.espresso.core
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    implementation 'com.facebook.android:facebook-login:16.3.0'
+
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.7.0'
+
+    implementation 'com.cloudinary:cloudinary-android:2.0.0'
+    implementation 'com.github.yalantis:ucrop:2.2.8'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

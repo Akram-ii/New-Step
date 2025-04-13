@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".Fragments.EditProfile_Fragment">
+
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/ToolBarEdit_Profile"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/CustomOverflowMenu"
+        />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ToolBarEdit_Profile" />
+
+
+
+
+    <TextView
+        android:id="@+id/Edit_title"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="15dp"
+        android:text="Edit profile"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+    <ImageButton
+        android:id="@+id/BackEdit_Button"
+        android:layout_width="56dp"
+        android:layout_height="54dp"
+        android:layout_margin="2dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/ripple_back_button"
+        android:padding="10dp"
+        android:scaleType="center"
+        android:src="@drawable/arrow_back_24dp_1f1f1f_fill0_wght400_grad0_opsz24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <Button
+        android:id="@+id/SaveEdit_button"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:text="Save"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="8dp"
+        android:padding="0dp"
+        android:background="@drawable/rounded_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:backgroundTint="@null"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ToolBarEdit_Profile">
+
+
+        <ImageView
+            android:id="@+id/backGroundEdit_image"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:background="@color/offWhite"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"/>
+
+        <ImageButton
+            android:id="@+id/editCoverButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple_back_button"
+            android:src="@drawable/addphoto2_icon"
+            android:scaleType="centerInside"/>
+
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="130dp"
+        android:layout_marginStart="10dp">
+
+
+        <ImageView
+            android:id="@+id/profileEdit_Image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/profile_border"
+            android:scaleType="centerCrop"
+            android:src="@drawable/pfp_purple"
+            android:clipToOutline="true"
+            />
+
+        <ImageButton
+            android:id="@+id/editProfileButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/ripple_back_button"
+            android:src="@drawable/addphoto"
+            android:scaleType="centerInside" />
+
+    </FrameLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="105dp"
+        android:hint="Bio"
+        android:layout_marginTop="340dp"
+        app:boxStrokeColor="@android:color/black"
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="@color/offWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Bioo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="258dp"
+        android:hint="User Name"
+        app:boxStrokeColor="@android:color/black"
+        app:boxBackgroundMode="filled"
+        app:boxBackgroundColor="@color/offWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_Username"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:padding="12dp"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+

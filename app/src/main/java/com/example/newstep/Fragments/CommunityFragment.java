@@ -103,13 +103,15 @@ public class CommunityFragment extends Fragment {
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
                             Timestamp timestampPost = doc.getTimestamp("timestamp");
+                            String profileImageUrl = doc.getString("profileImage");
+
 
 
                             List<String> likedBy = (List<String>) doc.get("likedBy");
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost);
+                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl);
 
 
                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
@@ -204,12 +206,13 @@ public class CommunityFragment extends Fragment {
                     if (documentSnapshot.exists()) {
 
                         String username = documentSnapshot.getString("username");
-
+                        String profileImageUrl = documentSnapshot.getString("profileImage");
 
                         Map<String, Object> post = new HashMap<>();
                         post.put("content", content);
                         post.put("userId", userId);
                         post.put("username", username);
+                        post.put("profileImage" , profileImageUrl);
 
 
                         post.put("timestamp", Timestamp.now());
@@ -237,7 +240,8 @@ public class CommunityFragment extends Fragment {
                 );
     }
 
-    private void showCommentDialog(String postId) {
+    public void showCommentDialog(String postId) {
+        Log.d("DEBUG_INTERFACE", "تم استدعاء showCommentDialog عبر Interface في Fragment A");
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
@@ -313,6 +317,8 @@ public class CommunityFragment extends Fragment {
                         });
             }
         });
+
+        Log.d("DEBUG_DIALOG", "سيتم عرض BottomSheetDialog الآن");
 
         dialog.show();
     }

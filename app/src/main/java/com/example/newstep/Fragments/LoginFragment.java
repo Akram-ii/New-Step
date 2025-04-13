@@ -1,11 +1,14 @@
 package com.example.newstep.Fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -23,11 +26,13 @@ import android.widget.Toast;
 
 import com.example.newstep.MainActivity;
 import com.example.newstep.R;
+import com.example.newstep.Util.Utilities;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,8 +45,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
 
-import repository.UserRepository;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginFragment extends Fragment {
@@ -55,6 +64,7 @@ public class LoginFragment extends Fragment {
     private GoogleSignInClient googleSignInClient;
     private FirebaseAuth firebaseAuth;
     private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 100;
+    private String token1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,6 +89,14 @@ public class LoginFragment extends Fragment {
                 .build();
 
         googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        token1 = task.getResult();
+                    }
+                });
+
 
         googleSignInButton.setOnClickListener(v -> signInWithGoogle());
 
@@ -258,63 +276,67 @@ public class LoginFragment extends Fragment {
     }
 
 
-
     private void signInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
+        googleSignInLauncher.launch(signInIntent);
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                Toast.makeText(getContext(), "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-
+    private final ActivityResultLauncher<Intent> googleSignInLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        if (account != null) {
+                            firebaseAuthWithGoogle(account.getIdToken(), token1);
+                        }
+                    } catch (ApiException e) {
+                        Toast.makeText(getContext(), "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
 
-    private void firebaseAuthWithGoogle(String idToken) {
+
+
+    private void firebaseAuthWithGoogle(String idToken, String token1) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(getActivity(), task -> {
+                .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                        UserRepository userRepository = new UserRepository();
-                        userRepository.saveGoogleUserToFirestore();
+                        if (user != null) {
+                            String userId = user.getUid();
+                            String username = user.getDisplayName() != null ? user.getDisplayName() : "Unknown";
+                            String registerDate = Utilities.timestampToStringNoDetail(Timestamp.now());
 
-                        Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("username", username);
+                            userData.put("id", userId);
+                            userData.put("registerDate", registerDate);
+                            userData.put("token", token1);
+                            userData.put("profileImage", user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
 
-
-                        startActivity(new Intent(getActivity(), MainActivity.class));
-                        getActivity().finish();
+                            db.collection("Users").document(userId)
+                                    .set(userData, SetOptions.merge())
+                                    .addOnSuccessListener(aVoid -> {
+                                        Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getContext(), MainActivity.class));
+                                        requireActivity().finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        }
                     } else {
                         Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -3,7 +3,6 @@ package com.example.newstep.Fragments;
 import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +35,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import repository.UserRepository;
 
 
 public class RegisterFragment extends Fragment {

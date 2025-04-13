@@ -9,4 +9,9 @@
 
     <style name="Theme.NewStep" parent="Base.Theme.NewStep" />
 
+    <style name="CustomOverflowMenu" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:tint">@color/black</item>
+    </style>
+
+
 </resources>
