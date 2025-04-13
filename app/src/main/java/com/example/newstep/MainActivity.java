@@ -3,6 +3,8 @@ package com.example.newstep;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -33,6 +36,7 @@ import com.example.newstep.Fragments.LoginFragment;
 import com.example.newstep.Fragments.MyHabitsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.NotifOnline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -67,6 +71,22 @@ FirebaseAuth firebaseAuth;
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String newToken = task.getResult();
+                        FirebaseUtil.allUserCollectionRef()
+                                .document(FirebaseUtil.getCurrentUserId())
+                                .update("token", newToken);
+                    }
+                });
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                Log.d( "token curr ",""+task.getResult());
+            }
+        });
+
 
 firebaseAuth=FirebaseAuth.getInstance();
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
@@ -114,6 +134,7 @@ admin.setOnClickListener(new View.OnClickListener() {
         startActivity(intent);
     }
 });
+
         firebaseAuth.addAuthStateListener(authStateListener);
         bottomView.setOnItemSelectedListener(item -> {
             if(item.getItemId()==R.id.nav_home){
@@ -140,6 +161,8 @@ admin.setOnClickListener(new View.OnClickListener() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
     }
     }
+
+
     private void checkUserAuthentication(Fragment fragment) {
         if (firebaseAuth.getCurrentUser() != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
