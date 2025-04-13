@@ -51,7 +51,7 @@ public class AdminCommentsFragment extends Fragment {
 
         firestore = FirebaseFirestore.getInstance();
 
-        // 🔥 Charge les reports
+
         loadReports();
 
         return view;
