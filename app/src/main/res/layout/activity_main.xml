@@ -73,6 +73,8 @@
         app:itemTextAppearanceActiveBoldEnabled="true"
         android:backgroundTint="@color/offWhite"
         android:background="@color/black"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start">
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

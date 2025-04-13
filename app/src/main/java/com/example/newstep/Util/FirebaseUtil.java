@@ -30,9 +30,6 @@ public class FirebaseUtil {
     public static CollectionReference allUserCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Users");
     }
-    public static CollectionReference allProjectCollectionRef(){
-        return FirebaseFirestore.getInstance().collection("Project");
-    }
     public static DocumentReference getChatroomRef(String chatroomId){
         return FirebaseFirestore.getInstance().collection("Chatrooms").document(chatroomId);
     }
@@ -45,6 +42,9 @@ public class FirebaseUtil {
         } else {
             return userid2  +"_"+userid1;
         }}
+
+
+
     public static CollectionReference allChatroomCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Chatrooms");
     }
@@ -85,4 +85,10 @@ public class FirebaseUtil {
                     Log.e("Firestore", "Error getting document: " + e.getMessage());
                 });
     }
+
+
+
+
+
+
 }

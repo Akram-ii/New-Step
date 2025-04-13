@@ -20,13 +20,14 @@ import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.Query;
 
 
 public class ChatsFragment extends Fragment {
 
     Button group;
-    private RelativeLayout addPerson;
+    private FloatingActionButton addPerson;
     Fragment secondFragment;
     private RecyclerView recyclerView;
     FragmentTransaction transaction;
@@ -90,7 +91,7 @@ public class ChatsFragment extends Fragment {
 
         Query query = FirebaseUtil.allChatroomCollectionRef()
                 .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId())
-                .orderBy("lastMsgTimeStamp", Query.Direction.DESCENDING);
+              ;
 
         FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>().setQuery(query, ChatroomModel.class).build();
         adapter = new RecentChatRecyclerAdapter(options, requireContext());

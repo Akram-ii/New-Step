@@ -1,45 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
     tools:context=".Fragments.GroupsFragment">
+
     <RelativeLayout
-        android:layout_width="300dp"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        >
-        <Button
-            android:elevation="5dp"
-            android:id="@+id/chatsBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginEnd="5dp"
-            android:textColor="@color/blue"
-            android:backgroundTint="@color/light_blue"
-            android:text="My chats" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
 
-        <Button
-            android:elevation="5dp"
-            android:backgroundTint="@color/blue"
-            android:layout_width="wrap_content"
-            android:text="Explore Groups"
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
+            android:id="@+id/Rlayout">
+
+            <Button
+                android:elevation="5dp"
+                android:id="@+id/chatsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginEnd="5dp"
+                android:textColor="@color/blue"
+                android:backgroundTint="@color/light_blue"
+                android:text="My Chats" />
+
+            <Button
+                android:elevation="5dp"
+                android:backgroundTint="@color/blue"
+                android:layout_width="wrap_content"
+                android:text="Groups"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textColor="@color/light_blue"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="50dp" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/Rlayout"
             android:layout_margin="5dp"
-            android:textColor="@color/light_blue"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="50dp"
-            />
+            android:id="@+id/groupsRecycler" />
     </RelativeLayout>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textSize="24sp"
-    android:layout_centerInParent="true"
-    android:text="group chat fragment"/>
 
-</RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/blue"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/blue"
+        android:contentDescription="Add"
+        android:src="@drawable/baseline_add_24"
+         />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

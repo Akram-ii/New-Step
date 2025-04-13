@@ -1,6 +1,8 @@
 package com.example.newstep.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,35 +17,52 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.newstep.Models.ChatMsgModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.Utilities;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FieldValue;
 
 import java.util.Objects;
 
 public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, ChatRecyclerAdapter.ChatModelViewHolder> {
     Context context;
+    String chatroomId;
 
-
-    public ChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatMsgModel> options,Context context) {
+    public ChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatMsgModel> options,Context context,String chatroomId) {
         super(options);
         this.context=context;
-
+        this.chatroomId=chatroomId;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ChatModelViewHolder holder, int position, @NonNull ChatMsgModel model) {
-        if(Objects.equals(model.getSenderId(), FirebaseUtil.getCurrentUserId())){
+        if (Objects.equals(model.getSenderId(), FirebaseUtil.getCurrentUserId())) {
             holder.leftChatLayout.setVisibility(View.GONE);
             holder.pfp.setVisibility(View.GONE);
             holder.rightChatLayout.setVisibility(View.VISIBLE);
             holder.rightMsg.setText(model.getMessage());
-        }else{
+        } else {
             FirebaseUtil.loadPfp(model.getSenderId(), holder.pfp);
             holder.leftChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftMsg.setText(model.getMessage());
-
         }
+holder.rightChatLayout.setOnLongClickListener(new View.OnLongClickListener() {
+    @Override
+    public boolean onLongClick(View view) {
+        Utilities.vibratePhone(context);
+        new AlertDialog.Builder(context).setMessage("Delete message ?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    Log.d("test message id ",model.getMessageId());
+                   FirebaseUtil.allChatroomCollectionRef().document(chatroomId).collection("chats").document(model.getMessageId()).delete();
+                   notifyDataSetChanged();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                })
+                .show();
+        return true;
+    }
+});
 
     }
     @NonNull

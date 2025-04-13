@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="20dp"
+    android:backgroundTint="@color/light_blue"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+
+        <ImageView
+            android:id="@+id/leave_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/leave_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+<ImageButton
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:src="@drawable/icon_back_purple"
+    android:id="@+id/back"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    />
+        <TextView
+            android:id="@+id/group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/purple"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/group_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/group_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/textview_background"
+            android:elevation="4dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:padding="15dp"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray" />
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
