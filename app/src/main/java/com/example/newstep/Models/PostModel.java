@@ -7,7 +7,7 @@ import java.util.List;
 public class PostModel {
     private String id;
     private String userName;
-    private String content;
+    private String content,userId;
     private Timestamp timestamp;
     private int likes;
     private int dislikes;
@@ -17,7 +17,19 @@ public class PostModel {
     public PostModel() {
     }
 
-    public PostModel(String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp) {
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public PostModel(String id, String content, int likes, String userName, int dislikes, Timestamp timestamp) {
         this.id = id;
         this.content = content;
         this.userName=userName;

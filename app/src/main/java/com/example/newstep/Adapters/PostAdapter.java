@@ -16,7 +16,10 @@ import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.NotifOnline;
 import com.example.newstep.Util.Utilities;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -85,11 +88,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             } else {
                 likedBy.add(userId);
                 post.setLikes(post.getLikes() + 1);
-                String token=FirebaseUtil.allUserCollectionRef().document(post.getId()).get().getResult().getString("token");
-                if(token==null){}
-                else{
-                NotifOnline notif=new NotifOnline(token,FirebaseUtil.getCurrentUsername(context)+" liked your post",post.getContent(),context);
-                notif.sendNotif();}
+
+                 FirebaseUtil.allUserCollectionRef().document(post.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        NotifOnline notif=new NotifOnline(documentSnapshot.getString("token"),FirebaseUtil.getCurrentUsername(context)+" liked your post",post.getContent(),context);
+                        notif.sendNotif();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
                 if (isDisliked) {
                     dislikedBy.remove(userId);
                     post.setDislikes(post.getDislikes() - 1);
@@ -105,11 +116,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             } else {
                 dislikedBy.add(userId);
                 post.setDislikes(post.getDislikes() + 1);
-                String token=FirebaseUtil.allUserCollectionRef().document(post.getId()).get().getResult().getString("token");
-                if(token==null){}
-                else{
-                NotifOnline notif=new NotifOnline(token,FirebaseUtil.getCurrentUsername(context)+" disliked your post",post.getContent(),context);
-                notif.sendNotif();}
+                FirebaseUtil.allUserCollectionRef().document(post.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        NotifOnline notif=new NotifOnline(documentSnapshot.getString("token"),FirebaseUtil.getCurrentUsername(context)+" disliked your post",post.getContent(),context);
+                        notif.sendNotif();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
                 if (isLiked) {
                     likedBy.remove(userId);
                     post.setLikes(post.getLikes() - 1);
