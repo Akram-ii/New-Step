@@ -13,6 +13,34 @@
     android:id="@+id/Profile_button"
     >
 
+    <RelativeLayout
+        android:layout_alignParentEnd="true"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        >
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:layout_width="77dp"
+            android:layout_height="50dp"
+            android:src="@drawable/icon_admin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginRight="10dp"
+            android:id="@+id/admin"
+            />
+        <TextView
+            android:textStyle="italic"
+            android:textColor="@color/light_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin mode"
+            android:layout_below="@+id/admin"
+            android:layout_alignStart="@+id/admin"
+            android:layout_alignEnd="@+id/admin"
+            />
+    </RelativeLayout>
+
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
