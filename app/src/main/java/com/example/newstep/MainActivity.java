@@ -120,6 +120,8 @@ firebaseAuth=FirebaseAuth.getInstance();
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                if(documentSnapshot.exists()){
+                   SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+                   prefs.edit().putString("currUserName", documentSnapshot.getString("username")).apply();
                    if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
                        admin.setVisibility(View.VISIBLE);
                    }

@@ -1,4 +1,4 @@
-package com.example.newstep.Util;
+package com.example.newstep.Databases;
 
 import android.content.ContentValues;
 import android.content.Context;

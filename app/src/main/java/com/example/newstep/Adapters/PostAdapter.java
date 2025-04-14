@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
+import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.NotifOnline;
 import com.example.newstep.Util.Utilities;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -83,6 +85,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             } else {
                 likedBy.add(userId);
                 post.setLikes(post.getLikes() + 1);
+                String token=FirebaseUtil.allUserCollectionRef().document(post.getId()).get().getResult().getString("token");
+                if(token==null){}
+                else{
+                NotifOnline notif=new NotifOnline(token,FirebaseUtil.getCurrentUsername(context)+" liked your post",post.getContent(),context);
+                notif.sendNotif();}
                 if (isDisliked) {
                     dislikedBy.remove(userId);
                     post.setDislikes(post.getDislikes() - 1);
@@ -98,6 +105,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             } else {
                 dislikedBy.add(userId);
                 post.setDislikes(post.getDislikes() + 1);
+                String token=FirebaseUtil.allUserCollectionRef().document(post.getId()).get().getResult().getString("token");
+                if(token==null){}
+                else{
+                NotifOnline notif=new NotifOnline(token,FirebaseUtil.getCurrentUsername(context)+" disliked your post",post.getContent(),context);
+                notif.sendNotif();}
                 if (isLiked) {
                     likedBy.remove(userId);
                     post.setLikes(post.getLikes() - 1);

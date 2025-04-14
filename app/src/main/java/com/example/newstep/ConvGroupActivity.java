@@ -28,6 +28,7 @@ import com.example.newstep.Models.ChatMsgModel;
 import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.NotifOnline;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -46,7 +47,7 @@ public class ConvGroupActivity extends AppCompatActivity {
     EditText msgEditText;
     ImageButton backButton, sendButton;
     RecyclerView recyclerView, recyclerviewChattingWith;
-    String chatroomId, currentUser;
+    String chatroomId, currentUser,currentUserName;
     ChatroomModel chatroomModel;
     ChatRecyclerAdapter adapter;
     SearchUserRecyclerAdapter adapter2;
@@ -70,7 +71,7 @@ public class ConvGroupActivity extends AppCompatActivity {
         add_user = findViewById(R.id.addMemberButton);
         remove_user = findViewById(R.id.removeMemberButton);
         currentUser = FirebaseUtil.getCurrentUserId();
-
+        currentUserName=FirebaseUtil.getCurrentUsername(this);
 
         Intent intent = getIntent();
         String groupName = intent.getStringExtra("groupName");
@@ -275,6 +276,9 @@ private void fetchUsers(List<String> userIds){
                     UserModel selectedFriend = talkedToUsers.get(which);
                     if (isChecked) {
                         addMemberToGroup(selectedFriend.getId());
+                        NotifOnline notif=new NotifOnline(selectedFriend.getToken(),"You have been added to a group chat",
+                                currentUserName+" added you to "+groupNameTextView.getText().toString(),this);
+                        notif.sendNotif();
                     }
                 });
 
@@ -320,6 +324,9 @@ private void fetchUsers(List<String> userIds){
                                 UserModel selectedMember = membersList.get(which);
                                 if (isChecked) {
                                     removeMemberFromGroup(selectedMember.getId());
+                                    NotifOnline notif=new NotifOnline(selectedMember.getToken(),"You have been removed from a group chat",
+                                            currentUserName+" removed you from "+groupNameTextView.getText().toString()+" group chat",this);
+                                    notif.sendNotif();
                                 }
                             });
 
