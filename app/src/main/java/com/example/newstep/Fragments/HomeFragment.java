@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.example.newstep.ProgressActivity;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
-import com.example.newstep.Util.QuoteDatabaseHelper;
+import com.example.newstep.Databases.QuoteDatabaseHelper;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 

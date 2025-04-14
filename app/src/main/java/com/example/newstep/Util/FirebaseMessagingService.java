@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Vibrator;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -22,11 +21,10 @@ import com.google.firebase.messaging.RemoteMessage;
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
     private NotificationManager notificationManager;
 
-
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
-        updateNewToken(token);
+updateNewToken(token);
     }
 
     @Override
@@ -68,28 +66,22 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
         notificationManager.notify(100,builder.build());
     }
+public void updateNewToken(String token){
+        if(FirebaseUtil.getCurrentUserId()!= null){//zidt had l condition bah mayasrach null pointer Exception ki maykonch mdayer login tsema yasra crash
+            FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).update("token",token)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
 
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
+                        }
+                    });
 
-    public void updateNewToken(String token){
+        }
 
-
-        FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).update("token",token)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
-
-
-
-
-
+}
 }

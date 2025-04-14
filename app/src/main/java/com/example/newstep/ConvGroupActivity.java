@@ -28,6 +28,7 @@ import com.example.newstep.Models.ChatMsgModel;
 import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.NotifOnline;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -46,7 +47,7 @@ public class ConvGroupActivity extends AppCompatActivity {
     EditText msgEditText;
     ImageButton backButton, sendButton;
     RecyclerView recyclerView, recyclerviewChattingWith;
-    String chatroomId, currentUser;
+    String chatroomId, currentUser,currentUserName;
     ChatroomModel chatroomModel;
     ChatRecyclerAdapter adapter;
     SearchUserRecyclerAdapter adapter2;
@@ -70,7 +71,7 @@ public class ConvGroupActivity extends AppCompatActivity {
         add_user = findViewById(R.id.addMemberButton);
         remove_user = findViewById(R.id.removeMemberButton);
         currentUser = FirebaseUtil.getCurrentUserId();
-
+        currentUserName=FirebaseUtil.getCurrentUsername(this);
 
         Intent intent = getIntent();
         String groupName = intent.getStringExtra("groupName");
@@ -104,9 +105,10 @@ public class ConvGroupActivity extends AppCompatActivity {
                 String message = msgEditText.getText().toString().trim();
                 if (!message.isEmpty()) {
                     userSentAMsg = true;
-                    sendMessageToGroup(message);
+                    sendMessageToGroup(message, groupName);
 
-                }
+
+                };
 
             }
         });
@@ -170,7 +172,7 @@ public class ConvGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessageToGroup(String message) {
+    private void sendMessageToGroup(String message , String gN) {
         chatroomModel.setLastMsgSent(message);
         chatroomModel.setLastMsgSenderId(FirebaseUtil.getCurrentUserId());
         chatroomModel.setLastMsgTimeStamp(Timestamp.now());
@@ -186,8 +188,40 @@ public class ConvGroupActivity extends AppCompatActivity {
                 msgEditText.setText("");
             }
         });
+        sendNotificationsToGroupMembers(message,gN);
     }
+    public void sendMessageNotificationsToUser(String idRecever, String message,String groupName){
+        FirebaseUtil.allUserCollectionRef().document(idRecever).get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()&& documentSnapshot!= null){
+                String ReceverToken= documentSnapshot.getString("token");
+                NotifOnline notifOnline= new NotifOnline(ReceverToken,"new message from "+ currentUserName+" in "+groupName+ " group chat ",message,ConvGroupActivity.this);
+                notifOnline.sendNotif();
+            }
+        });
 
+
+    }
+    private void sendNotificationsToGroupMembers(String message,String groupName) {
+        FirebaseUtil.getChatroomRef(chatroomId).get().addOnSuccessListener(documentSnapshot -> {
+            ChatroomModel chatroomModel = documentSnapshot.toObject(ChatroomModel.class);
+            if (chatroomModel != null) {
+                List<String> userIds = chatroomModel.getUserIds();
+                if (userIds != null && !userIds.isEmpty()) {
+
+
+
+                    for (int i=0 ; i< userIds.size();i++) {
+                        String userId =userIds.get(i);
+                        if (!userId.equals(currentUser)) {
+
+                            sendMessageNotificationsToUser(userId, message, groupName);
+                        }
+                    }
+
+                }
+            }
+        });
+    }
     private void setupRecyclerOtherUsers() {
         if (recyclerviewChattingWith == null) {
             Log.e("ConvGroupActivity", "recyclerviewChattingWith is null");
@@ -275,6 +309,9 @@ private void fetchUsers(List<String> userIds){
                     UserModel selectedFriend = talkedToUsers.get(which);
                     if (isChecked) {
                         addMemberToGroup(selectedFriend.getId());
+                        NotifOnline notif=new NotifOnline(selectedFriend.getToken(),"You have been added to a group chat",
+                                currentUserName+" added you to "+groupNameTextView.getText().toString(),this);
+                        notif.sendNotif();
                     }
                 });
 
@@ -320,6 +357,9 @@ private void fetchUsers(List<String> userIds){
                                 UserModel selectedMember = membersList.get(which);
                                 if (isChecked) {
                                     removeMemberFromGroup(selectedMember.getId());
+                                    NotifOnline notif=new NotifOnline(selectedMember.getToken(),"You have been removed from a group chat",
+                                            currentUserName+" removed you from "+groupNameTextView.getText().toString()+" group chat",this);
+                                    notif.sendNotif();
                                 }
                             });
 

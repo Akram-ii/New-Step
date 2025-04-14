@@ -1,6 +1,8 @@
 package com.example.newstep.Util;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.ImageView;
@@ -50,7 +52,10 @@ public class FirebaseUtil {
             return userid2  +"_"+userid1;
         }}
 
-
+public static String getCurrentUsername(Context context){
+    SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+     return sharedPreferences.getString("currUserName", "default_value");
+}
 
     public static CollectionReference allChatroomCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Chatrooms");
