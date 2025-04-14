@@ -27,6 +27,7 @@ import com.example.newstep.Adapters.PostAdapter;
 import com.example.newstep.Models.Comment;
 import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
+import com.example.newstep.Util.NotifOnline;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
@@ -309,6 +310,37 @@ public class CommunityFragment extends Fragment {
                                     .document(commentId).set(comment)
                                     .addOnSuccessListener(aVoid -> {
                                         editTextComment.setText("");
+
+
+                                        db.collection("posts").document(postId)
+                                                .get()
+                                                .addOnSuccessListener(postDoc -> {
+                                                    if (postDoc.exists()) {
+                                                        String postOwnerId = postDoc.getString("userId");
+
+
+                                                        if (postOwnerId != null && !userId.equals(postOwnerId)) {
+
+
+                                                            db.collection("Users").document(postOwnerId)
+                                                                    .get()
+                                                                    .addOnSuccessListener(ownerDoc -> {
+                                                                        if (ownerDoc.exists()) {
+                                                                            String ownerFCMToken = ownerDoc.getString("token");
+
+
+                                                                            String title = "You have a new comment on your post";
+                                                                            String body = username + "commented on your post";
+
+                                                                            NotifOnline notif = new NotifOnline(ownerFCMToken, title, body, requireContext());
+                                                                            notif.sendNotif();
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                });
+
+
                                     });
                         });
             }

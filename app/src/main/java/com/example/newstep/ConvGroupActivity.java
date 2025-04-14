@@ -105,9 +105,10 @@ public class ConvGroupActivity extends AppCompatActivity {
                 String message = msgEditText.getText().toString().trim();
                 if (!message.isEmpty()) {
                     userSentAMsg = true;
-                    sendMessageToGroup(message);
+                    sendMessageToGroup(message, groupName);
 
-                }
+
+                };
 
             }
         });
@@ -171,7 +172,7 @@ public class ConvGroupActivity extends AppCompatActivity {
         });
     }
 
-    private void sendMessageToGroup(String message) {
+    private void sendMessageToGroup(String message , String gN) {
         chatroomModel.setLastMsgSent(message);
         chatroomModel.setLastMsgSenderId(FirebaseUtil.getCurrentUserId());
         chatroomModel.setLastMsgTimeStamp(Timestamp.now());
@@ -187,8 +188,40 @@ public class ConvGroupActivity extends AppCompatActivity {
                 msgEditText.setText("");
             }
         });
+        sendNotificationsToGroupMembers(message,gN);
     }
+    public void sendMessageNotificationsToUser(String idRecever, String message,String groupName){
+        FirebaseUtil.allUserCollectionRef().document(idRecever).get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()&& documentSnapshot!= null){
+                String ReceverToken= documentSnapshot.getString("token");
+                NotifOnline notifOnline= new NotifOnline(ReceverToken,"new message from "+ currentUserName+" in "+groupName+ " group chat ",message,ConvGroupActivity.this);
+                notifOnline.sendNotif();
+            }
+        });
 
+
+    }
+    private void sendNotificationsToGroupMembers(String message,String groupName) {
+        FirebaseUtil.getChatroomRef(chatroomId).get().addOnSuccessListener(documentSnapshot -> {
+            ChatroomModel chatroomModel = documentSnapshot.toObject(ChatroomModel.class);
+            if (chatroomModel != null) {
+                List<String> userIds = chatroomModel.getUserIds();
+                if (userIds != null && !userIds.isEmpty()) {
+
+
+
+                    for (int i=0 ; i< userIds.size();i++) {
+                        String userId =userIds.get(i);
+                        if (!userId.equals(currentUser)) {
+
+                            sendMessageNotificationsToUser(userId, message, groupName);
+                        }
+                    }
+
+                }
+            }
+        });
+    }
     private void setupRecyclerOtherUsers() {
         if (recyclerviewChattingWith == null) {
             Log.e("ConvGroupActivity", "recyclerviewChattingWith is null");

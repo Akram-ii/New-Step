@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newstep.Models.Comment;
 import com.example.newstep.R;
+import com.example.newstep.Util.NotifOnline;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -78,6 +79,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     .document(comment.getCommentId());
 
             db.runTransaction(transaction -> {
+
+
+
+
                 DocumentSnapshot snapshot = transaction.get(commentRef);
                 Comment updatedComment = snapshot.toObject(Comment.class);
                 if (updatedComment == null) return null;
@@ -87,10 +92,38 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                     updatedLikes.remove(currentUserId);
                 } else {
                     updatedLikes.add(currentUserId);
+
+                    String commentOwnerId = comment.getUserId();
+                    if (!commentOwnerId.equals(currentUserId)) {
+                        FirebaseFirestore.getInstance().collection("Users").document(commentOwnerId)
+                                .get()
+                                .addOnSuccessListener(userDoc -> {
+                                    if (userDoc.exists()) {
+                                        String ownerFCMToken = userDoc.getString("token");
+
+
+                                        FirebaseFirestore.getInstance().collection("Users").document(currentUserId)
+                                                .get()
+                                                .addOnSuccessListener(currentUserDoc -> {
+                                                    String likerUsername = "Someone";
+                                                    if (currentUserDoc.exists() && currentUserDoc.contains("username")) {
+                                                        likerUsername = currentUserDoc.getString("username");
+                                                    }
+
+                                                    String title = "New Like on Your Comment";
+                                                    String body = likerUsername + " liked your comment.";
+
+                                                    NotifOnline notif = new NotifOnline(ownerFCMToken, title, body, context);
+                                                    notif.sendNotif();
+                                                });
+                                    }
+                                });
+                    }
                 }
 
                 transaction.update(commentRef, "likes", updatedLikes);
                 return updatedLikes;
+
             }).addOnSuccessListener(updatedLikes -> {
                 comment.setLikes(updatedLikes);
                 notifyItemChanged(position);

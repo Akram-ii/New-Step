@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -71,6 +72,9 @@ FirebaseAuth firebaseAuth;
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        if(FirebaseUtil.getCurrentUserId()!= null){// zidto bah maysrach null pointer exception ki maykonch user mdayer login
+
+
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -79,7 +83,9 @@ FirebaseAuth firebaseAuth;
                                 .document(FirebaseUtil.getCurrentUserId())
                                 .update("token", newToken);
                     }
-                });
+                });}else{
+            Toast.makeText(this, "user not found !", Toast.LENGTH_SHORT).show();
+        }
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
