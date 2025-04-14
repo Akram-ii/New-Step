@@ -110,7 +110,7 @@ public class CommunityFragment extends Fragment {
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost);
+                                PostModel post = new PostModel(postId,userId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost);
 
 
                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());

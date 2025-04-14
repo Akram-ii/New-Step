@@ -2,6 +2,7 @@ package com.example.newstep.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +89,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             } else {
                 likedBy.add(userId);
                 post.setLikes(post.getLikes() + 1);
-
+                Log.d( "idmo pos ",""+post.getUserId());
                  FirebaseUtil.allUserCollectionRef().document(post.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {

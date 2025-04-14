@@ -29,13 +29,14 @@ public class PostModel {
         this.content = content;
     }
 
-    public PostModel(String id, String content, int likes, String userName, int dislikes, Timestamp timestamp) {
+    public PostModel(String id,String userId, String content, int likes, String userName, int dislikes, Timestamp timestamp) {
         this.id = id;
         this.content = content;
         this.userName=userName;
         this.likes = likes;
         this.dislikes = dislikes;
         this.timestamp= timestamp;
+        this.userId=userId;;
     }
 
     public String getId() {
