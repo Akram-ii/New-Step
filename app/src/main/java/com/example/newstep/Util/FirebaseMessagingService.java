@@ -67,17 +67,21 @@ updateNewToken(token);
         notificationManager.notify(100,builder.build());
     }
 public void updateNewToken(String token){
-FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).update("token",token)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
+        if(FirebaseUtil.getCurrentUserId()!= null){//zidt had l condition bah mayasrach null pointer Exception ki maykonch mdayer login tsema yasra crash
+            FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).update("token",token)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
 
-            }
-        });
+                        }
+                    });
+
+        }
+
 }
 }
