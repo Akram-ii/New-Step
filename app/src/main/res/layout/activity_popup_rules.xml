@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:elevation="10dp"
+    android:backgroundTint="#80000000"
+    android:gravity="center"
+    android:background="#80000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/light_blue"
+        android:background="@drawable/popupbg"
+        android:padding="15dp">
+
+
+        <ImageView
+            android:id="@+id/infoIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_info"
+            app:tint="@color/purple" />
+
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terms & Conditions"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@id/infoIcon"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true" />
+
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/titleText"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@android:color/white"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/rulesText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"
+                android:text="Welcome to our community!\n\nTo ensure a safe and respectful environment for everyone, please read and accept our Terms & Conditions below:\n\n1. Respect and Safety\n• Be respectful to others.\n• Harassment, bullying, hate speech, or discrimination will not be tolerated.\n• Do not share violent, sexual, or illegal content.\n\n2. Private and Group Chats\n• Do not spam or send unsolicited messages.\n\n3. Posts and Comments\n• Avoid spreading misinformation.\n• Be constructive and respectful in discussions.\n• No self-promotion or advertising without permission.\n\n4. Community Guidelines\n• Follow local laws and app rules.\n• Repeated violations may lead to account suspension.\n\n" />
+        </ScrollView>
+
+
+        <CheckBox
+            android:id="@+id/checkboxAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I agree to the Terms and Conditions"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_below="@id/scrollView"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true" />
+
+
+        <LinearLayout
+            android:id="@+id/btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/checkboxAgree"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/darkGray"
+                app:cornerRadius="20dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/accept"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:text="Continue"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#673AB7"
+                android:enabled="false"
+                app:cornerRadius="20dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>
+
