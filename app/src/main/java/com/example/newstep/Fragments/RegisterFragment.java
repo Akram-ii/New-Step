@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newstep.R;
+import com.example.newstep.RulesActivity;
 import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.Utilities;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -84,24 +85,33 @@ public class RegisterFragment extends Fragment {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                p.setMessage("Please wait");
+                p.show();
                 String txtEmail = Email.getText().toString();
                 String txtPassword = Password.getText().toString();
                 String txtConfirm = confirm.getText().toString();
                 String txtUserName = userName.getText().toString();
                 Log.d("FirestoreDebug", "usrnae: " + txtUserName);
                 if (txtUserName.length()<3 ) {
+                    p.dismiss();
                     userName.setError("Too short");
                 } else if (txtUserName.length()>15 ) {
+                    p.dismiss();
                     userName.setError("Too long");
                 }else if (txtEmail.isEmpty() ) {
+                    p.dismiss();
                     Email.setError("Enter your E-mail");
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(txtEmail).matches()){
+                    p.dismiss();
                     Email.setError("Not a valid E-mail");
                 }else if(txtPassword.isEmpty()){
+                    p.dismiss();
                     Toast.makeText(getContext(), "Enter your password", Toast.LENGTH_SHORT).show();
                 } else if(txtPassword.length()<6){
+                    p.dismiss();
                     Toast.makeText(getContext(), "Password too short", Toast.LENGTH_SHORT).show();
                 }else if (!txtPassword.equals(txtConfirm)){
+                    p.dismiss();
                     Toast.makeText(getContext(), "Password does not match", Toast.LENGTH_SHORT).show();
                 }else{
                     FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
@@ -129,7 +139,13 @@ public class RegisterFragment extends Fragment {
                     if (!querySnapshot.isEmpty()) {
                         userName.setError("Username is already taken");
                     } else {
-                       registerUser(email,pwd,username,token);
+                        Intent intent=new Intent(getContext(), RulesActivity.class);
+                        intent.putExtra("email",email);
+                        intent.putExtra("pwd",pwd);
+                        intent.putExtra("username",username);
+                        intent.putExtra("token",token);
+                        p.dismiss();
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(e -> {
