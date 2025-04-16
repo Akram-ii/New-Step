@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:elevation="10dp"
+    android:backgroundTint="@color/transparent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:background="@drawable/popupbg"
+        android:padding="10dp">
+
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter Reports"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:paddingBottom="12dp"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textTitle"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/sortByReportsAsc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Ascending"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+
+    <Button
+        android:id="@+id/sortByNewest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Newest"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+</LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/sortByReportsDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Descending"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+
+    <Button
+        android:id="@+id/sortByOldest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Oldest"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+</LinearLayout>
+</LinearLayout>
+    </RelativeLayout>
+    </LinearLayout>

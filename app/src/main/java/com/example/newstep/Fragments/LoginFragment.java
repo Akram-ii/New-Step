@@ -1,9 +1,11 @@
 package com.example.newstep.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,16 +14,24 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newstep.MainActivity;
 import com.example.newstep.R;
+import com.example.newstep.Util.FirebaseUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +39,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 
 public class LoginFragment extends Fragment {
@@ -136,23 +147,36 @@ public class LoginFragment extends Fragment {
             public void onSuccess(AuthResult authResult) {
                 p.dismiss();
                 FirebaseUser user =FirebaseAuth.getInstance().getCurrentUser();
-                if(user.isEmailVerified()){
-                    Toast.makeText(getContext(),"Welcome!",Toast.LENGTH_SHORT).show();
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FirebaseUtil.allUserCollectionRef().document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBanned"))){
+                            FirebaseAuth.getInstance().signOut();
+                            ((MainActivity) requireContext()).popupBan();
+                        }else{
 
-                    Fragment existingFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-                    if (existingFragment != null) {
-                        fragmentManager.beginTransaction().remove(existingFragment).commit();
+                            if(user.isEmailVerified()){
+
+
+                                Toast.makeText(getContext(), "Welcome!", Toast.LENGTH_SHORT).show();
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                Fragment existingFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+                                if (existingFragment != null) {
+                                    fragmentManager.beginTransaction().remove(existingFragment).commit();
+                                }
+
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                HomeFragment homeFragment = new HomeFragment();
+                                transaction.replace(R.id.fragment_container, homeFragment, HomeFragment.class.getSimpleName());
+                                transaction.addToBackStack(null);
+                                transaction.commitAllowingStateLoss();
+                            }else{
+                                showAlertDialog();
+                            }
+                        }
                     }
+                });
 
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    HomeFragment homeFragment = new HomeFragment();
-                    transaction.replace(R.id.fragment_container, homeFragment, HomeFragment.class.getSimpleName());
-                    transaction.addToBackStack(null);
-                    transaction.commitAllowingStateLoss();
-                }else{
-                    showAlertDialog();
-                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -163,6 +187,7 @@ public class LoginFragment extends Fragment {
             }
         });
     }
+
 
     private void showAlertDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext());

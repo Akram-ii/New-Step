@@ -3,13 +3,20 @@ package com.example.newstep;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -90,7 +97,6 @@ firebaseAuth=FirebaseAuth.getInstance();
         authStateListener = firebaseAuth -> {
             user = firebaseAuth.getCurrentUser();
             if (user == null) {
-                Log.d("Auth Check", "User not logged in - Redirecting to LoginFragment");
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
             }
         };
@@ -103,10 +109,14 @@ firebaseAuth=FirebaseAuth.getInstance();
                    if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
                        admin.setVisibility(View.VISIBLE);
                    }
+                   if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBanned"))){
+                       FirebaseAuth.getInstance().signOut();
+                   }
                }
                 }
             });
         }
+
 admin.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
@@ -137,7 +147,7 @@ admin.setOnClickListener(new View.OnClickListener() {
     }
     }
     private void checkUserAuthentication(Fragment fragment) {
-        if (firebaseAuth.getCurrentUser() != null) {
+        if (firebaseAuth.getCurrentUser() != null ) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
@@ -168,11 +178,39 @@ navigationView.setCheckedItem(R.id.nav_community);
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
+    public void popupBan() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
 
-    @Override
-    public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }else {super.onBackPressed();}
+        // Create a PopupWindow
+        PopupWindow popupWindow = new PopupWindow(
+                popUpView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                true
+        );
+
+        // Set transparent background
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Dim the background
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f; // Reduce brightness
+        getWindow().setAttributes(layoutParams);
+
+        // Show popup
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+
+        // Restore brightness when popup is dismissed
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f; // Restore full brightness
+            getWindow().setAttributes(originalParams);
+        });
+
+        // Close button
+        ImageView closePopup = popUpView.findViewById(R.id.back_imageView);
+        closePopup.setOnClickListener(v -> popupWindow.dismiss());
     }
+
 }
