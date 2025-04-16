@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -163,6 +165,21 @@ public class CommunityFragment extends Fragment {
         // Initialiser les boutons de la pop-up
         Button buttonCancel = popUpView.findViewById(R.id.buttonCancel);
         Button buttonPost = popUpView.findViewById(R.id.buttonPost);
+        Spinner spinnerCategory= popUpView.findViewById(R.id.spinner_category);
+        List<String> categories = new ArrayList<>();
+        categories.add("my experience");
+        categories.add("ask for help");
+        categories.add("motivation");
+        categories.add("reflection");
+        categories.add("progress update");
+        categories.add("Challenges");
+        categories.add("Advices");
+        categories.add("anything");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,categories);
+        adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
+        spinnerCategory.setAdapter(adapter);
+        String selectCategory =spinnerCategory.getSelectedItem().toString();
 
         // Fermer la pop-up lorsqu'on clique sur Annuler
         buttonCancel.setOnClickListener(v -> popupWindow.dismiss());
@@ -173,17 +190,21 @@ public class CommunityFragment extends Fragment {
             String postContent = editTextPostContent.getText().toString().trim();
 
             if (!postContent.isEmpty()) {
-                createPost(postContent, popupWindow); // Créer le post
+                createPost(postContent, selectCategory,popupWindow); // Créer le post
                 popupWindow.dismiss();
             } else {
                 // Afficher un message d'erreur si le post est vide
                 Toast.makeText(requireContext(), "Post cannot be empty", Toast.LENGTH_SHORT).show();
             }
+
+
+
+
         });
     }
 
 
-    private void createPost(String content, PopupWindow popupWindow) {
+    private void createPost(String content,String category, PopupWindow popupWindow) {
         // Obtenir l'utilisateur actuel via Firebase Authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
@@ -211,9 +232,8 @@ public class CommunityFragment extends Fragment {
                         post.put("content", content);
                         post.put("userId", userId);
                         post.put("username", username);
-
-
                         post.put("timestamp", Timestamp.now());
+                        post.put("category",category);
 
 
                         firestore.collection("posts")
