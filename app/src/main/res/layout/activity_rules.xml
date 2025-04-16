@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/light_blue"
+    tools:context=".RulesActivity">
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+>
+        <ProgressBar
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:id="@+id/p_bar"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/blue"
+            />
+        <ImageView
+            android:id="@+id/back_imageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/back_ic"
+            app:tint="@color/blue" />
+
+        <ImageView
+            android:id="@+id/infoIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_info"
+            app:tint="@color/blue" />
+
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terms &amp; Conditions"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@id/infoIcon"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true" />
+
+
+
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/titleText"
+                android:id="@+id/rulesText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="4dp"
+                android:text="Welcome to our community!\n\nTo ensure a safe and respectful environment for everyone, please read and accept our Terms &amp; Conditions below:\n\n1. Respect and Safety\n• Be respectful to others.\n• Harassment, bullying, hate speech, or discrimination will not be tolerated.\n• Do not share violent, sexual, or illegal content.\n\n2. Private and Group Chats\n• Do not spam or send unsolicited messages.\n\n3. Posts and Comments\n• Avoid spreading misinformation.\n• Be constructive and respectful in discussions.\n• No self-promotion or advertising without permission.\n\n4. Community Guidelines\n• Follow local laws and app rules.\n• Repeated violations may lead to account suspension."
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+
+        <CheckBox
+            android:id="@+id/checkboxAgree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I agree to the Terms &amp; Conditions"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:buttonTint="@color/blue"
+            android:layout_below="@id/rulesText"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true" />
+
+<com.google.android.material.button.MaterialButton
+    app:cornerRadius="20dp"
+    android:textSize="18sp"
+    android:visibility="gone"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/checkboxAgree"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="10dp"
+    android:text="Continue"
+    android:id="@+id/continueBtn"
+    android:backgroundTint="@color/blue"
+    />
+
+
+    </RelativeLayout>
+</LinearLayout>
