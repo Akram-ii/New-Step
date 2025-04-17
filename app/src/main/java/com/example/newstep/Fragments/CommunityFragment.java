@@ -14,8 +14,11 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +34,8 @@ import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.NotifOnline;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -53,9 +58,12 @@ import java.util.UUID;
 public class CommunityFragment extends Fragment {
 
     private FirebaseFirestore firestore;
+    private TextView filterText;
+    ImageView filter;
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<PostModel> postList;
+    private List<String> selectedCategories;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +78,9 @@ public class CommunityFragment extends Fragment {
         // Initialize Firestore
         firestore = FirebaseFirestore.getInstance();
 
+        selectedCategories=new ArrayList<>();
+        filter=view.findViewById(R.id.filter);
+        filterText=view.findViewById(R.id.filter_text);
         recyclerView = view.findViewById(R.id.post_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postList = new ArrayList<>();
@@ -84,6 +95,82 @@ public class CommunityFragment extends Fragment {
         // Set up the "Add Post" button
         FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
         buttonOpenPopup.setOnClickListener(v -> showPopupWindow());
+        filter.setOnClickListener(v -> showPopupWindowFilter());
+    }
+
+    private void showPopupWindowFilter() {
+        if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {
+            return;
+        }
+        LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.popup_filter, null);
+        PopupWindow popupWindow = new PopupWindow(
+                popUpView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
+        layoutParams.alpha = 0.5f;
+        requireActivity().getWindow().setAttributes(layoutParams);
+        popupWindow.showAtLocation(requireView(), Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = requireActivity().getWindow().getAttributes();
+            originalParams.alpha = 1.0f;
+            requireActivity().getWindow().setAttributes(originalParams);
+        });
+Button done;
+ImageView cancel;
+ImageButton nothing,all;
+ChipGroup chipGroup;
+chipGroup=popUpView.findViewById(R.id.chipGroup);
+all=popUpView.findViewById(R.id.selectAll);
+nothing=popUpView.findViewById(R.id.reset);
+done=popUpView.findViewById(R.id.filterNow);
+cancel=popUpView.findViewById(R.id.backBtn);
+cancel.setOnClickListener(v -> {popupWindow.dismiss();});
+all.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        for(int i=0;i<chipGroup.getChildCount();i++){
+            View child = chipGroup.getChildAt(i);
+            if(child instanceof Chip){
+                ((Chip) child).setChecked(true);
+            }
+        }
+    }
+});
+        nothing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(int i=0;i<chipGroup.getChildCount();i++){
+                    View child = chipGroup.getChildAt(i);
+                    if(child instanceof Chip){
+                        ((Chip) child).setChecked(false);
+                    }
+                }
+            }
+        });
+    chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
+        @Override
+        public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
+            if(checkedIds.isEmpty()){
+            done.setVisibility(View.GONE);
+            }else{
+                done.setVisibility(View.VISIBLE);
+                for(int i :checkedIds){
+                    Chip chip = group.findViewById(i);
+                    selectedCategories.add(chip.getText().toString());
+                }
+            }
+        }
+    });
+    done.setOnClickListener(v->{setupRecycler();});
+    }
+
+    private void setupRecycler() {
+
     }
 
 
@@ -167,14 +254,14 @@ public class CommunityFragment extends Fragment {
         Button buttonPost = popUpView.findViewById(R.id.buttonPost);
         Spinner spinnerCategory= popUpView.findViewById(R.id.spinner_category);
         List<String> categories = new ArrayList<>();
-        categories.add("my experience");
-        categories.add("ask for help");
-        categories.add("motivation");
-        categories.add("reflection");
-        categories.add("progress update");
+        categories.add("My Experience");
+        categories.add("Ask for help");
+        categories.add("Motivation");
+        categories.add("Reflection");
+        categories.add("Progress Update");
         categories.add("Challenges");
         categories.add("Advices");
-        categories.add("anything");
+        categories.add("Other");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,categories);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
