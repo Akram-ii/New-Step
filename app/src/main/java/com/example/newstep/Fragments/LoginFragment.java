@@ -45,6 +45,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -312,31 +313,64 @@ public class LoginFragment extends Fragment {
 
                         if (user != null) {
                             String userId = user.getUid();
-                            String username = user.getDisplayName() != null ? user.getDisplayName() : "Unknown";
+                            String defaultUsername = user.getDisplayName() != null ? user.getDisplayName() : "Unknown";
                             String registerDate = Utilities.timestampToStringNoDetail(Timestamp.now());
 
-                            Map<String, Object> userData = new HashMap<>();
-                            userData.put("username", username);
-                            userData.put("id", userId);
-                            userData.put("registerDate", registerDate);
-                            userData.put("token", token1);
-                            userData.put("profileImage", user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
+                            DocumentReference userRef = db.collection("Users").document(userId);
 
-                            db.collection("Users").document(userId)
-                                    .set(userData, SetOptions.merge())
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getContext(), MainActivity.class));
-                                        requireActivity().finish();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(getContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    });
+                            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                                String profileImageUrl;
+                                String username;
+
+                                if (documentSnapshot.exists()) {
+
+
+                                    String storedProfileImage = documentSnapshot.getString("profileImage");
+                                    profileImageUrl = (storedProfileImage != null && !storedProfileImage.isEmpty())
+                                            ? storedProfileImage
+                                            : (user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
+
+
+                                    String storedUsername = documentSnapshot.getString("username");
+                                    username = (storedUsername != null && !storedUsername.isEmpty())
+                                            ? storedUsername
+                                            : defaultUsername;
+
+                                } else {
+
+                                    profileImageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
+                                    username = defaultUsername;
+                                }
+
+
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("username", username);
+                                userData.put("id", userId);
+                                userData.put("registerDate", registerDate);
+                                userData.put("token", token1);
+                                userData.put("profileImage", profileImageUrl);
+
+
+                                userRef.set(userData, SetOptions.merge())
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(getContext(), MainActivity.class));
+                                            requireActivity().finish();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(getContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Failed to fetch existing user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
                         }
                     } else {
                         Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
+
 
 }

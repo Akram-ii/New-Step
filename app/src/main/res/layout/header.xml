@@ -38,7 +38,16 @@
             android:layout_alignStart="@+id/admin"
             android:layout_alignEnd="@+id/admin"
             />
+
     </RelativeLayout>
+
+
+    <!--<ImageView
+        android:id="@+id/curve"
+        android:layout_width="190dp"
+        android:layout_height="175dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/header3" />-->
 
 
     <TextView
@@ -55,8 +64,8 @@
 
     <ImageView
         android:id="@+id/drawerpfp"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_above="@+id/drawerUsername"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="17dp"
@@ -75,6 +84,7 @@
         android:layout_marginBottom="-27dp"
         android:text="Log in..."
         android:textColor="@color/light_blue"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
+
 
 </RelativeLayout>

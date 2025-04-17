@@ -1,5 +1,6 @@
 package com.example.newstep;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -123,25 +124,7 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
             findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
 
 
-            /*EditProfile_Fragment editProfileFragment = new EditProfile_Fragment();
-
-            findViewById(R.id.viewPager).setVisibility(View.GONE);
-            findViewById(R.id.profileTabLayout).setVisibility(View.GONE);
-            findViewById(R.id.editProfileButton).setVisibility(View.GONE);
-
-
-            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, editProfileFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-             */
         });
-
-
 
 
 
@@ -167,10 +150,21 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
 
     @Override
     protected void onResume() {
+
         super.onResume();
-        loadUserProfile();
-        getusername();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        boolean shouldRefresh = prefs.getBoolean("needRefresh", false);
+
+        if (shouldRefresh) {
+            loadUserProfile();
+            getusername();
+            prefs.edit().putBoolean("needRefresh", false).apply();
+        }
+
+
     }
+
+
 
 
 

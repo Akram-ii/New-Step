@@ -1,7 +1,10 @@
 package com.example.newstep.Fragments;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,12 +13,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,6 +29,7 @@ import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
 
 import com.bumptech.glide.Glide;
+import com.example.newstep.ProfileActivity;
 import com.example.newstep.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,14 +38,18 @@ import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Map;
 import java.util.HashMap;
+import android.os.Handler;
 
 
 public class EditProfile_Fragment extends Fragment {
@@ -60,7 +70,10 @@ public class EditProfile_Fragment extends Fragment {
     private TextInputEditText etUsername;
     private TextInputEditText Bio_Edit;
     private ImageButton back;
+    private FrameLayout loadingOverlay;
 
+    private static final String DEFAULT_PROFILE_IMAGE = "https://dummyimage.com/500x500/ffffff/ffffff.png";
+    private static final String DEFAULT_COVER_IMAGE = "https://dummyimage.com/500x500/E7E7E7/E7E7E7.png";
 
 
     @Override
@@ -77,7 +90,7 @@ public class EditProfile_Fragment extends Fragment {
         etUsername = view.findViewById(R.id.et_Username);
         Bio_Edit = view.findViewById(R.id.Bioo);
         back = view.findViewById(R.id.BackEdit_Button);
-
+        loadingOverlay = view.findViewById(R.id.loadingOverlay);
 
         background_image.setOnClickListener(v -> showImagePickerDialog(COVER_IMAGE));
         editprofil_image.setOnClickListener(v -> showImagePickerDialog(PROFILE_IMAGE));
@@ -88,30 +101,57 @@ public class EditProfile_Fragment extends Fragment {
 
         saveEdit_button.setOnClickListener(v -> {
 
+            if(isAdded()) {
 
-            if (profile_image.getDrawable() != null) {
-                Uri profileImageUri = getUriFromImageView(profile_image);
-                uploadImageToCloudinary(profileImageUri, "profileImage");
-            }
-
-            if (couverture_image.getDrawable() != null) {
-                Uri coverImageUri = getUriFromImageView(couverture_image);
-                uploadImageToCloudinary(coverImageUri, "coverImage");
-            }
-
-            if (etUsername != null && etUsername.getText() != null) {
-                String etUsername2 = etUsername.getText().toString().trim();
-                updateUserName(etUsername2);
-            } else {
-                Log.e("Error", "etUsername or its text is null");
-            }
+                loadingOverlay.setVisibility(View.VISIBLE);
 
 
-            if (Bio_Edit != null && Bio_Edit.getText() != null) {
-                String newBio = Bio_Edit.getText().toString().trim();
-                updateUserBio(newBio);
-            } else {
-                Log.e("Error", "newBio or its text is null");
+                if (profile_image.getDrawable() != null) {
+                    Uri profileImageUri = getUriFromImageView(profile_image);
+                    uploadImageToCloudinary(profileImageUri, "profileImage");
+                } else {
+                        uploadDefaultImage("profileImage", DEFAULT_PROFILE_IMAGE);
+                }
+
+                if (couverture_image.getDrawable() != null) {
+                    Uri coverImageUri = getUriFromImageView(couverture_image);
+                    uploadImageToCloudinary(coverImageUri, "coverImage");
+                } else {
+                        uploadDefaultImage("coverImage", DEFAULT_COVER_IMAGE);
+                }
+
+                if (etUsername != null && etUsername.getText() != null) {
+                    String etUsername2 = etUsername.getText().toString().trim();
+                    updateUserName(etUsername2);
+                } else {
+                    Log.e("Error", "etUsername or its text is null");
+                }
+
+
+                if (Bio_Edit != null && Bio_Edit.getText() != null) {
+                    String newBio = Bio_Edit.getText().toString().trim();
+                    updateUserBio(newBio);
+                } else {
+                    Log.e("Error", "newBio or its text is null");
+                }
+
+
+                SharedPreferences prefs = requireActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+                prefs.edit().putBoolean("needRefresh", true).apply();
+
+                new Handler().postDelayed(() -> {
+
+                    loadingOverlay.setVisibility(View.GONE);
+
+                    if (getActivity() != null) {
+                        Intent intent = new Intent(requireContext(), ProfileActivity.class);
+                        startActivity(intent);
+                        requireActivity().finish();
+                    }
+                }, 10000);
+
+            }else{
+                Log.e("Error", "Fragment not attached to an activity.");
             }
 
 
@@ -208,14 +248,22 @@ public class EditProfile_Fragment extends Fragment {
     private void uploadImageToCloudinary(Uri imageUri, String imageType) {
         new Thread(() -> {
             try {
+                if (imageUri == null) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> showToast("Image URI is null!"));
+                    }
+                    return;
+                }
 
                 String imagePath = getRealPathFromUri(imageUri);
                 if (imagePath == null) {
-                    requireActivity().runOnUiThread(() -> showToast("Invalid image path!"));
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> showToast("Invalid image path!"));
+                    }
                     return;
                 }
-                File imageFile = new File(imagePath);
 
+                File imageFile = new File(imagePath);
 
                 Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                         "cloud_name", "def4scxo9",
@@ -228,32 +276,38 @@ public class EditProfile_Fragment extends Fragment {
                 if (uploadResult.containsKey("secure_url")) {
                     String imageUrl = (String) uploadResult.get("secure_url");
 
+                    Activity activity = getActivity();
+                    if (activity != null && isAdded()) {
+                        activity.runOnUiThread(() -> {
+                            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                            FirebaseAuth auth = FirebaseAuth.getInstance();
+                            FirebaseUser user = auth.getCurrentUser();
 
-                    requireActivity().runOnUiThread(() -> {
-                        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-                        FirebaseAuth auth = FirebaseAuth.getInstance();
-                        FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                String userId = user.getUid();
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put(imageType, imageUrl);
 
-                        if (user != null) {
-                            String userId = user.getUid();
-                            Map<String, Object> userData = new HashMap<>();
-                            userData.put(imageType, imageUrl);
-
-                            firestore.collection("Users").document(userId)
-                                    .update(userData)
-                                    .addOnSuccessListener(aVoid -> showToast(imageType + " uploaded successfully"))
-                                    .addOnFailureListener(e -> showToast("Failed to upload " + imageType));
-                        } else {
-                            showToast("User is not logged in!");
-                        }
-                    });
+                                firestore.collection("Users").document(userId)
+                                        .update(userData)
+                                        .addOnSuccessListener(aVoid -> showToast(imageType + " uploaded successfully"))
+                                        .addOnFailureListener(e -> showToast("Failed to upload " + imageType));
+                            } else {
+                                showToast("User is not logged in!");
+                            }
+                        });
+                    }
                 } else {
-                    requireActivity().runOnUiThread(() -> showToast("Failed to upload image!"));
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> showToast("Failed to upload image!"));
+                    }
                 }
 
             } catch (IOException e) {
                 e.printStackTrace();
-                requireActivity().runOnUiThread(() -> showToast("Upload failed: " + e.getMessage()));
+                if (isAdded()) {
+                    requireActivity().runOnUiThread(() -> showToast("Upload failed: " + e.getMessage()));
+                }
             }
         }).start();
     }
@@ -261,21 +315,30 @@ public class EditProfile_Fragment extends Fragment {
 
 
 
-
-
     private String getRealPathFromUri(Uri uri) {
-        String result = null;
-        Cursor cursor = requireContext().getContentResolver().query(uri, null, null, null, null);
-        if (cursor != null) {
-            int columnIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            if (columnIndex != -1) {
-                cursor.moveToFirst();
-                result = cursor.getString(columnIndex);
+        try {
+            InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
+            if (inputStream == null) return null;
+
+            File tempFile = File.createTempFile("upload", ".jpg", requireContext().getCacheDir());
+            FileOutputStream outputStream = new FileOutputStream(tempFile);
+
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = inputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, length);
             }
-            cursor.close();
+
+            outputStream.close();
+            inputStream.close();
+
+            return tempFile.getAbsolutePath(); // هذا هو المسار الحقيقي للصورة المؤقتة
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        return result != null ? result : uri.getPath();
     }
+
 
 
 
@@ -327,11 +390,35 @@ public class EditProfile_Fragment extends Fragment {
 
 
     private Uri getImageUri(Context context, Bitmap bitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "CapturedImage", null);
-        return Uri.parse(path);
+        OutputStream outputStream;
+        Uri imageUri = null;
+
+        try {
+            // نحدد نوع الصورة ومكانها (MediaStore في الـ Pictures)
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, "CapturedImage_" + System.currentTimeMillis() + ".jpg");
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+            ContentResolver resolver = context.getContentResolver();
+            imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            if (imageUri != null) {
+                outputStream = resolver.openOutputStream(imageUri);
+                if (outputStream != null) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.close();
+                }else{
+                    Log.e("getImageUri", "OutputStream is null!");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return imageUri;
     }
+
 
 
     private Uri getUriFromImageView(ImageView imageView) {
@@ -452,6 +539,25 @@ public class EditProfile_Fragment extends Fragment {
                         }
                     })
                     .addOnFailureListener(e -> showToast("Failed to load images!"));
+        }
+    }
+
+
+    private void uploadDefaultImage(String imageType, String imageUrl) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+
+        if (user != null) {
+            String userId = user.getUid();
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+            Map<String, Object> data = new HashMap<>();
+            data.put(imageType, imageUrl);
+
+            firestore.collection("Users").document(userId)
+                    .update(data)
+                    .addOnSuccessListener(aVoid -> Log.d("Upload", imageType + " default image uploaded."))
+                    .addOnFailureListener(e -> Log.e("Upload", "Failed to upload default image for " + imageType));
         }
     }
 

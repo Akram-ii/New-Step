@@ -174,6 +174,12 @@ FirebaseAuth firebaseAuth;
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserProfile();
+    }
+
 
 
     private boolean userIsLoggedIn() {

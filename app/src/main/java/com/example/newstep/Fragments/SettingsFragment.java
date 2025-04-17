@@ -71,19 +71,19 @@ public class SettingsFragment extends Fragment {
 
     private void setAppLocale(String language) {
 
-        // التأكد من أن الكود يعمل في الفراجمانت
+
         if (getContext() == null) return;
 
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
 
         Configuration config = getResources().getConfiguration();
-        config.setLocale(locale); // تحديث اللغة في الـ Configuration
+        config.setLocale(locale);
 
-        // تحديث الـ context الحالي
+
         getContext().getResources().updateConfiguration(config, getContext().getResources().getDisplayMetrics());
 
-        // إعادة تحميل الـ Fragment الحالي بشكل آمن
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }

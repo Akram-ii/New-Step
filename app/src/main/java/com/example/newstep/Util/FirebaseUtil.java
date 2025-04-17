@@ -62,17 +62,21 @@ public class FirebaseUtil {
         Log.d("Chatroom", "Document Reference: " + docRef.getPath()); // Log the document reference
         return docRef;
     }
-    public static void loadPfp(String userId, ImageView pfp){
 
+    public static void loadPfp(String userId, ImageView pfp) {
         FirebaseUtil.allUserCollectionRef().document(userId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        String uriString = "https://"+documentSnapshot.getString("profilePictureUri");
+                        String uriString = documentSnapshot.getString("profileImage");
 
-                        if (documentSnapshot.getString("profilePictureUri")!=null && !documentSnapshot.getString("profilePictureUri").isEmpty()) {
-                            Uri uri=Uri.parse(uriString);
+                        if (uriString != null && !uriString.isEmpty()) {
+                            Uri uri = Uri.parse(uriString);
                             Log.d("Firestore", "Profile picture URI: " + uri.toString());
-                            Picasso.get().load(uri).transform(new CircleTransform()).into(pfp);
+                            Picasso.get()
+                                    .load(uri)
+                                    .placeholder(R.drawable.pfp_purple)
+                                    .transform(new CircleTransform())
+                                    .into(pfp);
                         } else {
                             pfp.setImageResource(R.drawable.pfp_blue);
                             Log.d("Firestore", "No profile picture");
@@ -85,9 +89,6 @@ public class FirebaseUtil {
                     Log.e("Firestore", "Error getting document: " + e.getMessage());
                 });
     }
-
-
-
 
 
 

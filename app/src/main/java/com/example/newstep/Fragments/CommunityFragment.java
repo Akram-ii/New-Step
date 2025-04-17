@@ -106,9 +106,10 @@ public class CommunityFragment extends Fragment {
                             String profileImageUrl = doc.getString("profileImage");
 
 
-
                             List<String> likedBy = (List<String>) doc.get("likedBy");
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+
+
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
                                 PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl);
@@ -121,6 +122,7 @@ public class CommunityFragment extends Fragment {
                             }
                         }
                         postAdapter.notifyDataSetChanged();
+
                     }
 
                 });
@@ -322,6 +324,8 @@ public class CommunityFragment extends Fragment {
 
         dialog.show();
     }
+
+
 }
 
 
