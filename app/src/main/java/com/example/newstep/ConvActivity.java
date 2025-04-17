@@ -190,7 +190,7 @@ public class ConvActivity extends AppCompatActivity {
                         chatroomModel=new ChatroomModel(chatroomId
                                 , Arrays.asList(FirebaseUtil.getCurrentUserId()
                                 ,otherUser.getId())
-                                , Timestamp.now(),"","",0);
+                                , Timestamp.now(),"","",0,0,0,"","","","");
                         FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel);
                     } else if (!chatroomModel.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId())) {
                         chatroomModel.setUnseenMsg(0);

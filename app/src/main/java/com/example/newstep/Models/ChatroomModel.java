@@ -5,7 +5,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class ChatroomModel {
-    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName,desc;
+    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName,desc,privacy;
     int unseenMsg,number_members,isGroup;
     List<String> userIds;
     com.google.firebase.Timestamp lastMsgTimeStamp;
@@ -19,7 +19,15 @@ public class ChatroomModel {
         this.desc = desc;
     }
 
-    public ChatroomModel(String chatroomId, List<String> userIds, Timestamp lastMsgTimeStamp, String lastMsgSenderId, String lastMsgSent, int unseenMsg) {
+    public String getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(String privacy) {
+        this.privacy = privacy;
+    }
+
+    public ChatroomModel(String chatroomId, List<String> userIds, Timestamp lastMsgTimeStamp, String lastMsgSenderId, String lastMsgSent, int unseenMsg, int number_members, int isGroup, String ownerId, String groupName, String desc, String privacy) {
         this.chatroomId = chatroomId;
         this.lastMsgSenderId = lastMsgSenderId;
         this.userIds = userIds;
@@ -27,6 +35,8 @@ public class ChatroomModel {
         this.lastMsgTimeStamp = lastMsgTimeStamp;
         this.lastMsgSent=lastMsgSent;
     }
+
+
 
     public int getIsGroup() {
         return isGroup;

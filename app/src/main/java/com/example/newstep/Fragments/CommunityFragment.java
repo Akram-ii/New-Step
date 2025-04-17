@@ -166,7 +166,7 @@ all.setOnClickListener(new View.OnClickListener() {
             }
         }
     });
-    done.setOnClickListener(v->{setupRecycler();});
+    done.setOnClickListener(v->{setupRecycler();popupWindow.dismiss();});
     }
 
     private void setupRecycler() {

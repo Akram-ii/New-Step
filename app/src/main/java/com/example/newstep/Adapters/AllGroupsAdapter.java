@@ -47,7 +47,14 @@ Context context;
             holder.nbr_members.setText(model.getNumber_members() + " members");
         }
         holder.groupName.setText(model.getGroupName());
-
+if("Private".equals(model.getPrivacy())){
+    holder.privateIc.setVisibility(View.VISIBLE);
+    holder.publicIc.setVisibility(View.GONE);
+}
+if("Public".equals(model.getPrivacy())){
+    holder.privateIc.setVisibility(View.GONE);
+    holder.publicIc.setVisibility(View.VISIBLE);
+}
     holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -55,6 +62,9 @@ Context context;
                 Toast.makeText(context,"You are already member of this group",Toast.LENGTH_SHORT).show();
             }
             else {
+                if("Private".equals(model.getPrivacy())){
+                Toast.makeText(context,"This Group is Private you need to contact the owner so they can let you in",Toast.LENGTH_LONG).show();
+                }else{
                 new AlertDialog.Builder(context).setMessage("Do you want to join this group chat ?")
                         .setPositiveButton("Join", (dialog, which) -> {
                             FirebaseUtil.allChatroomCollectionRef().document(model.getChatroomId())
@@ -71,8 +81,9 @@ Context context;
                         .show();
 
             }
-        }
+        }}
     });
+
 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     @Override
     public boolean onLongClick(View view) {
@@ -115,13 +126,15 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     }
     class ChatroomModelViewHolder extends RecyclerView.ViewHolder{
        private TextView groupName,nbr_members,ownerUsername;
-       private ImageView pfp;
+       private ImageView pfp,privateIc,publicIc;
         public ChatroomModelViewHolder(@NonNull View itemView) {
             super(itemView);
             groupName=itemView.findViewById(R.id.group_name);
             nbr_members=itemView.findViewById(R.id.nbr_members);
             ownerUsername=itemView.findViewById(R.id.owner_username);
             pfp=itemView.findViewById(R.id.group_pic_image);
+            privateIc=itemView.findViewById(R.id.privateIc);
+            publicIc=itemView.findViewById(R.id.publicIc);
         }
 
     }

@@ -10,7 +10,7 @@
     android:gravity="center">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:backgroundTint="@color/light_blue"
     android:background="@drawable/popupbg">
@@ -52,7 +52,6 @@ android:imeOptions="actionDone"
         android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:elevation="4dp"
-       android:layout_above="@+id/btns"
         android:layout_height="wrap_content"
         android:id="@+id/group_desc"
         android:inputType="textMultiLine"
@@ -68,27 +67,52 @@ android:imeOptions="actionDone"
         android:background="@drawable/textview_background"
         />
 
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:id="@+id/radioGroup"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/group_desc"
+        android:layout_centerHorizontal="true">
+        <RadioButton
+            android:checked="true"
+            android:buttonTint="@color/purple"
+            android:layout_marginHorizontal="10dp"
+            android:id="@+id/radioPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Public" />
 
+        <RadioButton
+            android:buttonTint="@color/purple"
+            android:layout_marginHorizontal="10dp"
+            android:id="@+id/radioPrivate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Private" />
+
+    </RadioGroup>
     <ImageView
         android:id="@+id/delete_group_btn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/delete_group_icon"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:visibility="gone"/>
-
+        android:layout_below="@+id/radioGroup"
+        android:layout_marginTop="10dp"
+        />
     <LinearLayout
         android:id="@+id/btns"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="end"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/radioGroup"
         android:paddingHorizontal="10dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="0dp">
 
 
         <com.google.android.material.button.MaterialButton

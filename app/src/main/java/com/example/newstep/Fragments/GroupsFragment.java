@@ -13,6 +13,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -139,6 +141,9 @@ public class GroupsFragment extends Fragment {
             originalParams.alpha = 1.0f; // Rétablir l'opacité à 100%
             requireActivity().getWindow().setAttributes(originalParams);
         });
+        RadioGroup radioGroup=popupView.findViewById(R.id.radioGroup);
+        RadioButton radioPublic = popupView.findViewById(R.id.radioPublic);
+        RadioButton radioPrivate = popupView.findViewById(R.id.radioPrivate);
         EditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
         EditText groupDescInput=popupView.findViewById(R.id.group_desc);
         Button btnCancel = popupView.findViewById(R.id.btnCancel);
@@ -160,8 +165,14 @@ public class GroupsFragment extends Fragment {
                 Toast.makeText(getContext(), "Group description cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            createGroupInFirestore(groupName,groupDesc, popupWindow);
+            int selectedId = radioGroup.getCheckedRadioButtonId();
+            String privacySetting = "Public";
+            if (selectedId == R.id.radioPublic) {
+                privacySetting = "Public";
+            } else if (selectedId == R.id.radioPrivate) {
+                privacySetting = "Private";
+            }
+            createGroupInFirestore(groupName,groupDesc,privacySetting, popupWindow);
         });
 
         popupView.setOnTouchListener((v, event) -> {
@@ -173,7 +184,7 @@ public class GroupsFragment extends Fragment {
         });
     }
 
-    private void createGroupInFirestore(String groupName,String desc, PopupWindow popupWindow) {
+    private void createGroupInFirestore(String groupName,String desc,String privacy, PopupWindow popupWindow) {
 
         String ownerId = auth.getCurrentUser().getUid();
         DocumentReference newGroupRef = db.collection("Chatrooms").document();
@@ -185,6 +196,7 @@ public class GroupsFragment extends Fragment {
         userIds.add(FirebaseUtil.getCurrentUserId());
         groupData.put("userIds",userIds);
         groupData.put("desc",desc);
+        groupData.put("privacy",privacy);
         groupData.put("groupName", groupName);
         groupData.put("isGroup", 1);
         groupData.put("number_members", 1);
