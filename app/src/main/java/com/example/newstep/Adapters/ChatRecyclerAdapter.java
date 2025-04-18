@@ -29,8 +29,9 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, ChatRecyclerAdapter.ChatModelViewHolder> {
-    Context context;
-    String chatroomId;
+    private Context context;
+    private String chatroomId;
+    private long lastClickTime = 0;
 
     public ChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatMsgModel> options, Context context, String chatroomId) {
         super(options);
@@ -40,64 +41,48 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
 
     @Override
     protected void onBindViewHolder(@NonNull ChatModelViewHolder holder, int position, @NonNull ChatMsgModel model) {
-        // Set message content and visibility
+        // Configure message display
         if (Objects.equals(model.getSenderId(), FirebaseUtil.getCurrentUserId())) {
+            // Sent message (right side)
             holder.leftChatLayout.setVisibility(View.GONE);
             holder.pfp.setVisibility(View.GONE);
             holder.rightChatLayout.setVisibility(View.VISIBLE);
             holder.rightMsg.setText(model.getMessage());
             holder.leftLikeContainer.setVisibility(View.GONE);
+
+            // Set click listeners for right layout
+            holder.rightChatLayout.setOnClickListener(v -> handleMessageClick(holder));
+            holder.rightChatLayout.setOnLongClickListener(v -> {
+                showDeleteDialog(model);
+                return true;
+            });
         } else {
+            // Received message (left side)
             FirebaseUtil.loadPfp(model.getSenderId(), holder.pfp);
             holder.leftChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftMsg.setText(model.getMessage());
             holder.rightLikeContainer.setVisibility(View.GONE);
+
+            // Set click listener for left layout
+            holder.leftChatLayout.setOnClickListener(v -> handleMessageClick(holder));
         }
 
-        // Update like UI
+        // Update like display
         updateLikeUI(holder, model);
+    }
 
-        // Set double-click listener for likes
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            private long lastClickTime = 0;
-
-            @Override
-            public void onClick(View v) {
-                long clickTime = System.currentTimeMillis();
-                if (clickTime - lastClickTime < 300) { // Double-click detection
-                    int currentPosition = holder.getAdapterPosition();
-                    if (currentPosition != RecyclerView.NO_POSITION) {
-                        handleLikeAction(holder, currentPosition);
-                    }
-                    lastClickTime = 0;
-                } else {
-                    lastClickTime = clickTime;
-                }
+    private void handleMessageClick(ChatModelViewHolder holder) {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastClickTime < 300) { // Double click detection
+            int position = holder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                handleLikeAction(holder, position);
             }
-        });
-
-        // Set long-click listener for message deletion
-        holder.rightChatLayout.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Utilities.vibratePhone(context);
-                new AlertDialog.Builder(context)
-                        .setMessage("Delete message?")
-                        .setPositiveButton("Delete", (dialog, which) -> {
-                            FirebaseUtil.getChatroomMsgRef(chatroomId)
-                                    .document(model.getMessageId())
-                                    .delete()
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(context, "Failed to delete message", Toast.LENGTH_SHORT).show();
-                                        Log.e("DELETE_ERROR", "Failed to delete message", e);
-                                    });
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .show();
-                return true;
-            }
-        });
+            lastClickTime = 0;
+        } else {
+            lastClickTime = currentTime;
+        }
     }
 
     private void handleLikeAction(ChatModelViewHolder holder, int position) {
@@ -107,37 +92,26 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
         String currentUserId = FirebaseUtil.getCurrentUserId();
         List<String> newLikedBy = new ArrayList<>(model.getLikedBy());
 
-        boolean wasLiked = newLikedBy.contains(currentUserId);
-        if (wasLiked) {
+        // Toggle like status
+        if (newLikedBy.contains(currentUserId)) {
             newLikedBy.remove(currentUserId);
         } else {
             newLikedBy.add(currentUserId);
         }
 
+        // Prepare Firestore update
         Map<String, Object> updates = new HashMap<>();
         updates.put("likedBy", newLikedBy);
         updates.put("likeCount", newLikedBy.size());
         updates.put("lastUpdated", FieldValue.serverTimestamp());
 
+        // Update Firestore
         FirebaseUtil.getChatroomMsgRef(chatroomId)
                 .document(model.getMessageId())
                 .update(updates)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // Get fresh position and model reference
-                        int updatedPosition = holder.getAdapterPosition();
-                        if (updatedPosition != RecyclerView.NO_POSITION) {
-                            ChatMsgModel updatedModel = getItem(updatedPosition);
-                            if (updatedModel != null) {
-                                updatedModel.setLikedBy(newLikedBy);
-                                updatedModel.setLikeCount(newLikedBy.size());
-                                updateLikeUI(holder, updatedModel);
-                            }
-                        }
-                    } else {
-                        Toast.makeText(context, "Failed to update like", Toast.LENGTH_SHORT).show();
-                        Log.e("LIKE_ERROR", "Like update failed", task.getException());
-                    }
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Failed to update like", Toast.LENGTH_SHORT).show();
+                    Log.e("LIKE_ERROR", "Update failed", e);
                 });
     }
 
@@ -155,19 +129,38 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
         }
     }
 
+    private void showDeleteDialog(ChatMsgModel model) {
+        Utilities.vibratePhone(context);
+        new AlertDialog.Builder(context)
+                .setMessage("Delete message?")
+                .setPositiveButton("Delete", (dialog, which) -> deleteMessage(model))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void deleteMessage(ChatMsgModel model) {
+        FirebaseUtil.getChatroomMsgRef(chatroomId)
+                .document(model.getMessageId())
+                .delete()
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context, "Failed to delete message", Toast.LENGTH_SHORT).show();
+                    Log.e("DELETE_ERROR", "Delete failed", e);
+                });
+    }
+
     @NonNull
     @Override
     public ChatModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.chatmsg_recycler_row, parent, false);
+        view.setBackgroundResource(android.R.color.transparent); // Disable ripple effect
         return new ChatModelViewHolder(view);
     }
 
-    class ChatModelViewHolder extends RecyclerView.ViewHolder {
+    static class ChatModelViewHolder extends RecyclerView.ViewHolder {
         LinearLayout leftChatLayout, rightChatLayout;
         ImageView pfp;
         TextView leftMsg, rightMsg;
         LinearLayout leftLikeContainer, rightLikeContainer;
-        TextView leftLikeEmoji, rightLikeEmoji;
         TextView leftLikeCount, rightLikeCount;
 
         public ChatModelViewHolder(@NonNull View itemView) {
@@ -179,8 +172,6 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
             rightMsg = itemView.findViewById(R.id.right_chat_textView);
             leftLikeContainer = itemView.findViewById(R.id.left_like_container);
             rightLikeContainer = itemView.findViewById(R.id.right_like_container);
-            leftLikeEmoji = itemView.findViewById(R.id.left_like_emoji);
-            rightLikeEmoji = itemView.findViewById(R.id.right_like_emoji);
             leftLikeCount = itemView.findViewById(R.id.left_like_count);
             rightLikeCount = itemView.findViewById(R.id.right_like_count);
         }
