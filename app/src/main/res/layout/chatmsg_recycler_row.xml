@@ -10,20 +10,18 @@
         android:layout_width="26dp"
         android:layout_height="26dp"
         android:id="@+id/pfp"
-
         android:layout_alignBottom="@id/left_chat_layout"
-        android:src="@drawable/pfp_purple"
+        android:src="@drawable/pfp_purple" />
 
-        />
+
     <LinearLayout
         android:layout_marginStart="30dp"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/received_message_background"
-        android:backgroundTint="@color/purple"
+        android:backgroundTint="@color/gray"
         android:padding="8dp"
-
         android:id="@+id/left_chat_layout"
         android:layout_marginEnd="80dp">
 
@@ -31,30 +29,83 @@
             android:id="@+id/left_chat_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
-
+            android:textColor="@color/black"
+            android:textSize="18sp" />
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/left_like_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_below="@id/left_chat_layout"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/left_like_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="❤️"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/left_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/gray"
+            android:layout_marginStart="4dp"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/right_chat_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/sent_message_background"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/lavender2"
         android:padding="10dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="80dp"
-        >
+        android:layout_marginStart="80dp">
+
         <TextView
             android:id="@+id/right_chat_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            />
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/right_like_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_below="@id/right_chat_layout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/right_like_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="❤️"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/right_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/gray"
+            android:layout_marginStart="4dp"/>
     </LinearLayout>
 </RelativeLayout>
