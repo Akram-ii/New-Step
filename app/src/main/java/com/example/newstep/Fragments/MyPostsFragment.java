@@ -75,14 +75,7 @@ public class MyPostsFragment extends Fragment {
 
 
     private void setupRecyclerView(List<PostModel> posts) {
-        PostAdapter adapter = new PostAdapter(getContext(), posts, postId -> {
-
-            if (listener != null) {
-                Log.d("DEBUG_CLICK", "تم الضغط على زر التعليقات في Fragment B");
-                listener.showCommentDialog(postId);
-            }
-
-        });
+        PostAdapter adapter = new PostAdapter(getContext(), posts);
 
         recyclerView.setAdapter(adapter);
     }

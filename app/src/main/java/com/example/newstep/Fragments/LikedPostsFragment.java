@@ -68,9 +68,7 @@ public class LikedPostsFragment extends Fragment {
 
 
     private void setupRecyclerView(List<PostModel> posts) {
-        PostAdapter adapter = new PostAdapter(getContext(), posts, postId -> {
-
-        });
+        PostAdapter adapter = new PostAdapter(getContext(), posts);
 
         recyclerView.setAdapter(adapter);
     }

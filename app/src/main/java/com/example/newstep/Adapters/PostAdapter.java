@@ -43,6 +43,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         void onReportClick(String postId, String pUsername, String pContent);
     }
 
+    public PostAdapter(Context context, List<PostModel> postList) {
+        this.context = context;
+        this.postList = postList;
+        this.firestore = FirebaseFirestore.getInstance();
+        this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.commentClickListener = new OnCommentClickListener() {
+            @Override
+            public void onCommentClick(String postId) {
+
+            }
+        };
+        this.reportClickListener = new OnReportClickListener() {
+            @Override
+            public void onReportClick(String postId, String pUsername, String pContent) {
+
+            }
+        };
+    }
+
     public PostAdapter(Context context, List<PostModel> postList, OnCommentClickListener commentClickListener, OnReportClickListener reportClickListener) {
         this.context = context;
         this.postList = postList;
