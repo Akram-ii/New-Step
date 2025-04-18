@@ -4,6 +4,8 @@ package com.example.newstep.Adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,7 +163,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
         TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount;
-        ImageView btnLike, btnDislike,comment_btn , P_image;
+        ImageView btnLike, btnDislike,comment_btn , P_image,btnReport;
 
         public PostViewHolder(View itemView) {
             super(itemView);
@@ -175,6 +177,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             comment_btn = itemView.findViewById(R.id.comment_btn);
             commentCount = itemView.findViewById(R.id.commentCount);
             P_image = itemView.findViewById(R.id.userPicture);
+            btnReport = itemView.findViewById(R.id.btn_report);
         }
     }
 

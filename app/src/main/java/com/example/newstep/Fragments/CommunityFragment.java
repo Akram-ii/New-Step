@@ -209,14 +209,11 @@ public class CommunityFragment extends Fragment {
 
                         String username = documentSnapshot.getString("username");
                         String profileImageUrl = documentSnapshot.getString("profileImage");
-
                         Map<String, Object> post = new HashMap<>();
                         post.put("content", content);
                         post.put("userId", userId);
                         post.put("username", username);
                         post.put("profileImage" , profileImageUrl);
-
-
                         post.put("timestamp", Timestamp.now());
 
 
