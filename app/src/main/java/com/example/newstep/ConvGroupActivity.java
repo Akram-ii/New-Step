@@ -405,6 +405,18 @@ private void fetchUsers(List<String> userIds){
 
 
     private void showGroupMembersPopup() {
+
+        View overlayView = new View(this);
+        overlayView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        overlayView.setBackgroundColor(Color.argb(150, 0, 0, 0)); // Gris semi-transparent
+
+
+        ViewGroup rootView = findViewById(android.R.id.content);
+        rootView.addView(overlayView);
+
+
         View popupView = LayoutInflater.from(this).inflate(R.layout.chhatinwith, null);
 
         PopupWindow popupWindow = new PopupWindow(popupView,
@@ -413,11 +425,20 @@ private void fetchUsers(List<String> userIds){
                 true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setElevation(10);
+        popupWindow.setOutsideTouchable(true);
 
-        // Centrer au milieu de l'écran
+
+        popupWindow.setOnDismissListener(() -> {
+            rootView.removeView(overlayView);
+            if (adapter != null) {
+                adapter.stopListening();
+            }
+        });
+
+
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
 
-        // Référence au RecyclerView dans la popup
+
         RecyclerView recyclerView = popupView.findViewById(R.id.chattinWith);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -435,10 +456,12 @@ private void fetchUsers(List<String> userIds){
             recyclerView.setAdapter(adapter);
             adapter.startListening();
 
-            popupWindow.setOnDismissListener(adapter::stopListening);
+            popupWindow.setOnDismissListener(() -> {
+                adapter.stopListening();
+                rootView.removeView(overlayView);
+            });
         });
     }
-
 @Override
     public void onBackPressed() {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);

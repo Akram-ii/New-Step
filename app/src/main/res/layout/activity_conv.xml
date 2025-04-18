@@ -9,7 +9,7 @@
     android:background="@color/lavender2"
     tools:context=".ConvActivity">
 
-    <!-- Toolbar -->
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:background="@color/transparent"
         android:titleTextColor="@color/white" />
 
-    <!-- Back Button -->
+
     <ImageButton
         android:id="@+id/back_ImageButton"
         android:layout_width="35dp"
@@ -30,7 +30,7 @@
         android:src="@drawable/icon_back"
         android:background="?attr/selectableItemBackgroundBorderless" />
 
-    <!-- Profile Picture -->
+
     <ImageView
         android:id="@+id/pfp"
         android:layout_width="40dp"
@@ -40,7 +40,7 @@
         android:layout_alignTop="@id/toolbar"
         android:src="@drawable/pfp_light_blue" />
 
-    <!-- Activity Indicator -->
+
     <ImageView
         android:id="@+id/activity"
         android:layout_width="20dp"
@@ -49,7 +49,7 @@
         android:layout_marginTop="5dp"
         android:layout_alignTop="@id/toolbar" />
 
-    <!-- Username -->
+
     <TextView
         android:id="@+id/usernameTextView"
         android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-    <!-- RecyclerView -->
+
     <RelativeLayout
         android:id="@+id/recyclerLayout"
         android:layout_width="match_parent"
@@ -83,7 +83,7 @@
             android:padding="8dp" />
     </RelativeLayout>
 
-    <!-- Input Message Layout -->
+
     <RelativeLayout
         android:id="@+id/input_layout"
         android:layout_width="match_parent"
