@@ -3,12 +3,21 @@ package com.example.newstep;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.RelativeLayout;
 
@@ -33,6 +42,7 @@ import com.example.newstep.Fragments.MyHabitsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
 import com.example.newstep.Util.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -49,43 +59,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ImageView pfp;
+    ImageButton admin;
     TextView userName;
     Toolbar toolbar;
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
     View headerView;
-    ImageButton admin;
-
 int test;
 FirebaseAuth firebaseAuth;
     BottomNavigationView bottomView;
     static Boolean isMediaInit=false;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
-
         });
 
         firebaseAuth=FirebaseAuth.getInstance();
 
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String lastFragment = sharedPreferences.getString("lastFragment", "default_value");
-
         toolbar = findViewById(R.id.toolbar);
         bottomView= findViewById(R.id.bottomMenu);
         setSupportActionBar(toolbar);
-        navigationView = findViewById(R.id.navView);
+        navigationView=findViewById(R.id.navView);
         headerView = navigationView.getHeaderView(0);
         admin=headerView.findViewById(R.id.admin);
         userName = headerView.findViewById(R.id.drawerUsername);
@@ -106,27 +108,25 @@ FirebaseAuth firebaseAuth;
             }
         };
 
-
         if(FirebaseAuth.getInstance().getCurrentUser()!=null){
             FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
-                        if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
-                            admin.setVisibility(View.VISIBLE);
-                        }
-                    }
+               if(documentSnapshot.exists()){
+                   if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
+                       admin.setVisibility(View.VISIBLE);
+                   }
+               }
                 }
             });
         }
-        admin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this, AdminActivity.class);
-                startActivity(intent);
-            }
-        });
-
+admin.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Intent intent=new Intent(MainActivity.this, AdminActivity.class);
+        startActivity(intent);
+    }
+});
         firebaseAuth.addAuthStateListener(authStateListener);
         bottomView.setOnItemSelectedListener(item -> {
             if(item.getItemId()==R.id.nav_home){
@@ -170,15 +170,8 @@ FirebaseAuth firebaseAuth;
 
         });
 
-
-
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadUserProfile();
-    }
 
 
 
@@ -188,9 +181,13 @@ FirebaseAuth firebaseAuth;
         return currentUser != null;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserProfile();
+    }
     private void checkUserAuthentication(Fragment fragment) {
-        if (firebaseAuth.getCurrentUser() != null) {
+        if (firebaseAuth.getCurrentUser() != null ) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
@@ -220,7 +217,42 @@ navigationView.setCheckedItem(R.id.nav_community);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;
-    } // idafat profile fragmant min agal wad3iha fi hadihi al dala li ana al fragment la touda3 mitl activity
+    }
+
+    public void popupBan() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
+
+        // Create a PopupWindow
+        PopupWindow popupWindow = new PopupWindow(
+                popUpView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                true
+        );
+
+        // Set transparent background
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Dim the background
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f; // Reduce brightness
+        getWindow().setAttributes(layoutParams);
+
+        // Show popup
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+
+        // Restore brightness when popup is dismissed
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f; // Restore full brightness
+            getWindow().setAttributes(originalParams);
+        });
+
+        // Close button
+        ImageView closePopup = popUpView.findViewById(R.id.back_imageView);
+        closePopup.setOnClickListener(v -> popupWindow.dismiss());
+    }
 
     @Override
     public void onBackPressed() {
@@ -228,13 +260,6 @@ navigationView.setCheckedItem(R.id.nav_community);
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {super.onBackPressed();}
     }
-
-
-
-
-
-
-
     public void loadUserProfile() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -275,7 +300,4 @@ navigationView.setCheckedItem(R.id.nav_community);
                     Log.e("Firestore", "Failed to fetch user data", e);
                 });
     }
-
-
-
 }

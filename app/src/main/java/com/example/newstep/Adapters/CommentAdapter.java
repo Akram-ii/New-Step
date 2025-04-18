@@ -2,25 +2,39 @@ package com.example.newstep.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
+import android.app.AlertDialog;
+
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.newstep.Models.PostModel;
+import com.example.newstep.Models.ReportComment;
 import com.example.newstep.Models.Comment;
 import com.example.newstep.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +71,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         holder.textUsername.setText(username);
         holder.textComment.setText(comment.getText());
 
+        holder.btn_report.setOnClickListener(v -> {
+            showReportPopup(comment.getPostId(), comment.getCommentId(),
+                    comment.getpUsername(), comment.getpContent(),
+                    comment.getUsername(), comment.getText());
+        });
+
 
         holder.textDate.setText(getFormattedTime(comment.getTimestamp()));
 
@@ -70,6 +90,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         holder.buttonLikeComment.setColorFilter(hasLiked ? Color.RED : Color.GRAY);
 
+        db.collection("posts").document(comment.getPostId()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        final String pUsername = documentSnapshot.getString("username") != null ? documentSnapshot.getString("username") : "Unknown";
+                        final String pContent = documentSnapshot.getString("content") != null ? documentSnapshot.getString("content") : "No content";
+
+
+                        holder.btn_report.setOnClickListener(v -> {
+                            showReportPopup(comment.getPostId(), comment.getCommentId(),
+                                    pUsername, pContent, comment.getUsername(), comment.getText());
+                        });
+                    }
+                });
 
         holder.buttonLikeComment.setOnClickListener(v -> {
             DocumentReference commentRef = db.collection("posts")
@@ -133,6 +166,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public static class CommentViewHolder extends RecyclerView.ViewHolder {
         TextView textUsername, textComment, textLikeCount, textDate;
         ImageView buttonLikeComment;
+       ImageView  btn_report;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -141,6 +175,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             textLikeCount = itemView.findViewById(R.id.textLikeCount);
             textDate = itemView.findViewById(R.id.textDate);
             buttonLikeComment = itemView.findViewById(R.id.buttonLikeComment);
+            btn_report = itemView.findViewById(R.id.btn_report);
         }
     }
 
@@ -170,4 +205,74 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             return sdf.format(new Date(timestamp));
         }
     }
+    private void showReportPopup(String postId, String commentId, String pUsername, String pContent, String cUsername, String cContent) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.popup_commentrepport, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+
+        MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
+        MaterialButton btnReport = view.findViewById(R.id.btnReport);
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        btnReport.setOnClickListener(v -> {
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            checkIfAlreadyReported(postId, commentId, userId, pUsername, pContent, cUsername, cContent);
+            dialog.dismiss();
+        });
+    }
+
+
+    private void checkIfAlreadyReported(String postId, String commentId, String userId, String pUsername, String pContent, String cUsername, String cContent) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference reportRef = db.collection("ReportComments").document(commentId);
+
+        reportRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                List<String> userIds = (List<String>) documentSnapshot.get("userIds");
+                if (userIds != null && userIds.contains(userId)) {
+                    Toast.makeText(context, "You have already reported this comment", Toast.LENGTH_SHORT).show();
+                } else {
+                    updateExistingReport(reportRef, userId);
+                }
+            } else {
+                createNewReport(postId, commentId, userId, pUsername, pContent, cUsername, cContent);
+            }
+        });
+    }
+
+
+    private void createNewReport(String postId, String commentId, String userId, String pUsername, String pContent, String cUsername, String cContent) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String reportId = UUID.randomUUID().toString();
+
+        ReportComment report = new ReportComment(reportId, postId, commentId, Timestamp.now(), new ArrayList<>());
+        report.getUserIds().add(userId);
+        report.setNbReports(1);
+        report.setpUsername(pUsername);
+        report.setpContent(pContent);
+        report.setcUsername(cUsername);
+        report.setcContent(cContent);
+
+        db.collection("ReportComments").document(commentId).set(report)
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(context, "Comment reported successfully", Toast.LENGTH_SHORT).show()
+                );
+    }
+    private void updateExistingReport(DocumentReference reportRef, String userId) {
+        reportRef.update("userIds", FieldValue.arrayUnion(userId),
+                        "nbReports", FieldValue.increment(1),
+                        "lastReportTime", Timestamp.now())
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(context, "Comment reported successfully", Toast.LENGTH_SHORT).show()
+                )
+                .addOnFailureListener(e ->
+                        Toast.makeText(context, "Failed to report comment", Toast.LENGTH_SHORT).show()
+                );
+    }
+
 }

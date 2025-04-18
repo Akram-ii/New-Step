@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="20dp"
+    android:backgroundTint="@color/light_blue"
+    android:background="@color/transparent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp">
+
+
+        <ImageView
+            android:id="@+id/leave_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/leave_icon"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
+
+       <ImageView
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:id="@+id/pfp"
+           android:src="@drawable/pfp_purple"
+           android:layout_marginLeft="50dp"
+           />
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_back_purple"
+            android:id="@+id/back"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            />
+        <TextView
+            android:id="@+id/username"
+            android:text="Loading..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/purple"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/username"
+    android:layout_marginTop="15dp"
+    android:padding="10dp"
+    android:background="@drawable/textview_background">
+        <TextView
+            android:textColor="@color/red_for_buttons"
+            android:id="@+id/nb_reports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="5dp"
+            android:text="Loading..."
+            android:layout_marginBottom="5dp"
+            android:elevation="4dp"
+            android:gravity="top"
+            android:maxLines="4"
+            android:textSize="17sp"
+             />
+    <View
+        android:layout_centerHorizontal="true"
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/nb_reports"
+        android:background="@color/purple"
+
+        />
+    <TextView
+        android:id="@+id/register_time"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="5dp"
+        android:layout_below="@id/nb_reports"
+        android:layout_marginTop="5dp"
+        android:text="Loading..."
+        android:layout_marginBottom="0dp"
+        android:elevation="4dp"
+        android:gravity="top"
+        android:maxLines="4"
+        android:textSize="17sp"
+        />
+</RelativeLayout>
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -10,6 +10,9 @@ public class Comment {
     private String postId;
     private String username;
     private List<String> likes;
+    private String pUsername;
+    private String pContent;
+
 
 
     public Comment() {
@@ -17,7 +20,7 @@ public class Comment {
     }
 
 
-    public Comment(String commentId, String userId, String postId, String text, Long timestamp, String username) {
+    public Comment(String commentId, String userId, String postId, String text, Long timestamp, String username, String pUsername, String pContent) {
         this.commentId = commentId;
         this.userId = userId;
         this.text = text;
@@ -25,6 +28,10 @@ public class Comment {
         this.likes = new ArrayList<>();
         this.postId = postId;
         this.username = username;
+        this.pUsername = pUsername;
+        this.pContent = pContent;
+
+
 
     }
 
@@ -54,6 +61,12 @@ public class Comment {
 
     public String getUsername() {
         return username;
+    }
+    public String getpUsername() {
+        return pUsername;
+    }
+    public String getpContent() {
+        return pContent;
     }
 
 

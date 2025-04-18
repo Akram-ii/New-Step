@@ -19,6 +19,21 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".RulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeOfflineActivity"
+            android:exported="false" />
+        <activity
+        android:name=".WelcomeActivity"
+        android:exported="false" />
+        <activity
+            android:name=".WelcomeOnlineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminActivity"
             android:exported="false" />
         <activity
@@ -43,7 +58,7 @@
             android:name=".ConvActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
