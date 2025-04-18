@@ -10,14 +10,12 @@
     android:padding="20dp"
     tools:context=".Fragments.RegisterFragment">
 
-
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="60dp"
         android:src="@drawable/ic_launcher_foreground" />
-
 
     <TextView
         android:layout_width="match_parent"
@@ -29,34 +27,45 @@
         android:textStyle="bold"
         android:layout_marginBottom="30dp" />
 
-
-    <EditText
-        android:id="@+id/user"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:hint="Username"
-        android:inputType="textCapSentences"
-        android:background="@drawable/input_background"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:textColorHint="#999999"
-        android:textColor="#000000"
-        android:layout_marginBottom="15dp" />
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundMode="none">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/user"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:inputType="textCapSentences"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="#000000"
+            android:background="@drawable/input_background"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/email"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:hint="E-mail"
-        android:inputType="textEmailAddress"
-        android:background="@drawable/input_background"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:textColorHint="#999999"
-        android:textColor="#000000"
-        android:layout_marginBottom="15dp" />
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundMode="none">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:inputType="textEmailAddress"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="#000000"
+            android:background="@drawable/input_background"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -80,7 +89,6 @@
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -103,7 +111,6 @@
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <Button
         android:id="@+id/registerBTN"
         android:layout_width="match_parent"
@@ -114,7 +121,6 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,7 +129,6 @@
         android:textColor="#3F51B5"
         android:textSize="14sp"
         android:layout_marginTop="30dp" />
-
 
     <TextView
         android:id="@+id/loginTextView"
