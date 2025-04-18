@@ -41,34 +41,34 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
 
     @Override
     protected void onBindViewHolder(@NonNull ChatModelViewHolder holder, int position, @NonNull ChatMsgModel model) {
-        // Configure message display
+
         if (Objects.equals(model.getSenderId(), FirebaseUtil.getCurrentUserId())) {
-            // Sent message (right side)
+
             holder.leftChatLayout.setVisibility(View.GONE);
             holder.pfp.setVisibility(View.GONE);
             holder.rightChatLayout.setVisibility(View.VISIBLE);
             holder.rightMsg.setText(model.getMessage());
             holder.leftLikeContainer.setVisibility(View.GONE);
 
-            // Set click listeners for right layout
+
             holder.rightChatLayout.setOnClickListener(v -> handleMessageClick(holder));
             holder.rightChatLayout.setOnLongClickListener(v -> {
                 showDeleteDialog(model);
                 return true;
             });
         } else {
-            // Received message (left side)
+
             FirebaseUtil.loadPfp(model.getSenderId(), holder.pfp);
             holder.leftChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftMsg.setText(model.getMessage());
             holder.rightLikeContainer.setVisibility(View.GONE);
 
-            // Set click listener for left layout
+
             holder.leftChatLayout.setOnClickListener(v -> handleMessageClick(holder));
         }
 
-        // Update like display
+
         updateLikeUI(holder, model);
     }
 
@@ -92,20 +92,20 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
         String currentUserId = FirebaseUtil.getCurrentUserId();
         List<String> newLikedBy = new ArrayList<>(model.getLikedBy());
 
-        // Toggle like status
+
         if (newLikedBy.contains(currentUserId)) {
             newLikedBy.remove(currentUserId);
         } else {
             newLikedBy.add(currentUserId);
         }
 
-        // Prepare Firestore update
+
         Map<String, Object> updates = new HashMap<>();
         updates.put("likedBy", newLikedBy);
         updates.put("likeCount", newLikedBy.size());
         updates.put("lastUpdated", FieldValue.serverTimestamp());
 
-        // Update Firestore
+
         FirebaseUtil.getChatroomMsgRef(chatroomId)
                 .document(model.getMessageId())
                 .update(updates)
@@ -119,11 +119,11 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMsgModel, 
         int likeCount = model.getLikeCount();
 
         if (Objects.equals(model.getSenderId(), FirebaseUtil.getCurrentUserId())) {
-            // Right side (sent messages)
+
             holder.rightLikeCount.setText(String.valueOf(likeCount));
             holder.rightLikeContainer.setVisibility(likeCount > 0 ? View.VISIBLE : View.GONE);
         } else {
-            // Left side (received messages)
+
             holder.leftLikeCount.setText(String.valueOf(likeCount));
             holder.leftLikeContainer.setVisibility(likeCount > 0 ? View.VISIBLE : View.GONE);
         }
