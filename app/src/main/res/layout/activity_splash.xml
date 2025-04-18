@@ -5,16 +5,18 @@
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/blue"
+    android:background="@drawable/splash"
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
+
     <ImageView
         android:layout_marginTop="200dp"
         android:layout_gravity="center"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/icon_community"
-        app:tint="@color/light_blue" />
+        app:tint="@color/offWhite" />
+
     <ProgressBar
         android:layout_width="50dp"
         android:layout_height="50dp"
