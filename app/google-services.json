@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "513429518236",
+    "firebase_url": "https://new-step-app-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "new-step-app",
     "storage_bucket": "new-step-app.firebasestorage.app"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.newstep"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "513429518236-v6j0hvsovt3kfhmk80srm95e9hpdjsqp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.newstep",
+            "certificate_hash": "48c5e6fa8d769d4caa9695aa4dd229d8675c9bd8"
+          }
+        },
+        {
+          "client_id": "513429518236-k1muk0q7sgdgosfjhcdmj6761q3r848l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBBMrgIP28oaTFJwvvRUkLs2aZp4oVtOoE"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513429518236-k1muk0q7sgdgosfjhcdmj6761q3r848l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

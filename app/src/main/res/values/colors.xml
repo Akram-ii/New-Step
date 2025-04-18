@@ -6,7 +6,7 @@
     <color name="transparent">#00000000</color>
     <color name="darkGray">#696969</color>
     <color name="gray">#9B9A9A</color>
-
+    <color name="red">#F80707</color>
 
     <color name="blue">#6A96E6</color>
     <color name="green">#A2D2E9</color>
@@ -17,5 +17,7 @@
     <color name="RED">#FF0000</color>
     <color name="primaryColor">#6200EE</color>
     <color name="red_for_buttons">#b7251a</color>
+    <color name="coldpurple">#50406B</color>
+
 
 </resources>

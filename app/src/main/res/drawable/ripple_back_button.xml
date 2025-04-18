@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#BCBCBC">
+
+    <!-- الخلفية الدائرية -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+
+    <!-- تأثير الضغط الدائري -->
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="#BCBCBCFF" />
+        </shape>
+    </item>
+
+</ripple>

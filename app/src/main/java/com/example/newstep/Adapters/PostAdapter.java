@@ -1,27 +1,27 @@
 package com.example.newstep.Adapters;
 
 
-
 import android.content.Context;
 import android.graphics.Color;
-
+import android.util.Log;
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.newstep.Models.PostModel;
-
 import com.example.newstep.R;
 import com.example.newstep.Util.Utilities;
-
-
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -64,6 +64,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         PostModel post = postList.get(position);
         String postId = post.getId();
 
+
+        Glide.with(holder.itemView.getContext())
+                .load(post.getProfileImageUrl())
+                .placeholder(R.drawable.pfp_purple)
+                .error(R.drawable.pfp_purple)
+                .circleCrop()
+                .into(holder.P_image);
+
+
         holder.postContent.setText(post.getContent());
         holder.username.setText(post.getUserName());
         holder.timestampPost.setText(Utilities.getRelativeTime(post.getTimestamp()));
@@ -75,6 +84,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         boolean isLiked = likedBy.contains(userId);
         boolean isDisliked = dislikedBy.contains(userId);
+
 
         holder.btnLike.setColorFilter(isLiked ? Color.RED : Color.DKGRAY);
         holder.btnDislike.setColorFilter(isDisliked ? Color.BLUE : Color.DKGRAY);
@@ -151,7 +161,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
         TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount;
-        ImageView btnLike, btnDislike, comment_btn, btnReport;
+        ImageView btnLike, btnDislike,comment_btn , P_image,btnReport;
 
         public PostViewHolder(View itemView) {
             super(itemView);
@@ -164,9 +174,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             btnDislike = itemView.findViewById(R.id.btnDislike);
             comment_btn = itemView.findViewById(R.id.comment_btn);
             commentCount = itemView.findViewById(R.id.commentCount);
+            P_image = itemView.findViewById(R.id.userPicture);
             btnReport = itemView.findViewById(R.id.btn_report);
         }
     }
-
-
 }

@@ -55,6 +55,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
 
 
@@ -91,7 +93,6 @@ public class RegisterFragment extends Fragment {
                 String txtPassword = Password.getText().toString();
                 String txtConfirm = confirm.getText().toString();
                 String txtUserName = userName.getText().toString();
-                Log.d("FirestoreDebug", "usrnae: " + txtUserName);
                 if (txtUserName.length()<3 ) {
                     p.dismiss();
                     userName.setError("Too short");

@@ -1,3 +1,4 @@
+
 package com.example.newstep.Fragments;
 
 import android.app.Activity;
@@ -47,12 +48,9 @@ import com.google.firebase.firestore.SetOptions;
 
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Map;
-
 import java.util.UUID;
 
 public class CommunityFragment extends Fragment {
@@ -81,6 +79,8 @@ public class CommunityFragment extends Fragment {
         postAdapter = new PostAdapter(getContext(), postList, this::showCommentDialog, this::showReportPopup);
 
         recyclerView.setAdapter(postAdapter);
+        ;
+
 
         loadPosts();
 
@@ -105,7 +105,9 @@ public class CommunityFragment extends Fragment {
         });
     }
 
+
     private void loadPosts() {
+
         firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
@@ -123,12 +125,15 @@ public class CommunityFragment extends Fragment {
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
                             Timestamp timestampPost = doc.getTimestamp("timestamp");
+                            String profileImageUrl = doc.getString("profileImage");
+
 
                             List<String> likedBy = (List<String>) doc.get("likedBy");
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost);
+                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl);
+
 
                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                 post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
@@ -138,8 +143,10 @@ public class CommunityFragment extends Fragment {
                         }
                         postAdapter.notifyDataSetChanged();
                     }
+
                 });
     }
+
 
     private void showPopupWindow() {
         // Vérifier que l'activité est toujours en cours d'exécution
@@ -197,50 +204,65 @@ public class CommunityFragment extends Fragment {
         });
     }
 
+
     private void createPost(String content, PopupWindow popupWindow) {
         // Obtenir l'utilisateur actuel via Firebase Authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
+
 
         if (currentUser == null) {
             Toast.makeText(requireContext(), "You need to log in", Toast.LENGTH_SHORT).show();
             return;
         }
 
+
         String userId = currentUser.getUid();
+
 
         firestore.collection("Users").document(userId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
+
                     if (documentSnapshot.exists()) {
+
                         String username = documentSnapshot.getString("username");
+                        String profileImageUrl = documentSnapshot.getString("profileImage");
 
                         Map<String, Object> post = new HashMap<>();
                         post.put("content", content);
                         post.put("userId", userId);
                         post.put("username", username);
+                        post.put("profileImage" , profileImageUrl);
                         post.put("timestamp", Timestamp.now());
+
 
                         firestore.collection("posts")
                                 .add(post)
                                 .addOnSuccessListener(documentReference -> {
+
                                     Toast.makeText(requireContext(), "Post created successfully!", Toast.LENGTH_SHORT).show();
                                     popupWindow.dismiss();
                                 })
                                 .addOnFailureListener(e ->
+
                                         Toast.makeText(requireContext(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                                 );
                     } else {
+
                         Toast.makeText(requireContext(), "user not found", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e ->
+
                         Toast.makeText(requireContext(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
 
-    private void showCommentDialog(String postId) {
+    public void showCommentDialog(String postId) {
+        Log.d("DEBUG_INTERFACE", "تم استدعاء showCommentDialog عبر Interface في Fragment A");
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         if (currentUser == null) {
             Toast.makeText(requireContext(), "you need to log in", Toast.LENGTH_SHORT).show();
@@ -267,10 +289,12 @@ public class CommunityFragment extends Fragment {
         editTextComment.setEnabled(false);
         buttonSendComment.setEnabled(false);
 
+
         if (currentUser != null) {
             editTextComment.setEnabled(true);
             buttonSendComment.setEnabled(true);
         }
+
 
         db.collection("posts").document(postId).collection("comments")
                 .orderBy("timestamp", Query.Direction.ASCENDING)
@@ -286,6 +310,7 @@ public class CommunityFragment extends Fragment {
                     commentList.sort((c1, c2) -> Integer.compare(c2.getLikes().size(), c1.getLikes().size()));
                     commentAdapter.notifyDataSetChanged();
                 });
+
 
         buttonSendComment.setOnClickListener(v -> {
             FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -320,9 +345,10 @@ public class CommunityFragment extends Fragment {
 
         });
 
+        Log.d("DEBUG_DIALOG", "سيتم عرض BottomSheetDialog الآن");
+
         dialog.show();
     }
-
     private void showPopupBanned() {
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -469,3 +495,10 @@ public class CommunityFragment extends Fragment {
                 );
     }
 }
+
+
+
+
+
+
+
