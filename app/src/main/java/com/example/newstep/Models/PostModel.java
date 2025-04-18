@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class PostModel {
+    private String category;
     private String id;
     private String userName;
     private String content,userId;
@@ -15,6 +16,14 @@ public class PostModel {
     private List<String> dislikedBy;
 
     public PostModel() {
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getUserId() {
@@ -29,14 +38,15 @@ public class PostModel {
         this.content = content;
     }
 
-    public PostModel(String id,String userId, String content, int likes, String userName, int dislikes, Timestamp timestamp) {
+    public PostModel(String id,String userId, String content, int likes, String userName, int dislikes, Timestamp timestamp,String category) {
         this.id = id;
         this.content = content;
         this.userName=userName;
         this.likes = likes;
         this.dislikes = dislikes;
         this.timestamp= timestamp;
-        this.userId=userId;;
+        this.userId=userId;
+        this.category=category;
     }
 
     public String getId() {

@@ -2,6 +2,7 @@ package com.example.newstep.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,6 +81,7 @@ public class GroupsFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private ImageView filter_groups;
+    private String selectedIcon,selectedColor;
 
     @Nullable
     @Override
@@ -159,15 +162,21 @@ public class GroupsFragment extends Fragment {
             requireActivity().getWindow().setAttributes(originalParams);
         });
         RadioGroup radioGroup=popupView.findViewById(R.id.radioGroup);
+        ChipGroup chipGroupIcon=popupView.findViewById(R.id.chipGroupIcon);
+        ChipGroup chipGroupColor=popupView.findViewById(R.id.chipGroupColor);
         RadioButton radioPublic = popupView.findViewById(R.id.radioPublic);
         RadioButton radioPrivate = popupView.findViewById(R.id.radioPrivate);
         EditText groupNameInput = popupView.findViewById(R.id.groupNameInput);
         EditText groupDescInput=popupView.findViewById(R.id.group_desc);
         Button btnCancel = popupView.findViewById(R.id.btnCancel);
         Button btnAddGroup = popupView.findViewById(R.id.btnAddGroup);
-
         btnCancel.setOnClickListener(v -> popupWindow.dismiss());
+chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
+    @Override
+    public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
 
+    }
+});
         btnAddGroup.setOnClickListener(v -> {
             String groupName = groupNameInput.getText().toString().trim();
             String groupDesc = groupDescInput.getText().toString().trim();

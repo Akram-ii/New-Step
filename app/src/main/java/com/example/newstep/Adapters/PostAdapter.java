@@ -57,7 +57,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         PostModel post = postList.get(position);
         String postId = post.getId();
-
+if(post.getCategory()!=null){
+        holder.cat.setText(post.getCategory());}
         holder.postContent.setText(post.getContent());
         holder.username.setText(post.getUserName());
         holder.timestampPost.setText(Utilities.getRelativeTime(post.getTimestamp()));
@@ -163,11 +164,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
-        TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount;
+        TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount,cat;
         ImageView btnLike, btnDislike,comment_btn;
 
         public PostViewHolder(View itemView) {
             super(itemView);
+            cat=itemView.findViewById(R.id.postCat);
             postContent = itemView.findViewById(R.id.postContent);
             username = itemView.findViewById(R.id.userName);
             likeCount = itemView.findViewById(R.id.likeCount);
