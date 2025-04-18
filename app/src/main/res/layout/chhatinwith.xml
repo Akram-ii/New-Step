@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/popupbg"
+    android:elevation="8dp"
+    android:backgroundTint="@color/lavender2"
+    android:layout_gravity="center"
+    android:minWidth="300dp">
+
+    <TextView
+        android:id="@+id/titlePopup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GROUP MEMBRERS"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:paddingBottom="12dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chattinWith"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:background="@color/lavender2"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</LinearLayout>
+

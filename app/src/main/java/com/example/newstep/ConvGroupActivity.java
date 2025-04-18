@@ -4,14 +4,20 @@ package com.example.newstep;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 
 
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,12 +67,16 @@ public class ConvGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conv_group);
 
 
+        ImageButton grpMembers = findViewById(R.id.grpmembers);
+        grpMembers.setOnClickListener(v -> showGroupMembersPopup());
+
+
         groupNameTextView = findViewById(R.id.groupnameTextView);
         msgEditText = findViewById(R.id.msg_EditText);
         backButton = findViewById(R.id.back_ImageButton);
         sendButton = findViewById(R.id.send_ImageButton);
         recyclerView = findViewById(R.id.msgsRecyclerView);
-        recyclerviewChattingWith = findViewById(R.id.chattinWith);
+
         add_user = findViewById(R.id.addMemberButton);
         remove_user = findViewById(R.id.removeMemberButton);
         currentUser = FirebaseUtil.getCurrentUserId();
@@ -156,6 +166,7 @@ public class ConvGroupActivity extends AppCompatActivity {
                 .build();
         adapter = new ChatRecyclerAdapter(options, this, chatroomId);
         LinearLayoutManager manager = new LinearLayoutManager(this);
+
         manager.setReverseLayout(true);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
@@ -165,6 +176,7 @@ public class ConvGroupActivity extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
+
                 recyclerView.smoothScrollToPosition(0);
             }
         });
@@ -388,7 +400,46 @@ private void fetchUsers(List<String> userIds){
         });
     }
 
-    @Override
+
+
+
+
+    private void showGroupMembersPopup() {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.chhatinwith, null);
+
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setElevation(10);
+
+        // Centrer au milieu de l'écran
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+
+        // Référence au RecyclerView dans la popup
+        RecyclerView recyclerView = popupView.findViewById(R.id.chattinWith);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        FirebaseUtil.getChatroomRef(chatroomId).get().addOnSuccessListener(doc -> {
+            ChatroomModel chatroomModel = doc.toObject(ChatroomModel.class);
+            if (chatroomModel == null || chatroomModel.getUserIds() == null) return;
+
+            Query query = FirebaseUtil.allUserCollectionRef().whereIn("id", chatroomModel.getUserIds());
+
+            FirestoreRecyclerOptions<UserModel> options = new FirestoreRecyclerOptions.Builder<UserModel>()
+                    .setQuery(query, UserModel.class)
+                    .build();
+
+            SearchUserRecyclerAdapter adapter = new SearchUserRecyclerAdapter(options, this);
+            recyclerView.setAdapter(adapter);
+            adapter.startListening();
+
+            popupWindow.setOnDismissListener(adapter::stopListening);
+        });
+    }
+
+@Override
     public void onBackPressed() {
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         prefs.edit().putString("lastFragment", "ChatsFragment").apply();
