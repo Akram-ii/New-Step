@@ -266,7 +266,7 @@ all.setOnClickListener(new View.OnClickListener() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1,categories);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinnerCategory.setAdapter(adapter);
-        String selectCategory =spinnerCategory.getSelectedItem().toString();
+
 
         // Fermer la pop-up lorsqu'on clique sur Annuler
         buttonCancel.setOnClickListener(v -> popupWindow.dismiss());
@@ -277,6 +277,7 @@ all.setOnClickListener(new View.OnClickListener() {
             String postContent = editTextPostContent.getText().toString().trim();
 
             if (!postContent.isEmpty()) {
+                String selectCategory =spinnerCategory.getSelectedItem().toString();
                 createPost(postContent, selectCategory,popupWindow); // Créer le post
                 popupWindow.dismiss();
             } else {
