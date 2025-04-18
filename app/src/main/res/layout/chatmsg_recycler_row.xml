@@ -6,6 +6,7 @@
     android:paddingRight="8dp"
     android:layout_height="wrap_content">
 
+
     <ImageView
         android:layout_width="26dp"
         android:layout_height="26dp"
@@ -15,17 +16,17 @@
 
 
     <LinearLayout
-        android:layout_marginStart="30dp"
-        android:orientation="vertical"
+        android:id="@+id/left_chat_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="80dp"
         android:background="@drawable/received_message_background"
         android:backgroundTint="@color/gray"
-        android:padding="8dp"
-        android:id="@+id/left_chat_layout"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginEnd="80dp">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/left_chat_textView"
@@ -40,12 +41,12 @@
         android:id="@+id/left_like_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
         android:layout_below="@id/left_chat_layout"
         android:layout_marginStart="60dp"
         android:layout_marginTop="2dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/left_like_emoji"
@@ -58,24 +59,36 @@
             android:id="@+id/left_like_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:layout_marginStart="4dp"
             android:textColor="@color/gray"
-            android:layout_marginStart="4dp"/>
+            android:textSize="12sp"/>
     </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/right_chat_layout"
-        android:clickable="true"
-        android:focusable="true"
-
+    <TextView
+        android:id="@+id/left_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/left_like_container"
+        android:layout_alignStart="@id/left_chat_layout"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/darkGray"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
+    <!-- Message envoyé (côté droit) -->
+    <LinearLayout
+        android:id="@+id/right_chat_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="80dp"
         android:background="@drawable/sent_message_background"
         android:backgroundTint="@color/lavender2"
-        android:padding="10dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="80dp">
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/right_chat_textView"
@@ -90,13 +103,13 @@
         android:id="@+id/right_like_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="gone"
         android:layout_below="@id/right_chat_layout"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="2dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/right_like_emoji"
@@ -109,8 +122,19 @@
             android:id="@+id/right_like_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:layout_marginStart="4dp"
             android:textColor="@color/gray"
-            android:layout_marginStart="4dp"/>
+            android:textSize="12sp"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/right_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/right_like_container"
+        android:layout_alignEnd="@id/right_chat_layout"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/darkGray"
+        android:textSize="12sp"
+        android:visibility="gone"/>
 </RelativeLayout>

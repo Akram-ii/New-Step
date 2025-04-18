@@ -81,4 +81,9 @@ public class Utilities {
             }
         }
     }
+    public static String formatTimestamp(Timestamp timestamp) {
+        if (timestamp == null) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault());
+        return sdf.format(timestamp.toDate());
+    }
 }

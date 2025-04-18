@@ -12,6 +12,8 @@ public class ChatMsgModel {
     private Timestamp timestamp;
     private int likeCount;
     private List<String> likedBy;
+    private boolean isDateVisible = false;
+
 
 
 
@@ -93,5 +95,13 @@ public class ChatMsgModel {
             likeCount++;
         }
         return !isLiked;
+    }
+    public boolean toggleDateVisibility() {
+        isDateVisible = !isDateVisible;
+        return isDateVisible;
+    }
+
+    public boolean isDateVisible() {
+        return isDateVisible;
     }
 }
