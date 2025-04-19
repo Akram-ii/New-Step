@@ -2,7 +2,6 @@ package com.example.newstep.Fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -23,30 +22,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.PopupWindow;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import android.util.Log;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newstep.Adapters.AllGroupsAdapter;
 import com.example.newstep.Models.ChatroomModel;
@@ -62,7 +45,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -75,7 +57,6 @@ import java.util.Map;
 public class GroupsFragment extends Fragment {
 
     private FloatingActionButton addBtn;
-    private Button chat;
     private RecyclerView recyclerView;
     private AllGroupsAdapter adapter;
     private FirebaseFirestore db;
@@ -90,14 +71,12 @@ public class GroupsFragment extends Fragment {
 
         recyclerView = rootView.findViewById(R.id.groupsRecycler);
         addBtn = rootView.findViewById(R.id.addBtn);
-        chat = rootView.findViewById(R.id.chatsBtn);
         filter_groups=rootView.findViewById(R.id.filter_group);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
         addBtn.setOnClickListener(v -> showCreateGroupPopup(v));
-        chat.setOnClickListener(v -> setupChatBtn());
         filter_groups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,12 +150,7 @@ public class GroupsFragment extends Fragment {
         Button btnCancel = popupView.findViewById(R.id.btnCancel);
         Button btnAddGroup = popupView.findViewById(R.id.btnAddGroup);
         btnCancel.setOnClickListener(v -> popupWindow.dismiss());
-chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
-    @Override
-    public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
 
-    }
-});
         btnAddGroup.setOnClickListener(v -> {
             String groupName = groupNameInput.getText().toString().trim();
             String groupDesc = groupDescInput.getText().toString().trim();
@@ -191,6 +165,7 @@ chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChange
                 Toast.makeText(getContext(), "Group description cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
+            popupWindow.dismiss();
             int selectedId = radioGroup.getCheckedRadioButtonId();
             String privacySetting = "Public";
             if (selectedId == R.id.radioPublic) {
@@ -198,7 +173,12 @@ chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChange
             } else if (selectedId == R.id.radioPrivate) {
                 privacySetting = "Private";
             }
-            createGroupInFirestore(groupName,groupDesc,privacySetting, popupWindow);
+            int iconId=chipGroupIcon.getCheckedChipId();
+            int colorId=chipGroupColor.getCheckedChipId();
+            String iconName=getResources().getResourceEntryName(iconId);
+            String colorName=getResources().getResourceEntryName(colorId);
+            String colorHexCode=hexCodeForColor(colorName);
+            createGroupInFirestore(groupName,groupDesc,privacySetting,iconName,colorHexCode);
         });
 
         popupView.setOnTouchListener((v, event) -> {
@@ -210,7 +190,27 @@ chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChange
         });
     }
 
-    private void createGroupInFirestore(String groupName,String desc,String privacy, PopupWindow popupWindow) {
+    private String hexCodeForColor(String colorName) {
+        switch(colorName){
+            case "pink":
+                return "#C9A6D6";
+            case "purple":
+                return "#877DE0";
+            case "blue":
+                return "#6A96E6";
+            case "green":
+                return "#91B2BD";
+            case "gray":
+                return "#6C757D";
+            case "darkBlue":
+                return "#3C3C64";
+
+            default :
+                return "#D7BDE2";
+        }
+    }
+
+    private void createGroupInFirestore(String groupName,String desc,String privacy,String icon,String color) {
 
         String ownerId = auth.getCurrentUser().getUid();
         DocumentReference newGroupRef = db.collection("Chatrooms").document();
@@ -225,6 +225,8 @@ chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChange
         groupData.put("privacy",privacy);
         groupData.put("groupName", groupName);
         groupData.put("isGroup", 1);
+        groupData.put("icon", icon);
+        groupData.put("iconColor", color);
         groupData.put("number_members", 1);
         groupData.put("ownerId", ownerId);
         groupData.put("lastMsgSenderId",FirebaseUtil.getCurrentUserId());
@@ -236,28 +238,12 @@ chipGroupIcon.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChange
         newGroupRef.set(groupData)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(getContext(), "Group created !", Toast.LENGTH_SHORT).show();
-                    popupWindow.dismiss();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(), "Error:"+e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 
-    private void setupChatBtn() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragment_container);
-        if (currentFragment instanceof ChatsFragment) {
-            Log.d("ChatsFragment", "Already in ChatsFragment. No need to replace.");
-            return;
-        }
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        ChatsFragment chatsFragment = new ChatsFragment();
-        transaction.replace(R.id.fragment_container, chatsFragment, ChatsFragment.class.getSimpleName());
-        transaction.addToBackStack(null);
-        transaction.commitAllowingStateLoss();
-    }
 
     private void showFilterGroupsPopup() {
         if (getActivity() == null) return;

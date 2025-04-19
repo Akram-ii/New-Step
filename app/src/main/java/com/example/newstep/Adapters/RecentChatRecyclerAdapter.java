@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.util.Util;
@@ -36,6 +38,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.transition.Hold;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -58,12 +61,19 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
     }
 
     protected void onBindViewHolder(@NonNull ChatroomModelViewHolder holder, int position, @NonNull ChatroomModel model) {
-        Log.d("Chatroom", "userIds: " + model.getUserIds().toString());
-        if (model.getIsGroup() == 0) {
+        Log.d("ChatroomType", "Chatroom " + model.getChatroomId() + ": isGroup=" + model.getIsGroup());
+        Log.d("Chatroom", "userIds " + model.getIconColor());
 
+        if (model.getIsGroup() == 0) {
+            holder.username.setTextColor(ContextCompat.getColor(context, R.color.purple));
+            if(model.getIcon()==null){
+                holder.pfp.setImageResource(R.drawable.icon_group);
+                holder.pfp.setColorFilter(ContextCompat.getColor(context, R.color.purple), PorterDuff.Mode.SRC_IN);
+            }
         FirebaseUtil.getOtherUserFromChatroom(model.getUserIds()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                holder.pfp.setImageResource(R.drawable.icon_group);
                 if (task.isSuccessful() && task.getResult().exists()) {
                     UserModel otherUser = task.getResult().toObject(UserModel.class);
 
@@ -138,8 +148,25 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                 }
             }
         });
-    }else{ //group chat
-            holder.pfp.setImageResource(R.drawable.icon_group);
+    }else if (model.getIsGroup() == 1){ //group chat
+            if(model.getIcon()!=null){
+                String iconName = model.getIcon();
+                String hexColor = model.getIconColor();
+
+                int resId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+                if (resId != 0) {
+                    holder.pfp.setImageResource(resId);
+                }
+
+
+                try {
+                    int color = Color.parseColor(hexColor);
+                    holder.pfp.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    holder.username.setTextColor(Color.parseColor(hexColor));
+                } catch (IllegalArgumentException e) {
+
+                }
+            }
        holder.username.setText(model.getGroupName());
         holder.activity.setVisibility(View.GONE);
         holder.timestampRecentMsg.setText(Utilities.getRelativeTime(model.getLastMsgTimeStamp()));

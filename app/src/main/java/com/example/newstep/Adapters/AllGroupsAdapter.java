@@ -1,8 +1,13 @@
 package com.example.newstep.Adapters;
 
+
+import static com.google.common.reflect.Reflection.getPackageName;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,6 +41,25 @@ Context context;
 }
     @Override
     protected void onBindViewHolder(@NonNull AllGroupsAdapter.ChatroomModelViewHolder holder, int position, @NonNull ChatroomModel model) {
+        if(model.getIcon()!=null){
+            String iconName = model.getIcon();
+            String hexColor = model.getIconColor();
+
+            int resId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.pfp.setImageResource(resId);
+            }
+
+
+            try {
+                int color = Color.parseColor(hexColor);
+                holder.pfp.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                holder.groupName.setTextColor(Color.parseColor(hexColor));
+            } catch (IllegalArgumentException e) {
+
+            }
+        }
+
         FirebaseUtil.allUserCollectionRef().document(model.getOwnerId()).get()
                 .addOnSuccessListener(documentSnapshot -> {
                    holder.ownerUsername.setText("Created by "+documentSnapshot.getString("username"));
@@ -47,6 +71,7 @@ Context context;
             holder.nbr_members.setText(model.getNumber_members() + " members");
         }
         holder.groupName.setText(model.getGroupName());
+
 if("Private".equals(model.getPrivacy())){
     holder.privateIc.setVisibility(View.VISIBLE);
     holder.publicIc.setVisibility(View.GONE);

@@ -11,10 +11,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.newstep.Fragments.AdminCommentsFragment;
 import com.example.newstep.Fragments.AdminPostsFragment;
-import com.example.newstep.Fragments.ChatsFragment;
-import com.example.newstep.Fragments.CommunityFragment;
-import com.example.newstep.Fragments.HomeFragment;
-import com.example.newstep.Fragments.MyHabitsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AdminActivity extends AppCompatActivity {

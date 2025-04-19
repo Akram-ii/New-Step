@@ -34,11 +34,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/backBtn"
-        android:id="@+id/chipGroup">
+        android:id="@+id/chipGroup"
+        >
 <com.google.android.material.chip.Chip
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/exp"
+    android:checkable="true"
     app:checkedIconTint="@color/white"
     style="@style/Widget.MaterialComponents.Chip.Filter"
     android:text="My Experience"
@@ -47,11 +48,11 @@
     android:textSize="14sp"
     />
         <com.google.android.material.chip.Chip
+            android:checkable="true"
             app:chipBackgroundColor="@color/blue"
             app:checkedIconTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/help"
             android:text="Ask for help"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -63,8 +64,8 @@
             app:checkedIconTint="@color/white"
             android:text="Motivation"
             android:textColor="@color/white"
+            android:checkable="true"
             android:textSize="14sp"
-            android:id="@+id/motivation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -74,10 +75,10 @@
             app:chipBackgroundColor="@color/blue"
             app:checkedIconTint="@color/white"
             android:layout_width="wrap_content"
+            android:checkable="true"
             android:text="Reflection"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:id="@+id/reflection"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             />
@@ -87,8 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Chip.Filter"
+            android:checkable="true"
             android:text="Advices"
-            android:id="@+id/advices"
             android:textColor="@color/white"
             android:textSize="14sp"
             />
@@ -96,32 +97,32 @@
             app:chipBackgroundColor="@color/blue"
             app:checkedIconTint="@color/white"
             android:layout_width="wrap_content"
+            android:checkable="true"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:text="Progress Update"
-            android:id="@+id/progressU"
             android:textColor="@color/white"
             android:textSize="14sp"
             />
 
         <com.google.android.material.chip.Chip
             app:chipBackgroundColor="@color/blue"
+            android:checkable="true"
             app:checkedIconTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:text="Challenges"
-            android:id="@+id/challenges"
             android:textColor="@color/white"
             android:textSize="14sp"
             />
 
         <com.google.android.material.chip.Chip
+            android:checkable="true"
             app:chipBackgroundColor="@color/blue"
             app:checkedIconTint="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/other"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:text="Other"
             android:textColor="@color/white"

@@ -43,6 +43,9 @@
     import com.google.firebase.firestore.DocumentSnapshot;
     import com.google.firebase.firestore.FirebaseFirestore;
     import com.google.firebase.firestore.Query;
+
+    import org.apache.commons.logging.LogFactory;
+
     import java.text.SimpleDateFormat;
     import java.util.Date;
     import java.util.Locale;
@@ -56,9 +59,9 @@
     import java.util.UUID;
     
     public class CommunityFragment extends Fragment {
-    
+
+        private static final org.apache.commons.logging.Log log = LogFactory.getLog(CommunityFragment.class);
         private FirebaseFirestore firestore;
-        private TextView filterText;
         ImageView filter;
         private RecyclerView recyclerView;
         private PostAdapter postAdapter;
@@ -80,7 +83,7 @@
     
             selectedCategories=new ArrayList<>();
             filter=view.findViewById(R.id.filter);
-            filterText=view.findViewById(R.id.filter_text);
+
             recyclerView = view.findViewById(R.id.post_recyclerview);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             postList = new ArrayList<>();
@@ -94,7 +97,8 @@
             // Set up the "Add Post" button
             FloatingActionButton buttonOpenPopup = view.findViewById(R.id.buttonOpenPopup);
             buttonOpenPopup.setOnClickListener(v -> showPopupWindow());
-            filter.setOnClickListener(v -> showPopupWindowFilter());
+            filter.setOnClickListener(v ->  {selectedCategories.clear();
+                    showPopupWindowFilter();});
         }
     
         private void showPopupWindowFilter() {
@@ -142,6 +146,7 @@
             }
         }
     });
+
             nothing.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -156,28 +161,37 @@
         chipGroup.setOnCheckedStateChangeListener(new ChipGroup.OnCheckedStateChangeListener() {
             @Override
             public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
-                selectedCategories.clear();
+
                 if(checkedIds.size()!=group.getChildCount()){
                     nothing.setVisibility(View.GONE);
                     all.setVisibility(View.VISIBLE);
                     text.setText("All");
-                done.setVisibility(View.GONE);
                 }else{
                     if(checkedIds.size()==group.getChildCount()){
                         nothing.setVisibility(View.VISIBLE);
                         all.setVisibility(View.GONE);
                         text.setText("None");
                     }
-                    done.setVisibility(View.VISIBLE);
-                    for(int i :checkedIds){
-                        Chip chip = group.findViewById(i);
-                        selectedCategories.add(chip.getText().toString());
-                    }
                 }
             }
         });
-    
-        done.setOnClickListener(v->{setupRecycler(selectedCategories);popupWindow.dismiss();});
+
+        done.setOnClickListener(v->{
+            for (int i = 0; i < chipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) chipGroup.getChildAt(i);
+                if (chip.isChecked()) {
+                    selectedCategories.add(chip.getText().toString());
+                    Log.d("filtere, cat: ",""+chip.getText().toString());
+                }
+            }
+            if(!selectedCategories.isEmpty()){
+            setupRecycler(selectedCategories);
+                popupWindow.dismiss();
+            }
+            else{
+                Toast.makeText(getContext(),"You need to select at least one category",Toast.LENGTH_SHORT).show();
+            }
+            });
         }
     
         private void setupRecycler(List<String> list) {

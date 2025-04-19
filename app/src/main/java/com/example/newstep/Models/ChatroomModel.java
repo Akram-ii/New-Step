@@ -5,7 +5,7 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class ChatroomModel {
-    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName,desc,privacy;
+    String chatroomId,lastMsgSenderId,lastMsgSent,ownerId,groupName,desc,privacy,icon,iconColor;
     int unseenMsg,number_members,isGroup;
     List<String> userIds;
     com.google.firebase.Timestamp lastMsgTimeStamp;
@@ -17,6 +17,22 @@ public class ChatroomModel {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getIconColor() {
+        return iconColor;
+    }
+
+    public void setIconColor(String iconColor) {
+        this.iconColor = iconColor;
     }
 
     public String getPrivacy() {

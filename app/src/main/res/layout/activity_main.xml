@@ -49,7 +49,7 @@
             app:itemTextColor="@color/light_blue"
             app:menu="@menu/bottom_menu"
             android:layout_alignParentBottom="true"
-
+app:labelVisibilityMode="labeled"
 
             android:background="@color/white"
             />

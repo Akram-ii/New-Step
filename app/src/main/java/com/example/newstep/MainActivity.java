@@ -3,16 +3,12 @@ package com.example.newstep;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -31,13 +26,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.newstep.Fragments.AboutFragment;
 import com.example.newstep.Fragments.ChatsFragment;
+import com.example.newstep.Fragments.PrivateChatsFragment;
 import com.example.newstep.Fragments.CommunityFragment;
 import com.example.newstep.Fragments.HomeFragment;
 import com.example.newstep.Fragments.LoginFragment;
 import com.example.newstep.Fragments.MyHabitsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
 import com.example.newstep.Util.FirebaseUtil;
-import com.example.newstep.Util.NotifOnline;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -161,7 +156,7 @@ admin.setOnClickListener(new View.OnClickListener() {
             return true;
         });
     if(lastFragment.equals("ChatsFragment")){
-        checkUserAuthentication(new ChatsFragment());
+        checkUserAuthentication(new PrivateChatsFragment());
         navigationView.setCheckedItem(R.id.nav_chats);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
     }else{

@@ -11,38 +11,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        android:paddingHorizontal="10dp">
 
-        <RelativeLayout
-            android:layout_width="300dp"
-            android:layout_centerHorizontal="true"
-            android:layout_height="wrap_content"
-            android:id="@+id/Rlayout">
 
-            <Button
-                android:elevation="5dp"
-                android:id="@+id/chatsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginEnd="5dp"
-                android:textColor="@color/blue"
-                android:backgroundTint="@color/light_blue"
-                android:text="My Chats" />
-
-            <Button
-                android:elevation="5dp"
-                android:backgroundTint="@color/blue"
-                android:layout_width="wrap_content"
-                android:text="Groups"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:textColor="@color/light_blue"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="50dp" />
-        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +23,6 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/Rlayout"
             />
         <ImageButton
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -64,13 +34,13 @@
             android:src="@drawable/icon_filter"
             android:id="@+id/filter_group"
             app:tint="@color/black"
-            android:layout_below="@id/Rlayout"/>
+           />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/filter_group"
-            android:layout_margin="5dp"
+            android:layout_marginHorizontal="5dp"
             android:id="@+id/groupsRecycler" />
     </RelativeLayout>
 
