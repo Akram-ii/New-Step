@@ -77,16 +77,17 @@ public class MyGoalsDatabaseHelper extends SQLiteOpenHelper {
         return goalList;
     }
 
-    public int updateProgress(int goalId, int newProgress) {
+    public void updateGoal(int goalId, String newTitle, String newDescription, int newProgress) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, newTitle);
+        values.put(COLUMN_DESCRIPTION, newDescription);
         values.put(COLUMN_PROGRESS, newProgress);
 
-        return db.update(TABLE_GOALS, values, COLUMN_ID + "=?",
-                new String[]{String.valueOf(goalId)});
+        db.update(TABLE_GOALS, values, COLUMN_ID + "=?", new String[]{String.valueOf(goalId)});
+        db.close();
     }
-
     public void deleteGoal(int goalId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_GOALS, COLUMN_ID + "=?", new String[]{String.valueOf(goalId)});
