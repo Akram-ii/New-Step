@@ -35,6 +35,7 @@ import com.example.newstep.Adapters.AllGroupsAdapter;
 import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.Utilities;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
@@ -177,7 +178,7 @@ public class GroupsFragment extends Fragment {
             int colorId=chipGroupColor.getCheckedChipId();
             String iconName=getResources().getResourceEntryName(iconId);
             String colorName=getResources().getResourceEntryName(colorId);
-            String colorHexCode=hexCodeForColor(colorName);
+            String colorHexCode= Utilities.hexCodeForColor(colorName);
             createGroupInFirestore(groupName,groupDesc,privacySetting,iconName,colorHexCode);
         });
 
@@ -190,25 +191,7 @@ public class GroupsFragment extends Fragment {
         });
     }
 
-    private String hexCodeForColor(String colorName) {
-        switch(colorName){
-            case "pink":
-                return "#C9A6D6";
-            case "purple":
-                return "#877DE0";
-            case "blue":
-                return "#6A96E6";
-            case "green":
-                return "#91B2BD";
-            case "gray":
-                return "#6C757D";
-            case "darkBlue":
-                return "#3C3C64";
 
-            default :
-                return "#D7BDE2";
-        }
-    }
 
     private void createGroupInFirestore(String groupName,String desc,String privacy,String icon,String color) {
 

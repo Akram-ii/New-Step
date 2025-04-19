@@ -81,4 +81,26 @@ public class Utilities {
             }
         }
     }
+
+    public static  String hexCodeForColor(String colorName) {
+        switch(colorName){
+            case "pink":
+                return "#C9A6D6";
+            case "purple":
+                return "#877DE0";
+            case "blue":
+                return "#6A96E6";
+            case "green":
+                return "#91B2BD";
+            case "gray":
+                return "#6C757D";
+            case "darkBlue":
+                return "#3C3C64";
+            case  "orange"  :
+                return "#F28B30";
+
+            default :
+                return "#D7BDE2";
+        }
+    }
 }
