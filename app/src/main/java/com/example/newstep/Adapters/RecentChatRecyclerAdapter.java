@@ -72,15 +72,10 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
         Log.d("Chatroom", "userIds " + model.getIconColor());
 
         if (model.getIsGroup() == 0) {
-            holder.username.setTextColor(ContextCompat.getColor(context, R.color.purple));
-            if(model.getIcon()==null){
-                holder.pfp.setImageResource(R.drawable.icon_group);
-                holder.pfp.setColorFilter(ContextCompat.getColor(context, R.color.purple), PorterDuff.Mode.SRC_IN);
-            }
+
         FirebaseUtil.getOtherUserFromChatroom(model.getUserIds()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                holder.pfp.setImageResource(R.drawable.icon_group);
                 if (task.isSuccessful() && task.getResult().exists()) {
                     UserModel otherUser = task.getResult().toObject(UserModel.class);
 
@@ -88,15 +83,16 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
 
 
                     holder.username.setText(otherUser.getUsername());
-                    holder.pfp.setImageResource(R.drawable.pfp_purple);
                     if (lastMsgSentByMe) {
                         holder.mostRecentMsg.setText("Me: " + model.getLastMsgSent());
                     } else {
                         holder.mostRecentMsg.setText(otherUser.getUsername() + ": " + model.getLastMsgSent());
                     }
                     holder.timestampRecentMsg.setText(Utilities.getRelativeTime(model.getLastMsgTimeStamp()));
-                    FirebaseUtil.loadPfp(otherUser.getId(), holder.pfp);
-
+                    if(model.getIsGroup()==0) {
+                        holder.pfp.setImageDrawable(null);
+                        FirebaseUtil.loadPfp(otherUser.getId(), holder.pfp);
+                    }
 
                     if (model.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId()) || model.getUnseenMsg() == 0) {
                         holder.unseenMsg.setVisibility(View.GONE);
@@ -165,6 +161,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                     holder.pfp.setImageResource(resId);
                 }
 
+                if(model.getIsGroup()==1){
 
                 try {
                     int color = Color.parseColor(hexColor);
@@ -172,7 +169,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                     holder.username.setTextColor(Color.parseColor(hexColor));
                 } catch (IllegalArgumentException e) {
 
-                }
+                }}
             }
        holder.username.setText(model.getGroupName());
         holder.activity.setVisibility(View.GONE);

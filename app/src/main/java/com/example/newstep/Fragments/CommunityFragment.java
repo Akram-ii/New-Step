@@ -188,6 +188,7 @@ public class CommunityFragment extends Fragment {
                             String content = doc.getString("content");
                             String userId = doc.getString("userId");
                             String userName = doc.getString("username");
+                            String cat = doc.getString("category");
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
                             Timestamp timestampPost = doc.getTimestamp("timestamp");
@@ -198,7 +199,7 @@ public class CommunityFragment extends Fragment {
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl);
+                                PostModel post = new PostModel(postId,userId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl,cat);
 
 
                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
@@ -217,7 +218,7 @@ public class CommunityFragment extends Fragment {
             return;
         }
         LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popUpView = inflater.inflate(R.layout.popup_filter, null);
+        View popUpView = inflater.inflate(R.layout.popup_filter_commu, null);
         PopupWindow popupWindow = new PopupWindow(
                 popUpView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,

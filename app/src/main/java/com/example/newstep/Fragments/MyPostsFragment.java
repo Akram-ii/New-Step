@@ -108,6 +108,7 @@ public class MyPostsFragment extends Fragment {
                                 String postId = doc.getId();
                                 String content = doc.getString("content");
                                 String userId = doc.getString("userId");
+                                String cat = doc.getString("category");
                                 String userName = doc.getString("username");
                                 Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                                 Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
@@ -118,7 +119,7 @@ public class MyPostsFragment extends Fragment {
                                 List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                                 if (content != null && userId != null && userName != null && timestampPost != null) {
-                                    PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl);
+                                    PostModel post = new PostModel(postId, userId,content, likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat);
 
                                     post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                     post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
