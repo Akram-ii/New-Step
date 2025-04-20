@@ -128,9 +128,13 @@ if(post.getCategory()!=null){
             if (isLiked) {
                 likedBy.remove(userId);
                 post.setLikes(post.getLikes() - 1);
+                Utilities.addPointsToUsers(userId,-2);
+                Utilities.addPointsToUsers(post.getUserId(),-5);
             } else {
                 likedBy.add(userId);
                 post.setLikes(post.getLikes() + 1);
+                Utilities.addPointsToUsers(userId,2);
+                Utilities.addPointsToUsers(post.getUserId(),5);
                 Log.d( "idmo pos ",""+post.getUserId());
                  FirebaseUtil.allUserCollectionRef().document(post.getUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override

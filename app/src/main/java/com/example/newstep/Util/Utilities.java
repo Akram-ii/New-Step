@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.example.newstep.R;
 import com.google.firebase.Timestamp;
@@ -209,5 +210,30 @@ public static int getMinBadge(int points){
         } else {
             return 10000;
         }
+    }
+
+
+    public static void addPointsToUsers(String userId, int nbPoint) {
+
+        FirebaseUtil.allUserCollectionRef().document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Long points = documentSnapshot.getLong("points");
+                long currentPoints;
+                if (points != null) {
+                    currentPoints = points;
+                } else {
+                    currentPoints = 0;
+                }
+
+                long newPoints = currentPoints + nbPoint;
+                if (newPoints < 0) newPoints = 0;
+
+                FirebaseUtil.allUserCollectionRef().document(userId).update("points", newPoints)
+                        .addOnSuccessListener(aVoid -> Log.d("PointsSystem","My point updated "))
+                        .addOnFailureListener(e -> Log.e("PointsSystem", "Failed to update MyPoints", e));
+            } else {
+                Log.e("PointsSystem", "User document not found. No update made.");
+            }
+        }).addOnFailureListener(e -> Log.e("PointsSystem", "Failed to get user document", e));
     }
 }

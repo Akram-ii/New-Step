@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     String quote;
     ImageView click;
     Button g;
-    CardView ProgressCard;
+    CardView ProgressCard,BadgesCard;
     long lastUpdatedTime;
     FirebaseFirestore fdb;
     @Override
@@ -49,6 +49,7 @@ public class HomeFragment extends Fragment {
         click=rootView.findViewById(R.id.clickIcon);
         welcome=rootView.findViewById(R.id.welcomeText);
         g=rootView.findViewById(R.id.goals_button);
+        BadgesCard=rootView.findViewById(R.id.badges_card);
         ProgressCard =rootView.findViewById(R.id.progress_card);
         fdb=FirebaseFirestore.getInstance();
 
@@ -140,8 +141,29 @@ public class HomeFragment extends Fragment {
                 transaction.commitAllowingStateLoss();
             }
         });
+
+        BadgesCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                Fragment existingFragment = fragmentManager.findFragmentByTag(BadgesFragment.class.getSimpleName());
+                if (existingFragment != null) {
+                    fragmentManager.beginTransaction().remove(existingFragment).commit();
+                }
+
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                BadgesFragment badgesFragment= new BadgesFragment();
+                transaction.replace(R.id.fragment_container, badgesFragment, BadgesFragment.class.getSimpleName());
+                transaction.addToBackStack(null);
+                transaction.commitAllowingStateLoss();
+
+            }
+        });
         return rootView;
     }
+
 
     private void showQuoteEditDialog(String currentQuote) {
         final EditText editText = new EditText(getContext());

@@ -33,6 +33,7 @@
     import com.example.newstep.Models.PostModel;
     import com.example.newstep.R;
     import com.example.newstep.Util.NotifOnline;
+    import com.example.newstep.Util.Utilities;
     import com.google.android.material.bottomsheet.BottomSheetDialog;
     import com.google.android.material.chip.Chip;
     import com.google.android.material.chip.ChipGroup;
@@ -457,6 +458,7 @@ public class CommunityFragment extends Fragment {
                                 .addOnSuccessListener(documentReference -> {
 
                                     Toast.makeText(requireContext(), "Post created successfully!", Toast.LENGTH_SHORT).show();
+                                    Utilities.addPointsToUsers(userId,8);
                                     popupWindow.dismiss();
                                 })
                                 .addOnFailureListener(e ->
@@ -551,6 +553,7 @@ public class CommunityFragment extends Fragment {
                                            .document(commentId).set(comment)
                                            .addOnSuccessListener(aVoid -> {
                                                editTextComment.setText("");
+                                               Utilities.addPointsToUsers(userId,5);
                                            });
                                });
                    }
