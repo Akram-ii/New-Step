@@ -21,6 +21,7 @@ public class MyGoalsDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TITLE = "title";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_PROGRESS = "progress";
+    private static final String COLUMN_ICON = "icon";
 
     public MyGoalsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,7 +33,8 @@ public class MyGoalsDatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + COLUMN_TITLE + " TEXT,"
                 + COLUMN_DESCRIPTION + " TEXT,"
-                + COLUMN_PROGRESS + " INTEGER"
+                + COLUMN_PROGRESS + " INTEGER,"
+                + COLUMN_ICON + " TEXT"
                 + ")";
         db.execSQL(CREATE_GOALS_TABLE);
     }
@@ -50,6 +52,7 @@ public class MyGoalsDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_TITLE, goal.getTitle());
         values.put(COLUMN_DESCRIPTION, goal.getDesc());
         values.put(COLUMN_PROGRESS, goal.getProgress());
+        values.put(COLUMN_ICON, goal.getIcon());
 
         db.insert(TABLE_GOALS, null, values);
         db.close();
@@ -69,6 +72,7 @@ public class MyGoalsDatabaseHelper extends SQLiteOpenHelper {
                 goal.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE)));
                 goal.setDesc(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION)));
                 goal.setProgress(cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PROGRESS)));
+                goal.setIcon(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ICON)));
                 goalList.add(goal);
             } while (cursor.moveToNext());
         }
@@ -77,13 +81,14 @@ public class MyGoalsDatabaseHelper extends SQLiteOpenHelper {
         return goalList;
     }
 
-    public void updateGoal(int goalId, String newTitle, String newDescription, int newProgress) {
+    public void updateGoal(int goalId, String newTitle, String newDescription, int newProgress,String newIcon) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_TITLE, newTitle);
         values.put(COLUMN_DESCRIPTION, newDescription);
         values.put(COLUMN_PROGRESS, newProgress);
+        values.put(COLUMN_ICON, newIcon);
 
         db.update(TABLE_GOALS, values, COLUMN_ID + "=?", new String[]{String.valueOf(goalId)});
         db.close();

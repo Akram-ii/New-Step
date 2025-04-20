@@ -200,6 +200,9 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                 Intent intent = new Intent(context.getApplicationContext(), ConvGroupActivity.class);
                 intent.putExtra("groupName", model.getGroupName());
                 intent.putExtra("chatroomId", model.getChatroomId());
+                intent.putExtra("icon", model.getIcon());
+                intent.putExtra("iconImage", model.getIconColor());
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -357,8 +360,21 @@ desc.setText(grpDesc);
 
 
            String colorHexCode = Utilities.hexCodeForColor(colorName);
-
-
+           for (int i = 0; i < chipGroupColor.getChildCount(); i++) {
+               Chip chip = (Chip) chipGroupColor.getChildAt(i);
+               ColorStateList chipColor = chip.getChipBackgroundColor();
+               if (chipColor != null && chipColor.getDefaultColor() == Color.parseColor(colorHexCode)) {
+                   chip.setChecked(true);
+                   break;
+               }
+           }
+           for (int i = 0; i < chipGroupIcon.getChildCount(); i++) {
+               Chip chip = (Chip) chipGroupIcon.getChildAt(i);
+               if (chip.getTag() != null && chip.getTag().toString().equals(grpIcon)) {
+                   chip.setChecked(true);
+                   break;
+               }
+           }
            updateGroupInFirestore(id, groupName, groupDesc, privacySetting, iconName, colorHexCode);
 
            popupWindow.dismiss();
@@ -500,5 +516,6 @@ desc.setText(grpDesc);
     public interface OnDataLoadedListener {
         void onDataLoaded();
     }
+
 }
 

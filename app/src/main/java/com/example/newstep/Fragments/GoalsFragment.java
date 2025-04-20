@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import com.example.newstep.Databases.MyGoalsDatabaseHelper;
 import com.example.newstep.Models.GoalModel;
 import com.example.newstep.Models.HabitModel;
 import com.example.newstep.R;
+import com.example.newstep.Util.Utilities;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.List;
 
@@ -93,6 +96,7 @@ if(goals.size()==0){
         popupWindow.setOnDismissListener(() -> dimBackground(1.0f));
         EditText goal_name=popUpView.findViewById(R.id.goal_name);
         EditText goal_desc=popUpView.findViewById(R.id.goal_desc);
+        ChipGroup chipGroupIcon=popUpView.findViewById(R.id.chipGroupIcon);
         TextView progress_text_view=popUpView.findViewById(R.id.progress_text_view);
         SeekBar progress=popUpView.findViewById(R.id.progress);
         ImageView back=popUpView.findViewById(R.id.back);
@@ -128,6 +132,10 @@ add_goal.setOnClickListener(new View.OnClickListener() {
         model.setDesc(txtDesc);
         model.setTitle(txtName);
         model.setProgress(seek);
+            int iconId=chipGroupIcon.getCheckedChipId();
+            String iconName=getResources().getResourceEntryName(iconId);
+            Log.d("iconGoal: ",""+iconName);
+            model.setIcon(iconName);
             db.addGoal(model);
             updateStatsAndMessage();
             goals.add(model);

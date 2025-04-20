@@ -28,6 +28,7 @@
         android:gravity="center"
         android:layout_marginBottom="20dp" />
     <EditText
+        android:paddingLeft="5dp"
         android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
         />
 
     <EditText
+        android:paddingLeft="5dp"
 android:imeOptions="actionDone"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="5dp"
@@ -510,22 +512,7 @@ android:imeOptions="actionDone"
            app:chipIcon="@drawable/circle"
            app:chipIconSize="30dp"
            />
-       <com.google.android.material.chip.Chip
-           app:checkedIcon="@drawable/check"
-           app:checkedIconEnabled="true"
-           android:checkable="true"
-           app:checkedIconVisible="true"
-           app:checkedIconTint="@color/white"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:id="@+id/gray"
-           app:textStartPadding="0dp"
-           app:textEndPadding="0dp"
-           app:chipBackgroundColor="#6C757D "
-           app:chipIconTint="@color/transparent"
-           app:chipIcon="@drawable/circle"
-           app:chipIconSize="30dp"
-           />
+
        <com.google.android.material.chip.Chip
            app:checkedIcon="@drawable/check"
            app:checkedIconEnabled="true"

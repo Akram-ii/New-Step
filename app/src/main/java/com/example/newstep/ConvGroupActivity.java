@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -26,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ImageView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +49,10 @@ import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.NotifOnline;
 import com.example.newstep.Util.Utilities;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
@@ -60,11 +68,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class ConvGroupActivity extends AppCompatActivity {
     TextView groupNameTextView;
     EditText msgEditText;
     ImageButton backButton, sendButton;
+    ImageView pfp;
     RecyclerView recyclerView, recyclerviewChattingWith;
     String chatroomId, currentUser,currentUserName;
     ChatroomModel chatroomModel;
@@ -80,7 +90,7 @@ public class ConvGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_conv_group);
 
-
+        pfp=findViewById(R.id.pfp);
         groupNameTextView = findViewById(R.id.groupnameTextView);
         msgEditText = findViewById(R.id.msg_EditText);
         backButton = findViewById(R.id.back_ImageButton);
@@ -94,12 +104,23 @@ public class ConvGroupActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String groupName = intent.getStringExtra("groupName");
+        String icon=intent.getStringExtra("icon");
+        String iconColor=intent.getStringExtra("iconImage");
         chatroomId = intent.getStringExtra("chatroomId");
 
 
+if(icon!=null){
+    int resId = getResources().getIdentifier(icon, "drawable",getPackageName());
+    if (resId != 0) {
+        pfp.setImageResource(resId);
+}
+    try {
+        int color = Color.parseColor(iconColor);
+        pfp.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        groupNameTextView.setTextColor(color);
+    } catch (IllegalArgumentException e) {}
+}
         groupNameTextView.setText(groupName);
-
-
 
         FirebaseUtil.getChatroomRef(chatroomId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -112,6 +133,7 @@ public class ConvGroupActivity extends AppCompatActivity {
                            editGroup(chatroomId,chatroomModel.getGroupName(),chatroomModel.getDesc(),chatroomModel.getPrivacy(),chatroomModel.getIcon(),chatroomModel.getIconColor(),true);
                         }
                     });
+                    pfp.setOnClickListener(v->{editGroup(chatroomId,chatroomModel.getGroupName(),chatroomModel.getDesc(),chatroomModel.getPrivacy(),chatroomModel.getIcon(),chatroomModel.getIconColor(),true);});
                 }else{
                     groupNameTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -119,8 +141,9 @@ public class ConvGroupActivity extends AppCompatActivity {
                             editGroup(chatroomId,chatroomModel.getGroupName(),chatroomModel.getDesc(),chatroomModel.getPrivacy(),chatroomModel.getIcon(),chatroomModel.getIconColor(),false);
                         }
                     });
-
+                    pfp.setOnClickListener(v->{editGroup(chatroomId,chatroomModel.getGroupName(),chatroomModel.getDesc(),chatroomModel.getPrivacy(),chatroomModel.getIcon(),chatroomModel.getIconColor(),false);});
                 }
+
             }
         });
 

@@ -13,11 +13,46 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Utilities {
+    public static String hexCodeForColor(String colorName) {
+        switch(colorName){
+            case "pink":
+                return "#C9A6D6";
+            case "purple":
+                return "#877DE0";
+            case "blue":
+                return "#6A96E6";
+            case "green":
+                return "#91B2BD";
+            case "orange":
+                return "#F28B30";
+            case "darkBlue":
+                return "#3C3C64";
+
+            default :
+                return "#D7BDE2";
+        }
+    }
+    public static String getRandomHexColor() {
+        Random random = new Random();
+        List<String> list = new ArrayList<>();
+        list.add("#DDE6F2"); // soft desaturated blue-gray
+        list.add("#CFCDE7"); // gentle lavender-gray
+        list.add("#D9EAD3"); // soft sage green
+        list.add("#EDE0D4"); // light warm beige
+        list.add("#F6E7E7"); // dusty rose
+        list.add("#E4D1EC"); // pale mauve
+
+        return list.get(random.nextInt(list.size()));
+    }
+
     public static String getMonthFormat(int month) {
         switch (month){
             case 1:
@@ -82,25 +117,6 @@ public class Utilities {
         }
     }
 
-    public static  String hexCodeForColor(String colorName) {
-        switch(colorName){
-            case "pink":
-                return "#C9A6D6";
-            case "purple":
-                return "#877DE0";
-            case "blue":
-                return "#6A96E6";
-            case "green":
-                return "#91B2BD";
-            case "gray":
-                return "#6C757D";
-            case "darkBlue":
-                return "#3C3C64";
-            case  "orange"  :
-                return "#F28B30";
 
-            default :
-                return "#D7BDE2";
-        }
-    }
+
 }

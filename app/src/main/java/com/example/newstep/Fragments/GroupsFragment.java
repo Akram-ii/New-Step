@@ -1,5 +1,7 @@
 package com.example.newstep.Fragments;
 
+import static com.example.newstep.Util.Utilities.hexCodeForColor;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -191,7 +193,25 @@ public class GroupsFragment extends Fragment {
         });
     }
 
+    private String hexCodeForColor(String colorName) {
+        switch(colorName){
+            case "pink":
+                return "#C9A6D6";
+            case "purple":
+                return "#877DE0";
+            case "blue":
+                return "#6A96E6";
+            case "green":
+                return "#91B2BD";
+            case "gray":
+                return "#6C757D";
+            case "darkBlue":
+                return "#3C3C64";
 
+            default :
+                return "#D7BDE2";
+        }
+    }
 
     private void createGroupInFirestore(String groupName,String desc,String privacy,String icon,String color) {
 
