@@ -1,5 +1,9 @@
 package com.example.newstep.Adapters;
 
+
+import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -8,10 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
@@ -21,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -31,19 +38,43 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private final List<PostModel> postList;
     private final FirebaseFirestore firestore;
     private final String userId;
-    private final OnCommentClickListener  commentClickListener;
+    private final OnCommentClickListener commentClickListener;
+    private final OnReportClickListener reportClickListener;
+
     public interface OnCommentClickListener {
         void onCommentClick(String postId);
     }
 
+    public interface OnReportClickListener {
+        void onReportClick(String postId, String pUsername, String pContent);
+    }
 
+    public PostAdapter(Context context, List<PostModel> postList) {
+        this.context = context;
+        this.postList = postList;
+        this.firestore = FirebaseFirestore.getInstance();
+        this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        this.commentClickListener = new OnCommentClickListener() {
+            @Override
+            public void onCommentClick(String postId) {
 
-    public PostAdapter(Context context, List<PostModel> postList,OnCommentClickListener commentClickListener) {
+            }
+        };
+        this.reportClickListener = new OnReportClickListener() {
+            @Override
+            public void onReportClick(String postId, String pUsername, String pContent) {
+
+            }
+        };
+    }
+
+    public PostAdapter(Context context, List<PostModel> postList, OnCommentClickListener commentClickListener, OnReportClickListener reportClickListener) {
         this.context = context;
         this.postList = postList;
         this.firestore = FirebaseFirestore.getInstance();
         this.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.commentClickListener = commentClickListener;
+        this.reportClickListener = reportClickListener;
     }
 
     @NonNull
@@ -57,6 +88,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         PostModel post = postList.get(position);
         String postId = post.getId();
+
+
+        Glide.with(holder.itemView.getContext())
+                .load(post.getProfileImageUrl())
+                .placeholder(R.drawable.pfp_purple)
+                .error(R.drawable.pfp_purple)
+                .circleCrop()
+                .into(holder.P_image);
+
+
 if(post.getCategory()!=null){
         holder.cat.setText(post.getCategory());}
         holder.postContent.setText(post.getContent());
@@ -143,6 +184,12 @@ if(post.getCategory()!=null){
                 commentClickListener.onCommentClick(post.getId());
             }
         });
+
+        holder.btnReport.setOnClickListener(v -> {
+            if (reportClickListener != null) {
+                reportClickListener.onReportClick(postId, post.getUserName(), post.getContent());
+            }
+        });
     }
 
     private void updateFirestore(String postId, PostModel post, List<String> likedBy, List<String> dislikedBy, PostViewHolder holder, int position) {
@@ -164,8 +211,8 @@ if(post.getCategory()!=null){
     }
 
     static class PostViewHolder extends RecyclerView.ViewHolder {
-        TextView postContent, likeCount, dislikeCount, username, timestampPost, commentCount,cat;
-        ImageView btnLike, btnDislike,comment_btn;
+        TextView postContent, cat,likeCount, dislikeCount, username, timestampPost, commentCount;
+        ImageView btnLike, btnDislike,comment_btn,P_image,btnReport;
 
         public PostViewHolder(View itemView) {
             super(itemView);
@@ -179,6 +226,8 @@ if(post.getCategory()!=null){
             btnDislike = itemView.findViewById(R.id.btnDislike);
             comment_btn = itemView.findViewById(R.id.comment_btn);
             commentCount = itemView.findViewById(R.id.commentCount);
+            P_image = itemView.findViewById(R.id.userPicture);
+            btnReport = itemView.findViewById(R.id.btn_report);
         }
     }
 }

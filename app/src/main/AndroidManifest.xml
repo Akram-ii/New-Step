@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -19,6 +22,22 @@
         tools:targetApi="31">
 
         <activity
+            android:name=".RulesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeOfflineActivity"
+            android:exported="false" />
+        <activity
+        android:name=".WelcomeActivity"
+        android:exported="false" />
+        <activity
+            android:name=".WelcomeOnlineActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ProgressActivity"
             android:exported="false" />
         <activity
@@ -27,7 +46,6 @@
         <activity
             android:name=".ConvGroupActivity"
             android:exported="false" />
-
         <receiver
             android:name=".Util.NotifReceiver"
             android:exported="false">
@@ -47,13 +65,16 @@
 
         </service>
         <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".HabitDetailsActivity"
             android:exported="false" />
         <activity
             android:name=".ConvActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -61,6 +82,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
     </application>
 
 </manifest>

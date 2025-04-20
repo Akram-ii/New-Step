@@ -5,10 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <FrameLayout
+        android:id="@+id/preference_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent" />
+
+
 
 </FrameLayout>

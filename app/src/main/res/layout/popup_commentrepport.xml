@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:elevation="10dp"
+    android:backgroundTint="@color/transparent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/light_blue"
+        android:background="@drawable/popupbg"
+        android:padding="15dp">
+
+
+        <ImageView
+            android:id="@+id/warningIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_report"
+            android:layout_marginTop="10dp"/>
+
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Report This Comment"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_below="@id/warningIcon"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="8dp"
+            android:gravity="center"/>
+
+
+        <TextView
+            android:id="@+id/textMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Are you sure you want to report this comment? This action cannot be undone."
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_below="@id/title"
+            android:layout_marginHorizontal="15dp"
+            android:paddingTop="8dp"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/btns"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:paddingHorizontal="10dp"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="@color/darkGray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                app:cornerRadius="20dp"
+                android:text="No"
+                android:textColor="@color/white" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="#b7251a"
+                android:text="Yes"
+                android:textColor="@android:color/white"
+                app:cornerRadius="20dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

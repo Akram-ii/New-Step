@@ -38,7 +38,18 @@
             app:layout_constraintTop_toTopOf="@id/userPicture"
             app:layout_constraintBottom_toBottomOf="@id/userPicture"/>
 
-
+        <!-- 🚨 Bouton Report ajouté ici en haut à droite -->
+        <ImageButton
+            android:id="@+id/btn_report"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/warning"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Report this post"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/postContent"
@@ -47,7 +58,6 @@
             android:text="Content"
             android:textSize="14sp"
             android:textColor="@color/black"
-
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,9 +100,7 @@
                 android:id="@+id/btnLike"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/like_icon"
-
-                />
+                android:src="@drawable/like_icon"/>
 
             <TextView
                 android:id="@+id/likeCount"
@@ -107,8 +115,7 @@
                 android:id="@+id/btnDislike"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/dislike"
-              />
+                android:src="@drawable/dislike"/>
 
             <TextView
                 android:id="@+id/dislikeCount"
@@ -119,23 +126,18 @@
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="16dp"/>
 
-
             <ImageView
                 android:id="@+id/comment_btn"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@drawable/comment"
+                android:src="@drawable/comment"/>
 
-                />
             <TextView
                 android:id="@+id/commentCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:textColor="@color/darkGray"/>
-
-
-
 
         </LinearLayout>
 

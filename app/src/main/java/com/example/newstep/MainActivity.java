@@ -3,13 +3,23 @@ package com.example.newstep;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -40,8 +50,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.bumptech.glide.Glide;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerLayout;
@@ -155,19 +169,53 @@ admin.setOnClickListener(new View.OnClickListener() {
             }
             return true;
         });
-    if(lastFragment.equals("ChatsFragment")){
-        checkUserAuthentication(new PrivateChatsFragment());
-        navigationView.setCheckedItem(R.id.nav_chats);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new ChatsFragment()).commit();
-    }else{
-        navigationView.setCheckedItem(R.id.nav_home);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-    }
+
+        if(lastFragment.equals("ChatsFragment")){
+            checkUserAuthentication(new ChatsFragment());
+            navigationView.setCheckedItem(R.id.nav_chats);
+        }else{
+            navigationView.setCheckedItem(R.id.nav_home);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        }
+
+        loadUserProfile();
+
+        View headerView = navigationView.getHeaderView(0);
+        RelativeLayout profileButton = headerView.findViewById(R.id.Profile_button);
+
+        profileButton.setOnClickListener(v -> {
+            if(userIsLoggedIn()){
+
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+
+            }else{
+
+                LoginFragment loginFragment = new LoginFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, loginFragment).addToBackStack(null).commit();
+
+            }
+
+        });
+
     }
 
 
+
+
+    private boolean userIsLoggedIn() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        return currentUser != null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserProfile();
+    }
     private void checkUserAuthentication(Fragment fragment) {
-        if (firebaseAuth.getCurrentUser() != null) {
+        if (firebaseAuth.getCurrentUser() != null ) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
@@ -199,10 +247,85 @@ navigationView.setCheckedItem(R.id.nav_community);
         return false;
     }
 
+    public void popupBan() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
+
+        // Create a PopupWindow
+        PopupWindow popupWindow = new PopupWindow(
+                popUpView,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                true
+        );
+
+        // Set transparent background
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Dim the background
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f; // Reduce brightness
+        getWindow().setAttributes(layoutParams);
+
+        // Show popup
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+
+        // Restore brightness when popup is dismissed
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f; // Restore full brightness
+            getWindow().setAttributes(originalParams);
+        });
+
+        // Close button
+        ImageView closePopup = popUpView.findViewById(R.id.back_imageView);
+        closePopup.setOnClickListener(v -> popupWindow.dismiss());
+    }
+
     @Override
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {super.onBackPressed();}
+    }
+    public void loadUserProfile() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
+        if (auth.getCurrentUser() == null) {
+            Log.e("Firestore", "User is not logged in");
+            return;
+        }
+
+        String userId = auth.getCurrentUser().getUid();
+
+
+        db.collection("Users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+
+                        String userName1 = documentSnapshot.getString("username");
+                        String profileImageUrl = documentSnapshot.getString("profileImage");
+
+                        if (userName1 == null || userName1.trim().isEmpty()) {
+                            userName1 = "Unknown user";
+                        }
+                        userName.setText(userName1);
+
+
+                        Glide.with(pfp.getContext())
+                                .load(profileImageUrl)
+                                .circleCrop()
+                                .placeholder(R.drawable.pfp_purple)
+                                .error(R.drawable.pfp_purple)
+                                .into(pfp);
+                    } else {
+                        Log.e("Firestore", "Document not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Failed to fetch user data", e);
+                });
     }
 }

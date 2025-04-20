@@ -14,6 +14,7 @@ public class PostModel {
     private int dislikes;
     private List<String> likedBy;
     private List<String> dislikedBy;
+    private String profileImageUrl;
 
     public PostModel() {
     }
@@ -38,13 +39,14 @@ public class PostModel {
         this.content = content;
     }
 
-    public PostModel(String id,String userId, String content, int likes, String userName, int dislikes, Timestamp timestamp,String category) {
+    public PostModel(String id,String userId, String content, int likes, String userName, int dislikes, Timestamp timestamp,String profileImageUrl,String category) {
         this.id = id;
         this.content = content;
         this.userName=userName;
         this.likes = likes;
         this.dislikes = dislikes;
         this.timestamp= timestamp;
+        this.profileImageUrl = profileImageUrl;
         this.userId=userId;
         this.category=category;
     }
@@ -96,4 +98,6 @@ public class PostModel {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getProfileImageUrl() {return profileImageUrl;}
 }

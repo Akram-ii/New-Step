@@ -1,187 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
-    android:background="@drawable/goal_background_item"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:elevation="10dp"
+    android:backgroundTint="@color/transparent"
+    android:gravity="center">
 
-    >
-<ImageView
-    android:layout_marginTop="10dp"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/back_ic"
-    app:tint="@color/blue"
-    android:id="@+id/backBtn"
-    android:layout_marginBottom="10dp"
-    />
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="What are you into today?"
-        android:textSize="20sp"
-        android:textColor="@color/blue"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        />
-
-
-    <com.google.android.material.chip.ChipGroup
-        android:layout_marginTop="10dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/backBtn"
-        android:id="@+id/chipGroup"
-        >
-<com.google.android.material.chip.Chip
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:checkable="true"
-    app:checkedIconTint="@color/white"
-    style="@style/Widget.MaterialComponents.Chip.Filter"
-    android:text="My Experience"
-    app:chipBackgroundColor="@color/blue"
-    android:textColor="@color/white"
-    android:textSize="14sp"
-    />
-        <com.google.android.material.chip.Chip
-            android:checkable="true"
-            app:chipBackgroundColor="@color/blue"
-            app:checkedIconTint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ask for help"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            />
+        android:layout_margin="3dp"
+        android:background="@drawable/popupbg"
+        android:padding="10dp">
 
-        <com.google.android.material.chip.Chip
-            app:chipBackgroundColor="@color/blue"
-            app:checkedIconTint="@color/white"
-            android:text="Motivation"
-            android:textColor="@color/white"
-            android:checkable="true"
-            android:textSize="14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            />
-
-        <com.google.android.material.chip.Chip
-            app:chipBackgroundColor="@color/blue"
-            app:checkedIconTint="@color/white"
-            android:layout_width="wrap_content"
-            android:checkable="true"
-            android:text="Reflection"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            />
-        <com.google.android.material.chip.Chip
-            app:chipBackgroundColor="@color/blue"
-            app:checkedIconTint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:checkable="true"
-            android:text="Advices"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-        <com.google.android.material.chip.Chip
-            app:chipBackgroundColor="@color/blue"
-            app:checkedIconTint="@color/white"
-            android:layout_width="wrap_content"
-            android:checkable="true"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:text="Progress Update"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-
-        <com.google.android.material.chip.Chip
-            app:chipBackgroundColor="@color/blue"
-            android:checkable="true"
-            app:checkedIconTint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:text="Challenges"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-
-        <com.google.android.material.chip.Chip
-            android:checkable="true"
-            app:chipBackgroundColor="@color/blue"
-            app:checkedIconTint="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
-            android:text="Other"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            />
-    </com.google.android.material.chip.ChipGroup>
-
-
-
-    <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/forText"
-
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/icon_checked_round"
-        android:layout_below="@id/chipGroup"
-        app:tint="@color/light_blue" />
-    <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/all"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/icon_checked_round"
-        android:layout_below="@id/chipGroup"
-        app:tint="@color/blue" />
-    <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/nothing"
-        android:visibility="gone"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/icon_round"
-        android:layout_below="@id/chipGroup"
-        app:tint="@color/blue" />
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="All"
-    android:textAlignment="center"
-    android:layout_below="@+id/forText"
-    android:id="@+id/selectText"
-    android:layout_centerHorizontal="true"
-    />
-
-    <com.google.android.material.button.MaterialButton
+    <TextView
+        android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Filter Now"
-        android:textSize="17sp"
-        android:id="@+id/filterNow"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/selectText"
-        android:layout_marginTop="5dp"
-        app:cornerRadius="15dp"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/blue"
-        />
-</RelativeLayout>
+        android:text="Filter Reports"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:paddingBottom="12dp"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textTitle"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/sortByReportsAsc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Ascending"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+
+    <Button
+        android:id="@+id/sortByNewest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Newest"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+</LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/sortByReportsDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Descending"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+
+    <Button
+        android:id="@+id/sortByOldest"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/popupbg"
+        app:backgroundTint="#9073CE"
+        android:text="Oldest"
+        android:textColor="@android:color/white"
+        android:layout_margin="3dp"/>
+</LinearLayout>
+</LinearLayout>
+    </RelativeLayout>
+    </LinearLayout>

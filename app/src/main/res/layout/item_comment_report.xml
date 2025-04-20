@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/edittext_onblue"
+    android:backgroundTint="@color/lavender2"
+    android:layout_margin="8dp"
+    android:elevation="12dp"
+    android:layout_height="wrap_content">
+<ImageButton
+    android:id="@+id/user_info_btn"
+    android:layout_width="35dp"
+    android:layout_height="35dp"
+    android:layout_centerVertical="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="20dp"
+    android:src="@drawable/icon_info"
+
+    android:background="?attr/selectableItemBackgroundBorderless"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/cUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:text="user name"/>
+
+        <TextView
+            android:id="@+id/cContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="Commentaire"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
