@@ -6,6 +6,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.format.DateUtils;
 
+import com.example.newstep.R;
 import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
@@ -116,7 +117,97 @@ public class Utilities {
             }
         }
     }
+    private static final int[] POINT_THRESHOLDS = {
+            0, 25, 75, 150, 300, 500, 1000, 2000, 4000, 10000
+    };
 
-
-
+    private static final int[] IMAGE_IDS = {
+            R.drawable.first_step_badge,
+            R.drawable.fog_badge,
+            R.drawable.fire_badge,
+            R.drawable.lighthouse_badge,
+            R.drawable.sun_badge,
+            R.drawable.nest_badge,
+            R.drawable.safe_badge,
+            R.drawable.star_badge,
+            R.drawable.healer_badge,
+            R.drawable.phoenix_badge
+    };
+    public static int getNextBadgeImageId(int points) {
+        for (int i = 0; i < POINT_THRESHOLDS.length; i++) {
+            if (points < POINT_THRESHOLDS[i]) {
+                return IMAGE_IDS[i];
+            }
+        }
+        return IMAGE_IDS[IMAGE_IDS.length - 1];
+    }
+    public static int getCurrBadgesImageId(int points){
+        if (points < 25) {
+            return R.drawable.first_step_badge;
+        } else if (points < 75) {
+            return R.drawable.fog_badge;
+        } else if (points < 150) {
+            return R.drawable.fire_badge;
+        } else if (points < 300) {
+            return R.drawable.lighthouse_badge;
+        } else if (points < 500) {
+            return R.drawable.sun_badge;
+        } else if (points < 1000) {
+            return R.drawable.nest_badge;
+        } else if (points < 2000) {
+            return R.drawable.safe_badge;
+        } else if (points < 4000) {
+            return R.drawable.star_badge;
+        } else if (points < 10000) {
+            return R.drawable.healer_badge;
+        } else {
+            return R.drawable.phoenix_badge;
+        }
+    }
+public static int getMinBadge(int points){
+    if (points < 25) {
+        return 0;
+    } else if (points < 75) {
+        return 25;
+    } else if (points < 150) {
+        return 75;
+    } else if (points < 300) {
+        return 150;
+    } else if (points < 500) {
+        return 300;
+    } else if (points < 1000) {
+        return 500;
+    } else if (points < 2000) {
+        return 1000;
+    } else if (points < 4000) {
+        return 2000;
+    } else if (points < 10000) {
+        return 4000;
+    } else {
+        return 10000;
+    }
+}
+    public static int getNextBadge(int points) {
+        if (points < 25) {
+            return 25;
+        } else if (points < 75) {
+            return 75;
+        } else if (points < 150) {
+            return 150;
+        } else if (points < 300) {
+            return 300;
+        } else if (points < 500) {
+            return 500;
+        } else if (points < 1000) {
+            return 1000;
+        } else if (points < 2000) {
+            return 2000;
+        } else if (points < 4000) {
+            return 4000;
+        } else if (points < 10000) {
+            return 10000;
+        } else {
+            return 10000;
+        }
+    }
 }

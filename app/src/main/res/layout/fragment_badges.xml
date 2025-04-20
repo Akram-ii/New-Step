@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Fragments.BadgesFragment">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:id="@+id/r1"
+    android:layout_marginBottom="50dp"
+    android:layout_height="100dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="40dp"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="We grow by lifting each other"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        />
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_width="75dp"
+        android:layout_height="90dp"
+        android:id="@+id/a1"
+        android:elevation="10dp"
+        android:src="@drawable/circle"
+        app:tint="@color/blue"
+
+        />
+
+    <ImageView
+        android:id="@+id/currbadge"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignLeft="@+id/a1"
+        android:layout_alignTop="@+id/a1"
+        android:layout_alignRight="@+id/a1"
+        android:layout_alignBottom="@+id/a1"
+android:elevation="10dp"
+       android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/healer_badge" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/progressBar"
+        android:layout_alignRight="@id/progressBar"
+        android:layout_alignLeft="@id/progressBar"
+        android:id="@+id/currPoints"
+        android:text="143 Points"
+        android:textAlignment="center"
+        />
+<ProgressBar
+    android:layout_centerHorizontal="true"
+    android:layout_width="175dp"
+    android:layout_height="20dp"
+    android:progress="48"
+    android:max="100"
+android:layout_centerVertical="true"
+    android:id="@+id/progressBar"
+android:progressTint="@color/blue"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_toRightOf="@+id/a1"
+    />
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_width="75dp"
+        android:layout_height="90dp"
+        android:id="@+id/a2"
+        android:elevation="10dp"
+        android:layout_toRightOf="@id/progressBar"
+        android:src="@drawable/circle"
+        app:tint="@android:color/darker_gray"
+        android:layout_alignTop="@+id/a1"
+
+        />
+
+    <ImageView
+        android:elevation="10dp"
+        android:id="@+id/nextBadge"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignLeft="@+id/a2"
+        android:layout_alignTop="@+id/a2"
+        android:layout_alignRight="@+id/a2"
+        android:layout_alignBottom="@+id/a2"
+
+        android:padding="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/phoenix_badge" />
+</RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/recyclerBadges"
+        android:text="The Badges"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:id="@+id/recyclerBadges"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        android:layout_below="@+id/r1"
+
+        />
+</RelativeLayout>
