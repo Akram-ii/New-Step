@@ -216,9 +216,11 @@ admin.setOnClickListener(new View.OnClickListener() {
     }
     private void checkUserAuthentication(Fragment fragment) {
         if (firebaseAuth.getCurrentUser() != null ) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right).replace(R.id.fragment_container, fragment).commit();
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right).replace(R.id.fragment_container, new LoginFragment()).commit();
+            drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 
@@ -227,21 +229,23 @@ admin.setOnClickListener(new View.OnClickListener() {
         if(item.getItemId()==R.id.nav_home){
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
+            drawerLayout.closeDrawer(GravityCompat.START);
         }else if(item.getItemId()==R.id.nav_community){
             checkUserAuthentication(new CommunityFragment());
 navigationView.setCheckedItem(R.id.nav_community);
+            drawerLayout.closeDrawer(GravityCompat.START);
         }else if(item.getItemId()==R.id.nav_chats){
             checkUserAuthentication(new ChatsFragment());
             navigationView.setCheckedItem(R.id.nav_chats);
+            drawerLayout.closeDrawer(GravityCompat.START);
         }else if(item.getItemId()==R.id.nav_settings){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new SettingsFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_settings);
-        }else if(item.getItemId()==R.id.nav_about){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AboutFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_about);
+            drawerLayout.closeDrawer(GravityCompat.START);
         }else if(item.getItemId()== R.id.nav_my_habits){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MyHabitsFragment()).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right).replace(R.id.fragment_container,new MyHabitsFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_my_habits);
+            drawerLayout.closeDrawer(GravityCompat.START);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return false;

@@ -1,7 +1,9 @@
 package com.example.newstep.Adapters;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.util.Log;
 import android.content.Context;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.newstep.Models.GoalModel;
 import com.example.newstep.Models.PostModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
@@ -30,8 +33,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.w3c.dom.Document;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import io.opencensus.metrics.export.Summary;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private final Context context;
@@ -112,7 +119,30 @@ if(post.getCategory()!=null){
         boolean isLiked = likedBy.contains(userId);
         boolean isDisliked = dislikedBy.contains(userId);
 
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(post.getUserId().equals(FirebaseUtil.getCurrentUserId())){
+                    AlertDialog.Builder builder= new AlertDialog.Builder(context);
+                    builder.setTitle("Delete Post");
+                    builder.setMessage("This action cannot be undone");
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            FirebaseUtil.allPostsCollectionRef().document(post.getId()).delete();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
+                        }
+                    });
+                    builder.show();
+                }else{}
+                return true;
+            }
+        });
         holder.btnLike.setColorFilter(isLiked ? Color.RED : Color.DKGRAY);
         holder.btnDislike.setColorFilter(isDisliked ? Color.BLUE : Color.DKGRAY);
 
