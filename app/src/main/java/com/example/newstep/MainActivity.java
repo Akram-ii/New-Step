@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -32,6 +35,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.newstep.CustomViews.CurvedBottomNavigationView;
 import com.example.newstep.Fragments.AboutFragment;
 import com.example.newstep.Fragments.ChatsFragment;
 import com.example.newstep.Fragments.CommunityFragment;
@@ -60,9 +64,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
     View headerView;
-int test;
-FirebaseAuth firebaseAuth;
-    BottomNavigationView bottomView;
+    int test;
+    FirebaseAuth firebaseAuth;
+    CurvedBottomNavigationView bottomView;
+
     static Boolean isMediaInit=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +80,7 @@ FirebaseAuth firebaseAuth;
             return insets;
         });
 
-firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth=FirebaseAuth.getInstance();
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         String lastFragment = sharedPreferences.getString("lastFragment", "default_value");
         toolbar = findViewById(R.id.toolbar);
@@ -105,46 +110,82 @@ firebaseAuth=FirebaseAuth.getInstance();
             FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-               if(documentSnapshot.exists()){
-                   if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
-                       admin.setVisibility(View.VISIBLE);
-                   }
-                   if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBanned"))){
-                       FirebaseAuth.getInstance().signOut();
-                   }
-               }
+                    if(documentSnapshot.exists()){
+                        if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
+                            admin.setVisibility(View.VISIBLE);
+                        }
+                        if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBanned"))){
+                            FirebaseAuth.getInstance().signOut();
+                        }
+                    }
                 }
             });
         }
 
-admin.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        Intent intent=new Intent(MainActivity.this, AdminActivity.class);
-        startActivity(intent);
-    }
-});
-        firebaseAuth.addAuthStateListener(authStateListener);
-        bottomView.setOnItemSelectedListener(item -> {
-            if(item.getItemId()==R.id.nav_home){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav_home);
-            }else if(item.getItemId()==R.id.nav_chats){
-               checkUserAuthentication(new ChatsFragment());
-                navigationView.setCheckedItem(R.id.nav_chats);
-            }else if(item.getItemId()==R.id.nav_my_habits){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MyHabitsFragment()).commit();
-                navigationView.setCheckedItem(R.id.nav_my_habits);
-            }else if(item.getItemId()== R.id.nav_community){
-               checkUserAuthentication(new CommunityFragment());
-                navigationView.setCheckedItem(R.id.nav_community);
+        admin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this, AdminActivity.class);
+                startActivity(intent);
             }
-            return true;
         });
-    if(lastFragment.equals("ChatsFragment")){
-        checkUserAuthentication(new ChatsFragment());
-        navigationView.setCheckedItem(R.id.nav_chats);
-    }
+        firebaseAuth.addAuthStateListener(authStateListener);
+
+        CurvedBottomNavigationView bottomView = findViewById(R.id.bottomMenu);
+        bottomView.setOnItemSelectedListener(item -> {
+            int index = -1;
+
+            if (item.getItemId() == R.id.nav_home) {
+                index = 0;
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new HomeFragment())
+                        .commit();
+                navigationView.setCheckedItem(R.id.nav_home);
+
+            } else if (item.getItemId() == R.id.nav_my_habits) {
+                index = 1;
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new MyHabitsFragment())
+                        .commit();
+                navigationView.setCheckedItem(R.id.nav_my_habits);
+
+            } else if (item.getItemId() == R.id.nav_community) {
+                index = 2;
+                checkUserAuthentication(new CommunityFragment());
+                navigationView.setCheckedItem(R.id.nav_community);
+
+            } else if (item.getItemId() == R.id.nav_chats) {
+                index = 3;
+                checkUserAuthentication(new ChatsFragment());
+                navigationView.setCheckedItem(R.id.nav_chats);
+            }
+
+
+            if (index != -1) {
+                bottomView.setSelectedPosition(index);
+
+
+
+                View iconView = bottomView.findViewById(item.getItemId());
+                if (iconView != null) {
+                    Animation scale = AnimationUtils.loadAnimation(this, R.anim.scale_anim);
+                    iconView.startAnimation(scale);
+                }
+            }
+
+
+            return true;
+
+
+        });
+
+
+
+
+        if(lastFragment.equals("ChatsFragment")){
+            checkUserAuthentication(new ChatsFragment());
+            navigationView.setCheckedItem(R.id.nav_chats);
+        }
     }
     private void checkUserAuthentication(Fragment fragment) {
         if (firebaseAuth.getCurrentUser() != null ) {
@@ -161,7 +202,7 @@ admin.setOnClickListener(new View.OnClickListener() {
             navigationView.setCheckedItem(R.id.nav_home);
         }else if(item.getItemId()==R.id.nav_community){
             checkUserAuthentication(new CommunityFragment());
-navigationView.setCheckedItem(R.id.nav_community);
+            navigationView.setCheckedItem(R.id.nav_community);
         }else if(item.getItemId()==R.id.nav_chats){
             checkUserAuthentication(new ChatsFragment());
             navigationView.setCheckedItem(R.id.nav_chats);

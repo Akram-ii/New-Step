@@ -2,28 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:title="Home"
-        android:icon="@drawable/icon_home"
+
+        android:icon="@drawable/icons_home_filled"
         android:iconTint="@color/purple"
+
         />
     <item
         android:icon="@drawable/icon_my_habits"
         android:id="@+id/nav_my_habits"
-        android:title="My Habits"
-android:iconTint="@color/purple"
+
+        android:iconTint="@color/purple"
+
         />
 
     <item
         android:icon="@drawable/icon_community"
         android:id="@+id/nav_community"
-        android:title="Community"
-android:iconTint="@color/purple"
+
+        android:iconTint="@color/purple"
+
         />
     <item
-        android:icon="@drawable/icon_chats"
+        android:icon="@drawable/chat_icon_filled"
         android:id="@+id/nav_chats"
-        android:iconTint="@color/purple"
-        android:title="Chats"
+        android:iconTint="@color/blue"
+
 />
 
 
