@@ -7,6 +7,9 @@ public class UserModel {
     private String username;
     private String token;
     private String  cat;
+    private String Bio;
+    private String profileImage;
+    private String coverImage;
     private Timestamp whenBanned,whenBannedPosts,whenBannedComments;
 
     private boolean isBanned,isBannedPosts,isBannedComments,isRestricted;
@@ -130,6 +133,8 @@ public class UserModel {
     public void setToken(String token) {
         this.token = token;
     }
+
+
     public UserModel(String name, String date,String id) {
         this.username = name;
         this.registerDate = date;
@@ -146,6 +151,40 @@ public class UserModel {
 
     public String getRegisterDate() {
         return registerDate;
+    }
+
+
+    public UserModel(String name, String date , String Bio , String profileImage , String coverImage ){
+        this.username = name;
+        this.registerDate = date;
+        this.Bio = Bio;
+        this.coverImage = coverImage;
+        this.profileImage = profileImage;
+
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public String getBio(){
+        return Bio;
+    }
+
+    public void setBio(String Bio){
+        this.Bio = Bio;
     }
 
 

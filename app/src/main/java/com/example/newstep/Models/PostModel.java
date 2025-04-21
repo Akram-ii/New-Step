@@ -14,11 +14,12 @@ public class PostModel {
     private List<String> likedBy;
     private List<String> dislikedBy;
     private String profileImageUrl;
+    private String userId;
 
     public PostModel() {
     }
 
-    public PostModel(String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp , String profileImageUrl) {
+    public PostModel(String userId,String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp , String profileImageUrl) {
         this.id = id;
         this.content = content;
         this.userName=userName;
@@ -26,6 +27,7 @@ public class PostModel {
         this.dislikes = dislikes;
         this.timestamp= timestamp;
         this.profileImageUrl = profileImageUrl;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -77,4 +79,7 @@ public class PostModel {
     }
 
     public String getProfileImageUrl() {return profileImageUrl;}
+
+    public String getUserId(){return userId;}
+    public void setUserId(String userId){this.userId = userId;}
 }
