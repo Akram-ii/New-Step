@@ -9,10 +9,10 @@
 <RelativeLayout
     android:layout_width="wrap_content"
     android:id="@+id/r1"
-    android:layout_marginBottom="50dp"
+    android:layout_marginBottom="40dp"
     android:layout_height="100dp"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="40dp"
+    android:layout_marginTop="20dp"
     >
     <TextView
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
 android:elevation="10dp"
        android:padding="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/healer_badge" />
+         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@ android:elevation="10dp"
         android:layout_alignRight="@id/progressBar"
         android:layout_alignLeft="@id/progressBar"
         android:id="@+id/currPoints"
-        android:text="143 Points"
+        android:text=""
         android:textAlignment="center"
         />
 <ProgressBar
@@ -92,13 +92,14 @@ android:progressTint="@color/blue"
 
         android:padding="10dp"
         android:scaleType="centerInside"
-        android:src="@drawable/phoenix_badge" />
+        />
 </RelativeLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/recyclerBadges"
         android:text="The Badges"
+        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:layout_centerHorizontal="true"
@@ -111,6 +112,93 @@ android:progressTint="@color/blue"
         android:orientation="horizontal"
         android:scrollbars="horizontal"
         android:layout_below="@+id/r1"
-
         />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Frequently asked questions"
+    android:layout_marginTop="10dp"
+    android:layout_below="@id/recyclerBadges"
+    android:textSize="24sp"
+    android:textColor="@color/black"
+    android:textStyle="bold"
+    android:layout_marginLeft="10dp"
+    android:layout_marginBottom="5dp"
+    android:id="@+id/freq"
+    />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/freq"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:drawableTint="@color/black"
+
+        android:layout_height="wrap_content"
+        android:text="What are badges for?"
+            android:padding="10dp"
+        android:drawableRight="@drawable/ic_arrow_right"
+        android:textAlignment="viewStart"
+        android:id="@+id/q1"
+            android:elevation="10dp"
+        android:backgroundTint="@color/light_blue"
+        android:textColor="@color/black"
+        app:cornerRadius="10dp"
+        android:layout_marginHorizontal="8dp"
+        />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:drawableTint="@color/black"
+
+            android:layout_height="wrap_content"
+            android:text="What actions give me points?"
+            android:padding="10dp"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:textAlignment="viewStart"
+            android:id="@+id/q2"
+            android:elevation="10dp"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            android:layout_marginHorizontal="8dp"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:drawableTint="@color/black"
+
+            android:layout_height="wrap_content"
+            android:text="Can i see other peoples's badge?"
+            android:padding="10dp"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:textAlignment="viewStart"
+            android:id="@+id/q3"
+            android:elevation="10dp"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            android:layout_marginHorizontal="8dp"
+            />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:drawableTint="@color/black"
+
+            android:layout_height="wrap_content"
+            android:text="Why do i need points?"
+            android:padding="10dp"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:textAlignment="viewStart"
+            android:id="@+id/q4"
+            android:elevation="10dp"
+            android:backgroundTint="@color/light_blue"
+            android:textColor="@color/black"
+            app:cornerRadius="10dp"
+            android:layout_marginHorizontal="8dp"
+            />
+
+
+    </LinearLayout>
 </RelativeLayout>
