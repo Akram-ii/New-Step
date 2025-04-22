@@ -105,7 +105,7 @@ public class CommunityFragment extends Fragment {
         });
     }
 
-
+    /*
     private void loadPosts() {
 
         firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
@@ -132,7 +132,7 @@ public class CommunityFragment extends Fragment {
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl);
+                                PostModel post = new PostModel(userId,postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost , profileImageUrl);
 
 
                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
@@ -142,6 +142,62 @@ public class CommunityFragment extends Fragment {
                             }
                         }
                         postAdapter.notifyDataSetChanged();
+                    }
+
+                });
+    }
+
+     */
+
+
+
+
+    private void loadPosts() {
+
+        firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Log.e("FirestoreError", "Error loading posts: ", error);
+                        return;
+                    }
+
+                    postList.clear();
+                    if (value != null) {
+                        for (DocumentSnapshot doc : value.getDocuments()) {
+                            String postId = doc.getId();
+                            String content = doc.getString("content");
+                            String userId = doc.getString("userId");
+                            String userName = doc.getString("username");
+                            Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
+                            Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
+                            Timestamp timestampPost = doc.getTimestamp("timestamp");
+
+                            List<String> likedBy = (List<String>) doc.get("likedBy");
+                            List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+
+                            if (content != null && userId != null && userName != null && timestampPost != null) {
+
+
+                                FirebaseFirestore.getInstance().collection("Users")
+                                        .document(userId)
+                                        .get()
+                                        .addOnSuccessListener(userDoc -> {
+                                            String profileImageUrl = userDoc.getString("profileImage");
+
+                                            PostModel post = new PostModel(userId, postId, content,
+                                                    likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl);
+
+                                            post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                                            post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+
+                                            postList.add(post);
+                                            postAdapter.notifyDataSetChanged();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("UserFetchError", "Failed to fetch user profile image", e);
+                                        });
+                            }
+                        }
                     }
 
                 });

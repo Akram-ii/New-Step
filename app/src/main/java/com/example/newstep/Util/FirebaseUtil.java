@@ -1,10 +1,14 @@
 package com.example.newstep.Util;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -101,6 +105,38 @@ public class FirebaseUtil {
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Error getting document: " + e.getMessage());
                 });
+
+
+        pfp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Context context = v.getContext();
+
+                FirebaseFirestore.getInstance().collection("Users")
+                        .document(userId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                UserModel user = new UserModel();
+
+                                user.setId(userId);
+                                user.setUsername(documentSnapshot.getString("username"));
+                                user.setProfileImage(documentSnapshot.getString("profileImage"));
+                                user.setBio(documentSnapshot.getString("bio"));
+                                user.setRegisterDate(documentSnapshot.getString("registerDate"));
+                                user.setCoverImage(documentSnapshot.getString("coverImage"));
+
+                                UserProfilePopup.show(context, v, user);
+                            } else {
+                                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("PopupError", "Failed to fetch data", e);
+                        });
+            }
+        });
     }
 
 

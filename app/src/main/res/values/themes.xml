@@ -22,4 +22,10 @@
         <item name="colorControlActivated">@color/black</item>
     </style>
 
+
+    <style name="PopupSmoothAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
+
 </resources>
