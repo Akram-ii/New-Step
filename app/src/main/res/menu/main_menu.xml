@@ -32,7 +32,7 @@
             android:title="My Badge"
             />
 
-        <item android:title=" ">
+        <item android:title="Account &amp; Support">
             <menu>
                 <item
                     android:icon="@drawable/pfp_blue"
@@ -42,19 +42,13 @@
                     android:icon="@drawable/icon_settings"
                     android:id="@+id/nav_settings"
                     android:title="Settings" />
-
-            </menu>
-        </item>
-        <item android:title=" ">
-            <menu>
                 <item
                     android:icon="@drawable/icon_info"
                     android:id="@+id/nav_contact"
                     android:title="Contact Us" />
             </menu>
+
         </item>
-
-
     </group>
 
 </menu>

@@ -118,6 +118,7 @@ public class HomeFragment extends Fragment {
 
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 GoalsFragment goalsFragment=new GoalsFragment();
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
                 transaction.replace(R.id.fragment_container, goalsFragment, GoalsFragment.class.getSimpleName());
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();
@@ -136,6 +137,7 @@ public class HomeFragment extends Fragment {
 
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 ProgressFragment progressFragment= new ProgressFragment();
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
                 transaction.replace(R.id.fragment_container, progressFragment, ProgressFragment.class.getSimpleName());
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();
@@ -155,6 +157,7 @@ public class HomeFragment extends Fragment {
 
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 BadgesFragment badgesFragment= new BadgesFragment();
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
                 transaction.replace(R.id.fragment_container, badgesFragment, BadgesFragment.class.getSimpleName());
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();

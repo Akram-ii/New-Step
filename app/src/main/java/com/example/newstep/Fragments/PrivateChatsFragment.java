@@ -2,6 +2,8 @@ package com.example.newstep.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,9 +39,17 @@ public class PrivateChatsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_private_chats, container, false);
 
-        addPerson = rootView.findViewById(R.id.addPerson);
+
+        return rootView;
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addPerson = view.findViewById(R.id.addPerson);
         transaction = getParentFragmentManager().beginTransaction();
-        recyclerView = rootView.findViewById(R.id.recyclerViewChats);
+        recyclerView = view.findViewById(R.id.recyclerViewChats);
         secondFragment = new SearchFragment();
         addPerson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +63,7 @@ public class PrivateChatsFragment extends Fragment {
 
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 SearchFragment searchFragment = new SearchFragment();
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
                 transaction.replace(R.id.fragment_container, searchFragment, SearchFragment.class.getSimpleName());
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();
@@ -60,10 +71,7 @@ public class PrivateChatsFragment extends Fragment {
         });
 
         SetupRecyclerView();
-        return rootView;
-
     }
-
 
     private void SetupRecyclerView() {
 

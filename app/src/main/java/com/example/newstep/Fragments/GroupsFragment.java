@@ -72,9 +72,16 @@ public class GroupsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_groups, container, false);
 
-        recyclerView = rootView.findViewById(R.id.groupsRecycler);
-        addBtn = rootView.findViewById(R.id.addBtn);
-        filter_groups=rootView.findViewById(R.id.filter_group);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView = view.findViewById(R.id.groupsRecycler);
+        addBtn = view.findViewById(R.id.addBtn);
+        filter_groups=view.findViewById(R.id.filter_group);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -89,7 +96,6 @@ public class GroupsFragment extends Fragment {
 
         setupRecycler();
 
-        return rootView;
     }
 
     private void setupRecycler() {
