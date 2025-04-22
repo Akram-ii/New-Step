@@ -66,6 +66,9 @@ public static String getCurrentUsername(Context context){
     public static CollectionReference allPostsReportCollectionRef(){
         return FirebaseFirestore.getInstance().collection("reportPosts");
     }
+    public static CollectionReference allcontactCollectionRef(){
+        return FirebaseFirestore.getInstance().collection("contact");
+    }
     public static CollectionReference allPostsCollectionRef(){
         return FirebaseFirestore.getInstance().collection("posts");
     }
