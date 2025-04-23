@@ -7,6 +7,9 @@ public class ReportsModel {
     private String  id ,RuserId,Rusername,Rtitle,Rdesc,Rcat;
     private Timestamp Rtime;
 
+    public ReportsModel() {
+    }
+
     public ReportsModel(String id, String ruserId, String rusername, String rtitle, String rdesc, String rcat, Timestamp rtime) {
         this.id = id;
         RuserId = ruserId;
