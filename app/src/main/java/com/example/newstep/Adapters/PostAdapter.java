@@ -1,6 +1,7 @@
 package com.example.newstep.Adapters;
 
 
+import android.content.ClipData;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.newstep.Models.GoalModel;
 import com.example.newstep.Models.PostModel;
+import com.example.newstep.Models.UserModel;
 import com.example.newstep.R;
+import com.example.newstep.Util.UserProfilePopup;
 import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.NotifOnline;
 import com.example.newstep.Util.Utilities;
@@ -37,6 +40,7 @@ import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.content.ClipboardManager;
 
 import io.opencensus.metrics.export.Summary;
 
@@ -104,11 +108,66 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 .circleCrop()
                 .into(holder.P_image);
 
+        holder.P_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                UserModel user = new UserModel();
+                user.setId(post.getUserId());
+                user.setUsername(post.getUserName());
+                user.setProfileImage(post.getProfileImageUrl());
+
+                FirebaseFirestore.getInstance().collection("Users")
+                        .document(post.getUserId())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+
+                                String bio = documentSnapshot.getString("bio");
+                                String registerDate = documentSnapshot.getString("registerDate");
+                                String coverImage = documentSnapshot.getString("coverImage");
+                                user.setBio(bio);
+                                user.setRegisterDate(registerDate);
+                                user.setCoverImage(coverImage);
+
+                            }else{
+                                Toast.makeText(context, "nooooo", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            UserProfilePopup.show(context, v, user);
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("PopupUser", "Error getting info", e);
+
+                            UserProfilePopup.show(context, v, user);
+                        });
+            }
+        });
 
 if(post.getCategory()!=null){
         holder.cat.setText(post.getCategory());}
         holder.postContent.setText(post.getContent());
         holder.username.setText(post.getUserName());
+
+        holder.username.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Context context = v.getContext();
+                String username = holder.username.getText().toString();
+
+                ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("Username", username);
+                clipboard.setPrimaryClip(clip);
+
+                Toast.makeText(context, "Username copied", Toast.LENGTH_SHORT).show();
+
+                return true;
+            }
+        });
+
+
+
         holder.timestampPost.setText(Utilities.getRelativeTime(post.getTimestamp()));
         holder.likeCount.setText(String.valueOf(post.getLikes()));
         holder.dislikeCount.setText(String.valueOf(post.getDislikes()));

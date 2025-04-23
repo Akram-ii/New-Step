@@ -82,7 +82,7 @@ public class MyPostsFragment extends Fragment {
 
 
 
-
+    /*
     private void loadProfilposts() {
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -119,6 +119,7 @@ public class MyPostsFragment extends Fragment {
                                 List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                                 if (content != null && userId != null && userName != null && timestampPost != null) {
+                                    PostModel post = new PostModel(userId,postId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl);
                                     PostModel post = new PostModel(postId, userId,content, likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat);
 
                                     post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
@@ -128,6 +129,77 @@ public class MyPostsFragment extends Fragment {
                                 }
                             }
                             setupRecyclerView(profilePosts);
+                        }
+
+                    });
+
+        } else {
+            Toast.makeText(getContext(), "Please log in first", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+     */
+
+
+
+
+    private void loadProfilposts() {
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser != null) {
+
+            String currentUserId = currentUser.getUid();
+
+            firestore.collection("posts")
+                    .whereEqualTo("userId", currentUserId)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .addSnapshotListener((value, error) -> {
+                        if (error != null) {
+                            Log.e("FirestoreError", "Error loading posts: ", error);
+                            return;
+                        }
+
+                        List<PostModel> profilePosts = new ArrayList<>();
+                        if (value != null) {
+                            for (DocumentSnapshot doc : value.getDocuments()) {
+                                String postId = doc.getId();
+                                String content = doc.getString("content");
+                                String userId = doc.getString("userId");
+                                String userName = doc.getString("username");
+                                String cat = doc.getString("cat");
+                                Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
+                                Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
+                                Timestamp timestampPost = doc.getTimestamp("timestamp");
+
+                                List<String> likedBy = (List<String>) doc.get("likedBy");
+                                List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+
+                                if (content != null && userId != null && userName != null && timestampPost != null) {
+
+                                    // جلب صورة البروفايل من Collection Users
+                                    firestore.collection("Users")
+                                            .document(userId)
+                                            .get()
+                                            .addOnSuccessListener(userDoc -> {
+                                                String profileImageUrl = userDoc.getString("profileImage");
+
+                                                PostModel post = new PostModel(postId, userId, content,
+                                                        likes.intValue(), userName, dislikes.intValue(),
+                                                        timestampPost, profileImageUrl,cat);
+
+                                                post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                                                post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+
+                                                profilePosts.add(post);
+                                                setupRecyclerView(profilePosts); // تحديث كل مرة
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("UserFetchError", "Failed to fetch user profile image", e);
+                                            });
+                                }
+                            }
                         }
 
                     });

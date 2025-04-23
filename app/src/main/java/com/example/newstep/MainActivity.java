@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView pfp;
     ImageButton admin;
     TextView userName;
+    TextView userEmail;
     Toolbar toolbar;
     FirebaseAuth.AuthStateListener authStateListener;
     FirebaseUser user;
@@ -128,6 +129,7 @@ firebaseAuth=FirebaseAuth.getInstance();
         admin=headerView.findViewById(R.id.admin);
         userName = headerView.findViewById(R.id.drawerUsername);
         pfp = headerView.findViewById(R.id.drawerpfp);
+        userEmail = headerView.findViewById(R.id.drawerEmail);
         drawerLayout = findViewById(R.id.main);
         navigationView = findViewById(R.id.navView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -386,6 +388,7 @@ admin.setOnClickListener(new View.OnClickListener() {
     public void loadUserProfile() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         if (auth.getCurrentUser() == null) {
@@ -422,5 +425,13 @@ admin.setOnClickListener(new View.OnClickListener() {
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Failed to fetch user data", e);
                 });
+
+
+        if (user != null) {
+            String email = user.getEmail();
+            userEmail.setText(email.substring(0, email.indexOf("@")));
+        }
+
+
     }
 }

@@ -19,27 +19,7 @@ public class PostModel {
     public PostModel() {
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public PostModel(String id,String userId, String content, int likes, String userName, int dislikes, Timestamp timestamp,String profileImageUrl,String category) {
+    public PostModel(String userId,String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp , String profileImageUrl,String cat) {
         this.id = id;
         this.content = content;
         this.userName=userName;
@@ -48,7 +28,7 @@ public class PostModel {
         this.timestamp= timestamp;
         this.profileImageUrl = profileImageUrl;
         this.userId=userId;
-        this.category=category;
+        this.category=cat;
     }
 
     public String getId() {
@@ -100,4 +80,20 @@ public class PostModel {
     }
 
     public String getProfileImageUrl() {return profileImageUrl;}
+
+    public String getUserId(){return userId;}
+    public void setUserId(String userId){this.userId = userId;}
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }

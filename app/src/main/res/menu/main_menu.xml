@@ -10,7 +10,7 @@
             android:icon="@drawable/icon_my_habits"
             android:id="@+id/nav_my_habits"
             android:title="Recovery"
-        />
+            />
         <item
             android:icon="@drawable/goal10"
             android:id="@+id/nav_my_goals"
@@ -25,7 +25,7 @@
             android:icon="@drawable/icon_chats"
             android:id="@+id/nav_chats"
             android:title="Chats"
-        />
+            />
         <item
             android:icon="@drawable/group12"
             android:id="@+id/nav_my_badge"
