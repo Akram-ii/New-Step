@@ -247,7 +247,7 @@ public class CommunityFragment extends Fragment {
                                         .addOnSuccessListener(userDoc -> {
                                             String profileImageUrl = userDoc.getString("profileImage");
 
-                                            PostModel post = new PostModel(postId, userId, content,
+                                            PostModel post = new PostModel(userId, postId, content,
                                                     likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat);
 
                                             post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
@@ -365,14 +365,6 @@ public class CommunityFragment extends Fragment {
                         Log.e("FirestoreError", "Error loading posts: ", error);
                         return;
                     }
-    private void loadPosts() {
-
-        firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Log.e("FirestoreError", "Error loading posts: ", error);
-                        return;
-                    }
 
                     postList.clear();
                     if (value != null) {
@@ -398,7 +390,7 @@ public class CommunityFragment extends Fragment {
                                         .addOnSuccessListener(userDoc -> {
                                             String profileImageUrl = userDoc.getString("profileImage");
 
-                                            PostModel post = new PostModel(postId, userId, content,
+                                            PostModel post = new PostModel(userId, postId, content,
                                                     likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat);
 
                                             post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
@@ -412,38 +404,6 @@ public class CommunityFragment extends Fragment {
                                         });
                             }
                         }
-                    }
-
-                });
-    }
-                    postList.clear();
-                    if (value != null) {
-                        for (DocumentSnapshot doc : value.getDocuments()) {
-                            String postId = doc.getId();
-                            String content = doc.getString("content");
-                            String userId = doc.getString("userId");
-                            String userName = doc.getString("username");
-                            String cat = doc.getString("category");
-                            String i=doc.getString("profileImage");
-                            Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
-                            Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
-                            Timestamp timestampPost = doc.getTimestamp("timestamp");
-
-
-                            List<String> likedBy = (List<String>) doc.get("likedBy");
-                            List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
-
-                            if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(postId,userId, content, likes.intValue(), userName, dislikes.intValue(), timestampPost,i,cat);
-
-
-                                post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
-                                post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
-
-                                postList.add(post);
-                            }
-                        }
-                        postAdapter.notifyDataSetChanged();
                     }
 
                 });
