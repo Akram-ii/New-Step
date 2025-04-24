@@ -42,10 +42,15 @@
 
         <com.example.newstep.CustomViews.CurvedBottomNavigationView
             android:id="@+id/bottomMenu"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:paddingTop="0dp"
+            app:itemIconTint="@drawable/nav"
+            app:itemTextColor="@drawable/nav"
+            app:itemActiveIndicatorStyle="@color/blue"
+            android:backgroundTintMode="add"
             android:layout_marginTop="0dp"
             app:menu="@menu/bottom_menu"
             android:backgroundTint="@color/light_blue"
