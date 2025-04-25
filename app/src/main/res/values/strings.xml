@@ -19,5 +19,6 @@
         <item>fr</item>
     </string-array>
 
+    <string name="toggle_password">Toggle password visibility</string>
 
 </resources>

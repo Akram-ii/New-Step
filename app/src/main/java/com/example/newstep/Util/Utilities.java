@@ -118,6 +118,11 @@ public class Utilities {
             }
         }
     }
+    public static String formatTimestamp(Timestamp timestamp) {
+        if (timestamp == null) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault());
+        return sdf.format(timestamp.toDate());
+    }
     private static final int[] POINT_THRESHOLDS = {
             0, 25, 75, 150, 300, 500, 1000, 2000, 4000, 10000
     };

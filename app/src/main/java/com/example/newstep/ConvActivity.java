@@ -46,13 +46,13 @@ public class ConvActivity extends AppCompatActivity {
     TextView otherUsername;
     EditText msg;
 
-    ImageButton back,sendMSG;
-    ImageView pfp,activity;
+    ImageButton back, sendMSG;
+    ImageView pfp, activity;
     String chatroomId;
     ChatroomModel chatroomModel;
     ChatRecyclerAdapter adapter;
     String currentUserName;
-    RecyclerView recyclerView,recyclerViewOther;
+    RecyclerView recyclerView, recyclerViewOther;
     SearchUserRecyclerAdapter adapter2;
     UserModel otherUser;
 
@@ -63,42 +63,39 @@ public class ConvActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conv);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
 
-        userSentAMsg=false;
-        otherUser= FirebaseUtil.getUserModelFromIntent(getIntent());
-        otherUsername=findViewById(R.id.usernameTextView);
 
-        msg=findViewById(R.id.msg_EditText);
-        pfp=findViewById(R.id.pfp);
-        recyclerViewOther=findViewById(R.id.reyclerOther);
-        activity=findViewById(R.id.activity);
-        recyclerView=findViewById(R.id.msgsRecyclerView);
-        back=findViewById(R.id.back_ImageButton);
-        sendMSG=findViewById(R.id.send_ImageButton);
+        userSentAMsg = false;
+        otherUser = FirebaseUtil.getUserModelFromIntent(getIntent());
+        otherUsername = findViewById(R.id.usernameTextView);
+
+        msg = findViewById(R.id.msg_EditText);
+        pfp = findViewById(R.id.pfp);
+
+        activity = findViewById(R.id.activity);
+        recyclerView = findViewById(R.id.msgsRecyclerView);
+        back = findViewById(R.id.back_ImageButton);
+        sendMSG = findViewById(R.id.send_ImageButton);
         otherUsername.setText(otherUser.getUsername());
         currentUserName=FirebaseUtil.getCurrentUsername(ConvActivity.this);
         chatroomId= FirebaseUtil.getChatroomId(FirebaseUtil.getCurrentUserId(),otherUser.getId());
+        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.getCurrentUserId(), otherUser.getId());
         getOrCreateChatroomModel();
-        back.setOnClickListener(v->{
+        back.setOnClickListener(v -> {
             onBackPressed();
         });
 
-        FirebaseUtil.loadPfp(otherUser.getId(),pfp);
+        FirebaseUtil.loadPfp(otherUser.getId(), pfp);
 
         sendMSG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message=msg.getText().toString().trim();
-                if(message=="" || message.isEmpty()){
+                String message = msg.getText().toString().trim();
+                if (message == "" || message.isEmpty()) {
 
-                }else{
-                    userSentAMsg=true;
+                } else {
+                    userSentAMsg = true;
                     sendMessageToUser(message);
 
                 }
@@ -129,42 +126,43 @@ public class ConvActivity extends AppCompatActivity {
             }
         });
         SetupRecyclerView();
-        recyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() -1);
-        setupRecyclerViewother();
-    }
+        recyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() - 1);
 
-    public void sendMessageNotificationToUser(String idRecever, String message){
+    }
+    public void sendMessageNotificationToUser(String idRecever, String message) {
         FirebaseUtil.allUserCollectionRef().document(idRecever).get().addOnSuccessListener(documentSnapshot -> {
-            if(documentSnapshot.exists()&& documentSnapshot!= null){
-                String ReceverToken= documentSnapshot.getString("token");
-                NotifOnline notifOnline= new NotifOnline(ReceverToken,"new message from "+ currentUserName,message,ConvActivity.this);
+            if (documentSnapshot.exists() && documentSnapshot != null) {
+                String ReceverToken = documentSnapshot.getString("token");
+                NotifOnline notifOnline = new NotifOnline(ReceverToken, "new message from " + currentUserName, message, ConvActivity.this);
                 notifOnline.sendNotif();
             }
         });
-
-
     }
 
+    private void getUsername() {
 
+        FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        currentUserName = documentSnapshot.getString("username");
 
-
-    private void setupRecyclerViewother() {
-        String textUsername=otherUser.getUsername();
-        Query query = FirebaseFirestore.getInstance().collection("Users").whereEqualTo("username",textUsername);
-        FirestoreRecyclerOptions<UserModel> options=new FirestoreRecyclerOptions.Builder<UserModel>().setQuery(query,UserModel.class).build();
-        adapter2=new SearchUserRecyclerAdapter(options,this);
-        recyclerViewOther.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewOther.setAdapter(adapter2);
-        adapter2.startListening();
-
+                    } else {
+                        currentUserName = "";
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error fetching username: ", e);
+                    currentUserName = "";
+                });
     }
+
 
     private void SetupRecyclerView() {
 
-        Query query =FirebaseUtil.getChatroomMsgRef(chatroomId).orderBy("timestamp", Query.Direction.DESCENDING);
-        FirestoreRecyclerOptions<ChatMsgModel> options=new FirestoreRecyclerOptions.Builder<ChatMsgModel>().setQuery(query,ChatMsgModel.class).build();
-        adapter=new ChatRecyclerAdapter(options,this,chatroomId);
-        LinearLayoutManager manager=new LinearLayoutManager(this);
+        Query query = FirebaseUtil.getChatroomMsgRef(chatroomId).orderBy("timestamp", Query.Direction.DESCENDING);
+        FirestoreRecyclerOptions<ChatMsgModel> options = new FirestoreRecyclerOptions.Builder<ChatMsgModel>().setQuery(query, ChatMsgModel.class).build();
+        adapter = new ChatRecyclerAdapter(options, this, chatroomId);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setReverseLayout(true);
 
         recyclerView.setLayoutManager(manager);
@@ -184,13 +182,13 @@ public class ConvActivity extends AppCompatActivity {
         FirebaseUtil.getChatroomRef(chatroomId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    chatroomModel=task.getResult().toObject(ChatroomModel.class);
-                    if(chatroomModel==null){
-                        chatroomModel=new ChatroomModel(chatroomId
+                if (task.isSuccessful()) {
+                    chatroomModel = task.getResult().toObject(ChatroomModel.class);
+                    if (chatroomModel == null) {
+                        chatroomModel = new ChatroomModel(chatroomId
                                 , Arrays.asList(FirebaseUtil.getCurrentUserId()
-                                ,otherUser.getId())
-                                , Timestamp.now(),"","",0,0,0,"","","","");
+                                , otherUser.getId())
+                                , Timestamp.now(), "", "", 0,0,0,"","","","");
                         FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel);
                     } else if (!chatroomModel.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId())) {
                         chatroomModel.setUnseenMsg(0);
@@ -201,15 +199,16 @@ public class ConvActivity extends AppCompatActivity {
             }
         });
     }
+
     private void sendMessageToUser(String message1) {
         FirebaseUtil.allChatroomCollectionRef().document(chatroomId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if(error!=null){
+                if (error != null) {
                     return;
                 }
                 if (value != null && value.exists()) {
-                    chatroomModel.setUnseenMsg(value.getLong("unseenMsg").intValue()+1);
+                    chatroomModel.setUnseenMsg(value.getLong("unseenMsg").intValue() + 1);
                 }
             }
         });
@@ -217,7 +216,7 @@ public class ConvActivity extends AppCompatActivity {
         chatroomModel.setLastMsgSenderId(FirebaseUtil.getCurrentUserId());
         chatroomModel.setLastMsgTimeStamp(Timestamp.now());
         FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel);
-        ChatMsgModel chatMsgModel=new ChatMsgModel(message1,FirebaseUtil.getCurrentUserId(),Timestamp.now());
+        ChatMsgModel chatMsgModel = new ChatMsgModel(message1, FirebaseUtil.getCurrentUserId(), Timestamp.now());
         FirebaseUtil.getChatroomMsgRef(chatroomId).add(chatMsgModel).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
             @Override
             public void onComplete(@NonNull Task<DocumentReference> task) {
@@ -237,9 +236,9 @@ public class ConvActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        if(getIntent().getStringExtra("lastMsgId")!=FirebaseUtil.getCurrentUserId()){
-            if(!userSentAMsg) {
+    public void onBackPressed() {
+        if (getIntent().getStringExtra("lastMsgId") != FirebaseUtil.getCurrentUserId()) {
+            if (!userSentAMsg) {
                 FirebaseUtil.allChatroomCollectionRef().document(chatroomId).update("unseenMsg", 0);
             }
 
