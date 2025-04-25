@@ -7,11 +7,14 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,23 +25,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.newstep.Adapters.LeaderBoardAdapter;
+import com.example.newstep.Models.UserModel;
 import com.example.newstep.ProgressActivity;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Databases.QuoteDatabaseHelper;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
-    TextView textViewQuote,welcome;
+    TextView textViewQuote;
     QuoteDatabaseHelper dbHelper;
     String quote;
     ImageView click;
-    Button g;
-    CardView ProgressCard,BadgesCard;
+    RecyclerView leaderBoard;
+    LeaderBoardAdapter adapter;
+    CardView ProgressCard,BadgesCard,GoalsCard,CommunityCard;
     long lastUpdatedTime;
     FirebaseFirestore fdb;
     @Override
@@ -47,37 +59,16 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         textViewQuote = rootView.findViewById(R.id.quote_textView);
         click=rootView.findViewById(R.id.clickIcon);
-        welcome=rootView.findViewById(R.id.welcomeText);
-        g=rootView.findViewById(R.id.goals_button);
+
+        GoalsCard=rootView.findViewById(R.id.goals_card);
+        leaderBoard=rootView.findViewById(R.id.leader_board);
+        CommunityCard=rootView.findViewById(R.id.commu_card);
         BadgesCard=rootView.findViewById(R.id.badges_card);
         ProgressCard =rootView.findViewById(R.id.progress_card);
         fdb=FirebaseFirestore.getInstance();
 
         String currentUserId = FirebaseUtil.getCurrentUserId();
-
-        if (currentUserId != null) {
-
-            fdb.collection("Users").document(currentUserId).get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                String username = document.getString("username");
-                                if (username != null) {
-                                    welcome.setText("Welcome " + username+"!");
-                                } else {
-                                    welcome.setText("Welcome!");
-                                }
-                            }
-                        }
-                    });
-        } else {
-
-            welcome.setText("Welcome!");
-        }
-
-
-
+loadUsersLeaderBoard();
         dbHelper = new QuoteDatabaseHelper(getContext());
         String[] quoteData = dbHelper.getQuote();
         quote = quoteData[0];
@@ -106,7 +97,7 @@ public class HomeFragment extends Fragment {
       });
 
 
-        g.setOnClickListener(new View.OnClickListener() {
+        GoalsCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -165,6 +156,35 @@ public class HomeFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private void loadUsersLeaderBoard() {
+    FirebaseUtil.allUserCollectionRef().orderBy("points", Query.Direction.DESCENDING).limit(10).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        @Override
+        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            List<UserModel> topUsers = new ArrayList<>();
+            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                String username = doc.getString("username");
+                Long points = doc.getLong("points");
+                String profileImage = doc.getString("profileImage");
+                if (username != null && points != null) {
+                    topUsers.add(new UserModel(username,profileImage,points.intValue()));
+                }
+                setupRecycler(topUsers);
+            }
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+       Toast.makeText(getContext(),"Error loading the leaderboard: "+e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    });
+    }
+
+    private void setupRecycler(List<UserModel> topUsers) {
+        leaderBoard.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new LeaderBoardAdapter(topUsers, getContext());
+        leaderBoard.setAdapter(adapter);
     }
 
 

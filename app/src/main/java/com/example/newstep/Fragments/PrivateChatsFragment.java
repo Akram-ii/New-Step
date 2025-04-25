@@ -76,7 +76,7 @@ public class PrivateChatsFragment extends Fragment {
     public void SetupRecyclerView() {
 
         Query query = FirebaseUtil.allChatroomCollectionRef()
-                .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId())
+                .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId()).orderBy("lastMsgTimeStamp", Query.Direction.DESCENDING)
               ;
 
         FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>().setQuery(query, ChatroomModel.class).build();
