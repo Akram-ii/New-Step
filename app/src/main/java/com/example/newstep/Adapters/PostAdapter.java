@@ -99,8 +99,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         PostModel post = postList.get(position);
         String postId = post.getId();
-
-
+if(post.getUserId()==FirebaseUtil.getCurrentUserId()){
+    holder.btnReport.setVisibility(View.GONE);
+}
         Glide.with(holder.itemView.getContext())
                 .load(post.getProfileImageUrl())
                 .placeholder(R.drawable.pfp_purple)

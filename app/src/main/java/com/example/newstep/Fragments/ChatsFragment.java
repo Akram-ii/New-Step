@@ -35,12 +35,25 @@ MyPagerChats pagerAdapter;
 
             if (position == 0) {
                 tab.setText("My Chats");
+
             } else if (position == 1) {
                 tab.setText("Group Chats");
             }
 
         }).attach();
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
 
+                if (position == 0) {
+                    Fragment fragment = pagerAdapter.getFragmentAt(0);
+                    if (fragment instanceof PrivateChatsFragment) {
+                        ((PrivateChatsFragment) fragment).SetupRecyclerView();
+                    }
+                }
+            }
+        });
     return rootView;
     }
 }

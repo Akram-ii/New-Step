@@ -74,11 +74,9 @@ Context context;
 
 if("Private".equals(model.getPrivacy())){
     holder.privateIc.setVisibility(View.VISIBLE);
-    holder.publicIc.setVisibility(View.GONE);
 }
 if("Public".equals(model.getPrivacy())){
     holder.privateIc.setVisibility(View.GONE);
-    holder.publicIc.setVisibility(View.VISIBLE);
 }
     holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -151,7 +149,7 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     }
     class ChatroomModelViewHolder extends RecyclerView.ViewHolder{
        private TextView groupName,nbr_members,ownerUsername;
-       private ImageView pfp,privateIc,publicIc;
+       private ImageView pfp,privateIc;
         public ChatroomModelViewHolder(@NonNull View itemView) {
             super(itemView);
             groupName=itemView.findViewById(R.id.group_name);
@@ -159,7 +157,6 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             ownerUsername=itemView.findViewById(R.id.owner_username);
             pfp=itemView.findViewById(R.id.group_pic_image);
             privateIc=itemView.findViewById(R.id.privateIc);
-            publicIc=itemView.findViewById(R.id.publicIc);
         }
 
     }

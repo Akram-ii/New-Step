@@ -73,7 +73,7 @@ public class PrivateChatsFragment extends Fragment {
         SetupRecyclerView();
     }
 
-    private void SetupRecyclerView() {
+    public void SetupRecyclerView() {
 
         Query query = FirebaseUtil.allChatroomCollectionRef()
                 .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId())

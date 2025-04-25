@@ -71,17 +71,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 />
-            <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/unlock"
-            app:tint="@color/purple"
-                android:visibility="gone"
-            android:layout_centerVertical="true"
-            android:id="@+id/publicIc"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            />
+
         </RelativeLayout>
     </LinearLayout>
 
