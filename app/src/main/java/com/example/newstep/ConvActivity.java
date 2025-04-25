@@ -129,15 +129,15 @@ public class ConvActivity extends AppCompatActivity {
         recyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() - 1);
 
     }
-    public void sendMessageNotificationToUser(String idRecever, String message){
+    public void sendMessageNotificationToUser(String idRecever, String message) {
         FirebaseUtil.allUserCollectionRef().document(idRecever).get().addOnSuccessListener(documentSnapshot -> {
-            if(documentSnapshot.exists()&& documentSnapshot!= null){
-                String ReceverToken= documentSnapshot.getString("token");
-                NotifOnline notifOnline= new NotifOnline(ReceverToken,"new message from "+ currentUserName,message,ConvActivity.this);
+            if (documentSnapshot.exists() && documentSnapshot != null) {
+                String ReceverToken = documentSnapshot.getString("token");
+                NotifOnline notifOnline = new NotifOnline(ReceverToken, "new message from " + currentUserName, message, ConvActivity.this);
                 notifOnline.sendNotif();
             }
         });
-}
+    }
 
     private void getUsername() {
 
@@ -188,7 +188,7 @@ public class ConvActivity extends AppCompatActivity {
                         chatroomModel = new ChatroomModel(chatroomId
                                 , Arrays.asList(FirebaseUtil.getCurrentUserId()
                                 , otherUser.getId())
-                                , Timestamp.now(), "", "", 0);
+                                , Timestamp.now(), "", "", 0,0,0,"","","","");
                         FirebaseUtil.getChatroomRef(chatroomId).set(chatroomModel);
                     } else if (!chatroomModel.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId())) {
                         chatroomModel.setUnseenMsg(0);

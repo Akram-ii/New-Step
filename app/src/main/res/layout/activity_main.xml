@@ -8,15 +8,14 @@
     android:background="@color/blue"
     tools:context=".MainActivity"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
     >
     <FrameLayout
         android:id="@+id/dim_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#80000000"
-        android:visibility="gone"
-        android:clickable="true"/>
+    android:visibility="gone"
+    android:clickable="true"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,10 +30,13 @@
             android:layout_height="75dp"
             android:paddingTop="25dp"
             app:title=""
-            android:background="@color/blue"
-            />
+            android:background="@color/blue"/>
         <FrameLayout
+
             android:id="@+id/fragment_container"
+
+
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_below="@id/toolbar"
@@ -42,27 +44,17 @@
 
         <com.example.newstep.CustomViews.CurvedBottomNavigationView
             android:id="@+id/bottomMenu"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:paddingTop="0dp"
-            app:itemIconTint="@drawable/nav"
-            app:itemTextColor="@drawable/nav"
-            app:itemActiveIndicatorStyle="@color/blue"
-            android:backgroundTintMode="add"
             android:layout_marginTop="0dp"
             app:menu="@menu/bottom_menu"
-            android:layout_alignParentBottom="true"
-app:labelVisibilityMode="labeled"
-            android:backgroundTint="@color/light_blue"
-
+            android:background="@color/light_blue"
+            app:itemIconTint="@drawable/nav"
 
 
             />
-
-
-
     </RelativeLayout>
 
 
@@ -82,7 +74,7 @@ app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/blue"
         app:itemTextAppearanceActiveBoldEnabled="true"
         android:backgroundTint="@color/offWhite"
-        android:background="@drawable/rounded_nav_background"
+        android:background="@color/black"
         android:layout_gravity="start">
 
     </com.google.android.material.navigation.NavigationView>
