@@ -91,7 +91,7 @@ ProgressDialog p;
                 userInfo.put("isBanned",false);
                 userInfo.put("whenBannedComments",Timestamp.now());
                 userInfo.put("whenBannedPosts",Timestamp.now());
-
+                userInfo.put("points",0);
                 userInfo.put("isBannedComments",false);
                 userInfo.put("isBannedPosts",false);
                 userInfo.put("isRestricted",false);

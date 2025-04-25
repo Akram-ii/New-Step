@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp"
+    android:elevation="10dp"
+    android:layout_margin="20dp"
+    android:backgroundTint="@color/light_blue"
+    android:background="@drawable/goal_background_item"
+    >
+    <ImageView
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/back"
+        android:src="@drawable/back_ic"
+        app:tint="@color/blue"
+
+        />
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Us a Message"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:id="@+id/t1"
+        android:textColor="@color/blue"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+    <EditText
+        android:inputType="textCapWords"
+        android:backgroundTint="@color/light_blue"
+        android:layout_below="@+id/t1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:maxLines="2"
+        android:imeOptions="actionNext"
+        android:hint="Title of your message"
+        android:textColorHint="@color/gray"
+        android:padding="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginHorizontal="50dp"
+        android:textColor="@color/black"
+        android:elevation="10dp"
+        android:background="@drawable/button_background"
+
+        />
+
+    <EditText
+        android:imeOptions="actionDone"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:elevation="10dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/desc"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:hint="Please provide further details"
+        android:maxLines="4"
+        android:lines="5"
+        android:text=""
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_background"
+        />
+    <TextView
+        android:layout_marginBottom="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/cat"
+        android:textColor="@color/blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@+id/desc"
+        android:layout_marginTop="9dp"
+        android:text="Choose a message type"
+        />
+<Spinner
+    android:background="@drawable/goal_background_item"
+    android:id="@+id/spinner"
+    android:layout_width="match_parent"
+    android:elevation="10dp"
+    android:padding="5dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_below="@+id/cat"
+    android:layout_height="wrap_content"
+
+    />
+
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:elevation="10dp"
+        android:text="Send"
+        android:layout_below="@+id/spinner"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="5dp"
+        app:cornerRadius="20dp"
+        android:backgroundTint="@color/blue"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>
+
+

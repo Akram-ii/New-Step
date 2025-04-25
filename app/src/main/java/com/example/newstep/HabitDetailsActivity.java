@@ -1,6 +1,5 @@
 package com.example.newstep;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -11,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +25,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.newstep.Adapters.DailyNotesAdapter;
 import com.example.newstep.Models.DailyNoteModel;
-import com.example.newstep.R;
-import com.example.newstep.Util.DatabaseHelper;
+import com.example.newstep.Databases.MyHabitsDatabaseHelper;
 import com.example.newstep.Util.Utilities;
 import com.google.firebase.Timestamp;
 
@@ -38,7 +35,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<DailyNoteModel> dailyNoteModel;
     int habitId;
-    DatabaseHelper db;
+    MyHabitsDatabaseHelper db;
     DailyNotesAdapter adapter;
     Button log;
     ImageButton back;
@@ -62,7 +59,7 @@ public class HabitDetailsActivity extends AppCompatActivity {
         back.setOnClickListener(v->{
             onBackPressed();
         });
-        db=new DatabaseHelper(this);
+        db=new MyHabitsDatabaseHelper(this);
         recyclerView=findViewById(R.id.recyclerView);
         log=findViewById(R.id.logBtn);
         habitId=getIntent().getIntExtra("habit_id",-1);

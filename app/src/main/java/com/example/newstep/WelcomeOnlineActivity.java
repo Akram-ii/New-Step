@@ -49,6 +49,7 @@ public class WelcomeOnlineActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             startActivity(new Intent(WelcomeOnlineActivity.this, WelcomeOfflineActivity.class));
+            finish();
         }
     });
     }

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.GoalsFragment">
+
+    <RelativeLayout
+        android:backgroundTint="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:id="@+id/l1"
+        android:background="@drawable/goal_background_item"
+
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="20dp"
+        >
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/add_goal"
+
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/icon_add"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/blue" />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="7 Goals"
+    android:id="@+id/nb_goals"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="10dp"
+    android:textSize="24sp"
+    android:textColor="@color/blue"
+    android:textStyle="bold"
+    />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start now! Set a Goal"
+            android:textColor="@color/gray"
+            android:id="@+id/text_under_nb"
+            android:layout_below="@id/nb_goals"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Average progress"
+            android:layout_above="@+id/average_progress"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:id="@+id/average_progress"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            android:text="70%"
+            />
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In-progress"
+            android:id="@+id/t1"
+            android:layout_above="@+id/nb_in_progress"
+            />
+        <TextView
+            android:layout_alignEnd="@+id/t1"
+            android:layout_alignStart="@+id/t1"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:id="@+id/nb_in_progress"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            android:text="3"
+            />
+
+        <TextView
+            android:textColor="@color/black"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Completed"
+            android:id="@+id/t3"
+            android:layout_above="@+id/nb_in_progress"
+            />
+        <TextView
+            android:layout_alignEnd="@+id/t3"
+            android:layout_alignStart="@+id/t3"
+            android:textAlignment="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/blue"
+            android:id="@+id/nb_completed"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            android:text="4"
+            />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:backgroundTint="@color/white"
+            android:layout_below="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@drawable/habits_details_shape">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="20dp"
+                android:id="@+id/recycler_goals"
+                />
+
+
+
+        </RelativeLayout>
+    </RelativeLayout>

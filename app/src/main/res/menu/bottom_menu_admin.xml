@@ -25,4 +25,10 @@
         android:title="Banned accounts"
         android:iconTint="@color/purple"
         />
+    <item
+        android:icon="@drawable/icon_info"
+        android:id="@+id/nav_contactRep"
+        android:title="Contact Report"
+        android:iconTint="@color/purple"
+        />
 </menu>

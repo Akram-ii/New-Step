@@ -1,6 +1,4 @@
-package com.example.newstep.Util;
-
-import static android.app.DownloadManager.COLUMN_ID;
+package com.example.newstep.Databases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 
 import com.example.newstep.Models.DailyNoteModel;
 import com.example.newstep.Models.HabitModel;
@@ -18,7 +14,7 @@ import com.example.newstep.Models.HabitModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "habit_tracker.db";
     private static final int DATABASE_VERSION = 3;
 
@@ -37,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_NOTE = "note";
     private static final String COLUMN_MOOD = "mood";
-    public DatabaseHelper(Context context) {
+    public MyHabitsDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

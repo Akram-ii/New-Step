@@ -2,6 +2,7 @@ package com.example.newstep.Util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +31,13 @@ public class FirebaseUtil {
         return userModel;
     }
     public static String getCurrentUserId(){
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser UserId=FirebaseAuth.getInstance().getCurrentUser();
+        if(UserId!=null){
+            return UserId.getUid();
+        }
+        else{
+            return null;
+        }
     }
     public static CollectionReference allUserCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Users");
@@ -47,7 +55,10 @@ public class FirebaseUtil {
             return userid2  +"_"+userid1;
         }}
 
-
+public static String getCurrentUsername(Context context){
+    SharedPreferences sharedPreferences = context.getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+     return sharedPreferences.getString("currUserName", "default_value");
+}
 
     public static CollectionReference allChatroomCollectionRef(){
         return FirebaseFirestore.getInstance().collection("Chatrooms");
@@ -57,6 +68,9 @@ public class FirebaseUtil {
     }
     public static CollectionReference allPostsReportCollectionRef(){
         return FirebaseFirestore.getInstance().collection("reportPosts");
+    }
+    public static CollectionReference allcontactCollectionRef(){
+        return FirebaseFirestore.getInstance().collection("contact");
     }
     public static CollectionReference allPostsCollectionRef(){
         return FirebaseFirestore.getInstance().collection("posts");

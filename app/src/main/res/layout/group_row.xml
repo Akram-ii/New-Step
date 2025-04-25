@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -7,27 +8,31 @@
     android:background="@drawable/textview_background"
     android:elevation="2dp">
 
-    <include layout="@layout/grp_pfp"
+    <include
+        layout="@layout/grp_pfp"
         android:layout_height="52dp"
         android:layout_width="52dp"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
-        />
+        android:layout_margin="10dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
                 android:textColor="@color/purple"
                 android:layout_width="wrap_content"
                 android:id="@+id/group_name"
                 android:layout_height="wrap_content"
                 android:text="Loading..."
-                android:textSize="24sp"/>
+                android:layout_marginRight="60dp"
+                android:textSize="24sp" />
 
             <TextView
                 android:layout_marginTop="5dp"
@@ -37,12 +42,14 @@
                 android:layout_marginRight="20dp"
                 android:id="@+id/nbr_members"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:layout_centerVertical="true"
                 android:id="@+id/owner_username"
@@ -51,7 +58,20 @@
                 android:layout_marginRight="55dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkGray"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lock"
+                app:tint="@color/purple"
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:id="@+id/privateIc"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                />
+
         </RelativeLayout>
     </LinearLayout>
 

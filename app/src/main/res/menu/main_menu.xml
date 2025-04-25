@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:title="Home"
@@ -8,8 +9,14 @@
         <item
             android:icon="@drawable/icon_my_habits"
             android:id="@+id/nav_my_habits"
-            android:title="My Habits"
-        />
+            android:title="Recovery"
+            />
+        <item
+            android:icon="@drawable/goal10"
+            android:id="@+id/nav_my_goals"
+            android:title="Goals"
+            />
+
         <item
             android:icon="@drawable/icon_community"
             android:id="@+id/nav_community"
@@ -18,22 +25,30 @@
             android:icon="@drawable/icon_chats"
             android:id="@+id/nav_chats"
             android:title="Chats"
-        />
-
+            />
         <item
-            android:icon="@drawable/icon_settings"
-            android:id="@+id/nav_settings"
-            android:title="Settings" />
+            android:icon="@drawable/group12"
+            android:id="@+id/nav_my_badge"
+            android:title="My Badge"
+            />
 
+        <item android:title="Account &amp; Support">
+            <menu>
+                <item
+                    android:icon="@drawable/pfp_blue"
+                    android:id="@+id/nav_profile"
+                    android:title="Profile" />
+                <item
+                    android:icon="@drawable/icon_settings"
+                    android:id="@+id/nav_settings"
+                    android:title="Settings" />
+                <item
+                    android:icon="@drawable/icon_info"
+                    android:id="@+id/nav_contact"
+                    android:title="Contact Us" />
+            </menu>
 
-        <item
-            android:id="@+id/nav_about"
-            android:title="About us"
-            android:icon="@drawable/icon_about" />
-
-        <!--<item
-            android:id="@+id/nav_log"
-            android:title="Log out"
-            android:icon="@drawable/icon_logout" />-->
+        </item>
+    </group>
 
 </menu>

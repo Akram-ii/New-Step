@@ -16,6 +16,7 @@ public class UserModel {
 
     private String registerDate;
     private String id;
+    int points;
 
     private int availability;
 
@@ -84,18 +85,10 @@ public class UserModel {
     }
     private int nb_reports;
 
-    public String getCat() {
-        return cat;
-    }
 
-    public void setCat(String cat) {
-        this.cat = cat;
-    }
-
-    public UserModel(String username, String token, String cat, String registerDate, String id, int availability) {
+    public UserModel(String username, String token, String registerDate, String id, int availability) {
         this.username = username;
         this.token = token;
-        this.cat = cat;
         this.registerDate = registerDate;
         this.id = id;
         this.availability = availability;
@@ -133,8 +126,6 @@ public class UserModel {
     public void setToken(String token) {
         this.token = token;
     }
-
-
     public UserModel(String name, String date,String id) {
         this.username = name;
         this.registerDate = date;

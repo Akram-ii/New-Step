@@ -7,6 +7,7 @@ import android.text.TextPaint;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.newstep.Fragments.AdminBannedAccountsFragment;
 import com.example.newstep.Fragments.AdminCommentsFragment;
+import com.example.newstep.Fragments.AdminContactFragment;
 import com.example.newstep.Fragments.AdminPostsFragment;
 import com.example.newstep.Fragments.AdminRestrictedAccountsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,7 +28,7 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -51,6 +53,8 @@ public class AdminActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminPostsFragment()).commit();
             } else if (item.getItemId()==R.id.nav_Banned) {
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminBannedAccountsFragment()).commit();
+            }else if(item.getItemId()==R.id.nav_contactRep){
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new AdminContactFragment()).commit();
             }
             back=findViewById(R.id.back);
             back.setOnClickListener(v->{

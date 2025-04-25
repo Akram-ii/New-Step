@@ -33,6 +33,11 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-messaging:24.1.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
     implementation 'com.google.firebase:firebase-auth:23.1.0'
     implementation 'com.google.firebase:firebase-firestore:25.1.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -72,6 +77,7 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     implementation 'com.facebook.android:facebook-login:16.3.0'
 

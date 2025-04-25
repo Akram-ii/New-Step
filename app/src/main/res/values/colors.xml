@@ -15,9 +15,11 @@
     <color name="purple">#877DE0</color>
     <color name="lavender2">#CCCCFF</color>
     <color name="RED">#FF0000</color>
+    <color name="orange">#F28B30</color>
+
     <color name="primaryColor">#6200EE</color>
     <color name="red_for_buttons">#b7251a</color>
     <color name="coldpurple">#50406B</color>
 
-
+<color name="light_gray">#E0E0E0</color>
 </resources>
