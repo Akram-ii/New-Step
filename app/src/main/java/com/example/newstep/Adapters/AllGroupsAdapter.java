@@ -1,8 +1,13 @@
 package com.example.newstep.Adapters;
 
+
+import static com.google.common.reflect.Reflection.getPackageName;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,6 +41,25 @@ Context context;
 }
     @Override
     protected void onBindViewHolder(@NonNull AllGroupsAdapter.ChatroomModelViewHolder holder, int position, @NonNull ChatroomModel model) {
+        if(model.getIcon()!=null){
+            String iconName = model.getIcon();
+            String hexColor = model.getIconColor();
+
+            int resId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+            if (resId != 0) {
+                holder.pfp.setImageResource(resId);
+            }
+
+
+            try {
+                int color = Color.parseColor(hexColor);
+                holder.pfp.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                holder.groupName.setTextColor(Color.parseColor(hexColor));
+            } catch (IllegalArgumentException e) {
+
+            }
+        }
+
         FirebaseUtil.allUserCollectionRef().document(model.getOwnerId()).get()
                 .addOnSuccessListener(documentSnapshot -> {
                    holder.ownerUsername.setText("Created by "+documentSnapshot.getString("username"));
@@ -48,6 +72,12 @@ Context context;
         }
         holder.groupName.setText(model.getGroupName());
 
+if("Private".equals(model.getPrivacy())){
+    holder.privateIc.setVisibility(View.VISIBLE);
+}
+if("Public".equals(model.getPrivacy())){
+    holder.privateIc.setVisibility(View.GONE);
+}
     holder.itemView.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -55,6 +85,9 @@ Context context;
                 Toast.makeText(context,"You are already member of this group",Toast.LENGTH_SHORT).show();
             }
             else {
+                if("Private".equals(model.getPrivacy())){
+                Toast.makeText(context,"This Group is Private you need to contact the owner so they can let you in",Toast.LENGTH_LONG).show();
+                }else{
                 new AlertDialog.Builder(context).setMessage("Do you want to join this group chat ?")
                         .setPositiveButton("Join", (dialog, which) -> {
                             FirebaseUtil.allChatroomCollectionRef().document(model.getChatroomId())
@@ -71,8 +104,9 @@ Context context;
                         .show();
 
             }
-        }
+        }}
     });
+
 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     @Override
     public boolean onLongClick(View view) {
@@ -115,13 +149,14 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     }
     class ChatroomModelViewHolder extends RecyclerView.ViewHolder{
        private TextView groupName,nbr_members,ownerUsername;
-       private ImageView pfp;
+       private ImageView pfp,privateIc;
         public ChatroomModelViewHolder(@NonNull View itemView) {
             super(itemView);
             groupName=itemView.findViewById(R.id.group_name);
             nbr_members=itemView.findViewById(R.id.nbr_members);
             ownerUsername=itemView.findViewById(R.id.owner_username);
             pfp=itemView.findViewById(R.id.group_pic_image);
+            privateIc=itemView.findViewById(R.id.privateIc);
         }
 
     }

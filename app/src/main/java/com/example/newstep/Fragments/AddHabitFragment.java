@@ -1,10 +1,6 @@
 package com.example.newstep.Fragments;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static android.content.Context.MODE_PRIVATE;
 import static android.database.sqlite.SQLiteDatabase.openOrCreateDatabase;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.app.AlarmManager;
 import android.app.AlertDialog;
@@ -16,32 +12,25 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.newstep.Models.HabitModel;
 import com.example.newstep.R;
-import com.example.newstep.Util.DatabaseHelper;
+import com.example.newstep.Databases.MyHabitsDatabaseHelper;
 import com.example.newstep.Util.NotifReceiver;
 import com.example.newstep.Util.Utilities;
 import com.google.firebase.Timestamp;
@@ -55,7 +44,7 @@ public class AddHabitFragment extends Fragment {
     Button addBtn;
     TextView lastTime,cat,reminderTime;
     String catIn="";
-    DatabaseHelper db;
+    MyHabitsDatabaseHelper db;
     SQLiteDatabase notifDB;
     String ti="Stay on track !";
     String desc=" : Don't forget to log your day";
@@ -69,7 +58,7 @@ public class AddHabitFragment extends Fragment {
 initDatePicker();
         notifDB = requireContext().openOrCreateDatabase("reminderDB", Context.MODE_PRIVATE, null);
         notifDB.execSQL("CREATE TABLE IF NOT EXISTS Reminder(Time TEXT, Title TEXT, Description TEXT);");
-        db=new DatabaseHelper(getContext());
+        db=new MyHabitsDatabaseHelper(getContext());
         addBtn=rootView.findViewById(R.id.addHabitBtn);
         reminderTime=rootView.findViewById(R.id.reminderTime_TextView);
         name=rootView.findViewById(R.id.name_EditText);

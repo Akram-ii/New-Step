@@ -9,6 +9,9 @@
 
     <style name="Theme.NewStep" parent="Base.Theme.NewStep" />
 
+    <style name="CustomOverflowMenu" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:tint">@color/black</item>
+    </style>
 
     <style name="add_rmove_Dialog" parent="Theme.Material3.DayNight.Dialog.Alert">
         <item name="colorPrimary">@color/black</item>
@@ -20,8 +23,9 @@
     </style>
 
 
-
-
-
+    <style name="PopupSmoothAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_in</item>
+        <item name="android:windowExitAnimation">@anim/popup_out</item>
+    </style>
 
 </resources>

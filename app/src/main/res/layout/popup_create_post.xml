@@ -18,18 +18,33 @@
         <EditText
             android:id="@+id/editTextPostContent"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="top"
             android:hint="What's on your mind?..."
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textCapSentences"
-            android:minHeight="250dp"
             android:padding="16dp"
             android:scrollbars="vertical"
             android:textColor="@color/black"
             android:textSize="15sp" />
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="select a category :"
+            android:textColor="@color/purple"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner_category"
+            android:background="@drawable/spinner_category_background"/>
 
         <LinearLayout
             android:id="@+id/buttonLayout"
@@ -58,5 +73,7 @@
                 app:backgroundTint="@color/purple"
                 app:cornerRadius="20dp" />
         </LinearLayout>
+
+
     </LinearLayout>
 </RelativeLayout>

@@ -5,25 +5,30 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class PostModel {
+    private String category;
     private String id;
     private String userName;
-    private String content;
+    private String content,userId;
     private Timestamp timestamp;
     private int likes;
     private int dislikes;
     private List<String> likedBy;
     private List<String> dislikedBy;
+    private String profileImageUrl;
 
     public PostModel() {
     }
 
-    public PostModel(String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp) {
+    public PostModel(String userId,String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp , String profileImageUrl,String cat) {
         this.id = id;
         this.content = content;
         this.userName=userName;
         this.likes = likes;
         this.dislikes = dislikes;
         this.timestamp= timestamp;
+        this.profileImageUrl = profileImageUrl;
+        this.userId=userId;
+        this.category=cat;
     }
 
     public String getId() {
@@ -73,4 +78,22 @@ public class PostModel {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
+
+    public String getProfileImageUrl() {return profileImageUrl;}
+
+    public String getUserId(){return userId;}
+    public void setUserId(String userId){this.userId = userId;}
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }

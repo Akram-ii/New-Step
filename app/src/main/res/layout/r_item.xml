@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="12dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lavender2"
+        android:padding="12dp">
+
+
+        <ImageView
+            android:id="@+id/RuserPicture"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/pfp_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/RuserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="User Name"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/RuserPicture"
+            app:layout_constraintTop_toTopOf="@id/RuserPicture"
+            app:layout_constraintEnd_toStartOf="@id/Ruserinfo" />
+
+
+        <TextView
+            android:id="@+id/Rcat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toEndOf="@id/RuserPicture"
+            app:layout_constraintTop_toBottomOf="@id/RuserName" />
+
+
+        <ImageView
+            android:id="@+id/Ruserinfo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/icon_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/Rtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=" Title"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/RuserPicture"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <TextView
+            android:id="@+id/Rdesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="description"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/Rtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
+
+

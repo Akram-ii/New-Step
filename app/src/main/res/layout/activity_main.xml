@@ -53,6 +53,8 @@
             android:backgroundTintMode="add"
             android:layout_marginTop="0dp"
             app:menu="@menu/bottom_menu"
+            android:layout_alignParentBottom="true"
+app:labelVisibilityMode="labeled"
             android:backgroundTint="@color/light_blue"
 
 
@@ -80,7 +82,7 @@
         app:itemIconTint="@color/blue"
         app:itemTextAppearanceActiveBoldEnabled="true"
         android:backgroundTint="@color/offWhite"
-        android:background="@color/black"
+        android:background="@drawable/rounded_nav_background"
         android:layout_gravity="start">
 
     </com.google.android.material.navigation.NavigationView>

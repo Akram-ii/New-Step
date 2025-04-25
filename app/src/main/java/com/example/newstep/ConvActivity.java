@@ -28,6 +28,7 @@ import com.example.newstep.Models.ChatMsgModel;
 import com.example.newstep.Models.ChatroomModel;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.NotifOnline;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -77,6 +78,8 @@ public class ConvActivity extends AppCompatActivity {
         back = findViewById(R.id.back_ImageButton);
         sendMSG = findViewById(R.id.send_ImageButton);
         otherUsername.setText(otherUser.getUsername());
+        currentUserName=FirebaseUtil.getCurrentUsername(ConvActivity.this);
+        chatroomId= FirebaseUtil.getChatroomId(FirebaseUtil.getCurrentUserId(),otherUser.getId());
         chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.getCurrentUserId(), otherUser.getId());
         getOrCreateChatroomModel();
         back.setOnClickListener(v -> {
@@ -126,7 +129,15 @@ public class ConvActivity extends AppCompatActivity {
         recyclerView.getLayoutManager().scrollToPosition(adapter.getItemCount() - 1);
 
     }
-
+    public void sendMessageNotificationToUser(String idRecever, String message){
+        FirebaseUtil.allUserCollectionRef().document(idRecever).get().addOnSuccessListener(documentSnapshot -> {
+            if(documentSnapshot.exists()&& documentSnapshot!= null){
+                String ReceverToken= documentSnapshot.getString("token");
+                NotifOnline notifOnline= new NotifOnline(ReceverToken,"new message from "+ currentUserName,message,ConvActivity.this);
+                notifOnline.sendNotif();
+            }
+        });
+}
 
     private void getUsername() {
 
@@ -219,6 +230,8 @@ public class ConvActivity extends AppCompatActivity {
                 }
             }
         });
+
+        sendMessageNotificationToUser(otherUser.getId(),message1);
 
     }
 

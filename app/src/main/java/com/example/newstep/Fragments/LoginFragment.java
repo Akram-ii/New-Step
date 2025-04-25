@@ -1,5 +1,6 @@
 package com.example.newstep.Fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
@@ -31,15 +34,35 @@ import android.widget.Toast;
 
 import com.example.newstep.MainActivity;
 import com.example.newstep.R;
+import com.example.newstep.Util.Utilities;
+import com.google.android.gms.common.SignInButton;
 import com.example.newstep.Util.FirebaseUtil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.example.newstep.Util.FirebaseUtil;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginFragment extends Fragment {
@@ -49,6 +72,12 @@ public class LoginFragment extends Fragment {
     TextView forgot,register;
     FirebaseAuth auth= FirebaseAuth.getInstance();
     ProgressDialog p;
+
+    private GoogleSignInClient googleSignInClient;
+    private FirebaseAuth firebaseAuth;
+    private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 100;
+    private String token1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,6 +90,30 @@ public class LoginFragment extends Fragment {
         password=rootView.findViewById(R.id.password);
         forgot=rootView.findViewById(R.id.forgotPassword);
         register=rootView.findViewById(R.id.registerTextView);
+
+        SignInButton googleSignInButton = rootView.findViewById(R.id.btnGoogleSignIn);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        token1 = task.getResult();
+                    }
+                });
+
+
+        googleSignInButton.setOnClickListener(v -> signInWithGoogle());
+
+
+
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,16 +207,24 @@ public class LoginFragment extends Fragment {
                             FirebaseAuth.getInstance().signOut();
                             ((MainActivity) requireContext()).popupBan();
                         }else{
+                if(user.isEmailVerified()){
+                    Toast.makeText(getContext(),"Welcome!",Toast.LENGTH_SHORT).show();
 
-                            if(user.isEmailVerified()){
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("updateDrawer", true);
+                    startActivity(intent);
+                    getActivity().finish();
 
 
-                                Toast.makeText(getContext(), "Welcome!", Toast.LENGTH_SHORT).show();
-                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                                Fragment existingFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-                                if (existingFragment != null) {
-                                    fragmentManager.beginTransaction().remove(existingFragment).commit();
-                                }
+
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                    Fragment existingFragment = fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+                    if (existingFragment != null) {
+                        fragmentManager.beginTransaction().remove(existingFragment).commit();
+                    }
 
                                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                                 HomeFragment homeFragment = new HomeFragment();
@@ -187,7 +248,6 @@ public class LoginFragment extends Fragment {
             }
         });
     }
-
 
     private void showAlertDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
@@ -233,6 +293,102 @@ public class LoginFragment extends Fragment {
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
     }
+
+
+    private void signInWithGoogle() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        googleSignInLauncher.launch(signInIntent);
+    }
+
+
+    private final ActivityResultLauncher<Intent> googleSignInLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        if (account != null) {
+                            firebaseAuthWithGoogle(account.getIdToken(), token1);
+                        }
+                    } catch (ApiException e) {
+                        Toast.makeText(getContext(), "Google sign-in failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+
+
+    private void firebaseAuthWithGoogle(String idToken, String token1) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                        if (user != null) {
+                            String userId = user.getUid();
+                            String defaultUsername = user.getDisplayName() != null ? user.getDisplayName() : "Unknown";
+                            String registerDate = Utilities.timestampToStringNoDetail(Timestamp.now());
+
+                            DocumentReference userRef = db.collection("Users").document(userId);
+
+                            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                                String profileImageUrl;
+                                String username;
+
+                                if (documentSnapshot.exists()) {
+
+
+                                    String storedProfileImage = documentSnapshot.getString("profileImage");
+                                    profileImageUrl = (storedProfileImage != null && !storedProfileImage.isEmpty())
+                                            ? storedProfileImage
+                                            : (user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
+
+
+                                    String storedUsername = documentSnapshot.getString("username");
+                                    username = (storedUsername != null && !storedUsername.isEmpty())
+                                            ? storedUsername
+                                            : defaultUsername;
+
+                                } else {
+
+                                    profileImageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
+                                    username = defaultUsername;
+                                }
+
+
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("username", username);
+                                userData.put("id", userId);
+                                userData.put("registerDate", registerDate);
+                                userData.put("token", token1);
+                                userData.put("profileImage", profileImageUrl);
+
+
+                                userRef.set(userData, SetOptions.merge())
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(getContext(), MainActivity.class));
+                                            requireActivity().finish();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(getContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Failed to fetch existing user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
 
 }

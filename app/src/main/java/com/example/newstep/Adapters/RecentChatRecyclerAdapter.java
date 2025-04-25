@@ -3,11 +3,15 @@ package com.example.newstep.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -16,12 +20,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.util.Util;
@@ -36,6 +43,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.transition.Hold;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -58,7 +68,9 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
     }
 
     protected void onBindViewHolder(@NonNull ChatroomModelViewHolder holder, int position, @NonNull ChatroomModel model) {
-        Log.d("Chatroom", "userIds: " + model.getUserIds().toString());
+        Log.d("ChatroomType", "Chatroom " + model.getChatroomId() + ": isGroup=" + model.getIsGroup());
+        Log.d("Chatroom", "userIds " + model.getIconColor());
+
         if (model.getIsGroup() == 0) {
 
         FirebaseUtil.getOtherUserFromChatroom(model.getUserIds()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -71,15 +83,16 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
 
 
                     holder.username.setText(otherUser.getUsername());
-                    holder.pfp.setImageResource(R.drawable.pfp_purple);
                     if (lastMsgSentByMe) {
                         holder.mostRecentMsg.setText("Me: " + model.getLastMsgSent());
                     } else {
                         holder.mostRecentMsg.setText(otherUser.getUsername() + ": " + model.getLastMsgSent());
                     }
                     holder.timestampRecentMsg.setText(Utilities.getRelativeTime(model.getLastMsgTimeStamp()));
-                    FirebaseUtil.loadPfp(otherUser.getId(), holder.pfp);
-
+                    if(model.getIsGroup()==0) {
+                        holder.pfp.setImageDrawable(null);
+                        FirebaseUtil.loadPfp(otherUser.getId(), holder.pfp);
+                    }
 
                     if (model.getLastMsgSenderId().equals(FirebaseUtil.getCurrentUserId()) || model.getUnseenMsg() == 0) {
                         holder.unseenMsg.setVisibility(View.GONE);
@@ -138,8 +151,26 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                 }
             }
         });
-    }else{ //group chat
-            holder.pfp.setImageResource(R.drawable.icon_group);
+    }else if (model.getIsGroup() == 1){ //group chat
+            if(model.getIcon()!=null){
+                String iconName = model.getIcon();
+                String hexColor = model.getIconColor();
+
+                int resId = context.getResources().getIdentifier(iconName, "drawable", context.getPackageName());
+                if (resId != 0) {
+                    holder.pfp.setImageResource(resId);
+                }
+
+                if(model.getIsGroup()==1){
+
+                try {
+                    int color = Color.parseColor(hexColor);
+                    holder.pfp.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    holder.username.setTextColor(Color.parseColor(hexColor));
+                } catch (IllegalArgumentException e) {
+
+                }}
+            }
        holder.username.setText(model.getGroupName());
         holder.activity.setVisibility(View.GONE);
         holder.timestampRecentMsg.setText(Utilities.getRelativeTime(model.getLastMsgTimeStamp()));
@@ -166,6 +197,9 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                 Intent intent = new Intent(context.getApplicationContext(), ConvGroupActivity.class);
                 intent.putExtra("groupName", model.getGroupName());
                 intent.putExtra("chatroomId", model.getChatroomId());
+                intent.putExtra("icon", model.getIcon());
+                intent.putExtra("iconImage", model.getIconColor());
+
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -174,7 +208,7 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     @Override
     public boolean onLongClick(View view) {
         if(model.getOwnerId().equals(FirebaseUtil.getCurrentUserId())){
-            editGroup(model.getChatroomId(),model.getGroupName(), model.getDesc());
+            editGroup(model.getChatroomId(),model.getGroupName(), model.getDesc(),model.getPrivacy(), model.getIcon(), model.getIconColor());
 
         }else{
             viewGroupDetails(model.getGroupName(),model.getDesc(),model.getChatroomId());
@@ -222,74 +256,172 @@ desc.setText(grpDesc);
 
     }
 
-    private void editGroup(String id,String grpName,String grpDesc) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View popUpView = inflater.inflate(R.layout.popup_create_group, null);
 
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
 
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        View rootLayout = ((Activity) context).findViewById(android.R.id.content);
-        dimBackground(0.5f);
-        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
-            layoutParams.alpha = 1.0f;
-            ((Activity) context).getWindow().setAttributes(layoutParams);
-        });
-        popupWindow.setOnDismissListener(() -> dimBackground(1.0f));
-        TextView title=popUpView.findViewById(R.id.title);
-        EditText groupNameInput = popUpView.findViewById(R.id.groupNameInput);
-        EditText groupDescInput=popUpView.findViewById(R.id.group_desc);
-        Button btnCancel = popUpView.findViewById(R.id.btnCancel);
-        Button btnSave= popUpView.findViewById(R.id.btnAddGroup);
+    private void editGroup(String id, String grpName, String grpDesc, String privacy, String grpIcon, String grpIconColor) {
+       LayoutInflater inflater = LayoutInflater.from(context);
+       View popUpView = inflater.inflate(R.layout.popup_create_group, null);
+
+       int width = ViewGroup.LayoutParams.MATCH_PARENT;
+       int height = ViewGroup.LayoutParams.MATCH_PARENT;
+       final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, true);
+
+       popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+       WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
+       layoutParams.alpha = 0.5f;
+       ((Activity) context).getWindow().setAttributes(layoutParams);
+
+
+       popupWindow.showAtLocation(((Activity) context).findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+
+
+       popupWindow.setOnDismissListener(() -> {
+           WindowManager.LayoutParams originalParams = ((Activity) context).getWindow().getAttributes();
+           originalParams.alpha = 1.0f;
+           ((Activity) context).getWindow().setAttributes(originalParams);
+       });
+
+       RadioGroup radioGroup = popUpView.findViewById(R.id.radioGroup);
+       ChipGroup chipGroupIcon = popUpView.findViewById(R.id.chipGroupIcon);
+       ChipGroup chipGroupColor = popUpView.findViewById(R.id.chipGroupColor);
+       RadioButton radioPublic = popUpView.findViewById(R.id.radioPublic);
+       RadioButton radioPrivate = popUpView.findViewById(R.id.radioPrivate);
+       EditText groupNameInput = popUpView.findViewById(R.id.groupNameInput);
+       EditText groupDescInput = popUpView.findViewById(R.id.group_desc);
+       Button btnCancel = popUpView.findViewById(R.id.btnCancel);
+       Button btnSave = popUpView.findViewById(R.id.btnAddGroup);
+        TextView title =popUpView.findViewById(R.id.title);
+        TextView editIconText=popUpView.findViewById(R.id.text);
+        TextView editColerText =popUpView.findViewById(R.id.text2);
         ImageView delete_group=popUpView.findViewById(R.id.delete_group_btn);
         delete_group.setVisibility(View.VISIBLE);
-btnSave.setText("Save");
-title.setText("Edit your group");
-btnCancel.setOnClickListener(v -> popupWindow.dismiss());
-groupDescInput.setText(grpDesc);
-groupNameInput.setText(grpName);
-delete_group.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
 
-        deleteGroup(id);
-        popupWindow.dismiss();
-    }
-});
+        delete_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-btnSave.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        String groupName = groupNameInput.getText().toString().trim();
-        String groupDesc = groupDescInput.getText().toString().trim();
-        if (groupName.isEmpty()) {
-            Toast.makeText(context, "Group name cannot be empty", Toast.LENGTH_SHORT).show();
-        }else if (groupName.length()>25) {
-            Toast.makeText(context, "Group name is too long", Toast.LENGTH_SHORT).show();
-        }else
-        if(groupDesc.isEmpty()){
-            Toast.makeText(context, "Group description cannot be empty", Toast.LENGTH_SHORT).show();
+                deleteGroup(id);
+                popupWindow.dismiss();
+            }
+        });
+
+       btnSave.setText("save");
+       groupNameInput.setText(grpName);
+       groupDescInput.setText(grpDesc);
+        title.setText("Edit your Group");
+        editIconText.setText("Edit the Group Icon");
+        editColerText.setText("Edit the Icon Color");
+
+
+       if ("Public".equals(privacy)) {
+           radioPublic.setChecked(true);
+       } else {
+           radioPrivate.setChecked(true);
+       }
+
+
+        selectChipByColor(chipGroupColor, grpIconColor);
+        selectChipByIconTag(chipGroupIcon, grpIcon);
+
+
+
+       btnSave.setOnClickListener(v -> {
+           String groupName = groupNameInput.getText().toString().trim();
+           String groupDesc = groupDescInput.getText().toString().trim();
+
+           if (groupName.isEmpty()) {
+               Toast.makeText(context, "Group name cannot be empty", Toast.LENGTH_SHORT).show();
+               return;
+           } else if (groupName.length() > 25) {
+               Toast.makeText(context, "Group name is too long", Toast.LENGTH_SHORT).show();
+               return;
+           } else if (groupDesc.isEmpty()) {
+               Toast.makeText(context, "Group description cannot be empty", Toast.LENGTH_SHORT).show();
+               return;
+           }
+
+           int selectedId = radioGroup.getCheckedRadioButtonId();
+           String privacySetting;
+           if (selectedId == R.id.radioPublic) {
+               privacySetting = "Public";
+           } else {
+               privacySetting = "Private";
+           }
+
+           int iconId = chipGroupIcon.getCheckedChipId();
+           int colorId = chipGroupColor.getCheckedChipId();
+           String iconName = context.getResources().getResourceEntryName(iconId);
+           String colorName = context.getResources().getResourceEntryName(colorId);
+
+
+           String colorHexCode = Utilities.hexCodeForColor(colorName);
+           for (int i = 0; i < chipGroupColor.getChildCount(); i++) {
+               Chip chip = (Chip) chipGroupColor.getChildAt(i);
+               ColorStateList chipColor = chip.getChipBackgroundColor();
+               if (chipColor != null && chipColor.getDefaultColor() == Color.parseColor(colorHexCode)) {
+                   chip.setChecked(true);
+                   break;
+               }
+           }
+           for (int i = 0; i < chipGroupIcon.getChildCount(); i++) {
+               Chip chip = (Chip) chipGroupIcon.getChildAt(i);
+               if (chip.getTag() != null && chip.getTag().toString().equals(grpIcon)) {
+                   chip.setChecked(true);
+                   break;
+               }
+           }
+           updateGroupInFirestore(id, groupName, groupDesc, privacySetting, iconName, colorHexCode);
+
+           popupWindow.dismiss();
+       });
+
+
+       popUpView.setOnTouchListener((v, event) -> {
+           if (event.getAction() == MotionEvent.ACTION_DOWN) {
+               popupWindow.dismiss();
+               return true;
+           }
+           return false;
+       });
+
+        btnCancel.setOnClickListener(v -> popupWindow.dismiss());
+   }
+
+    private void selectChipByColor(ChipGroup chipGroup, String colorHex) {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            ColorStateList chipColor = chip.getChipBackgroundColor();
+            if (chipColor != null && chipColor.getDefaultColor() == Color.parseColor(colorHex)) {
+                chip.setChecked(true);
+                break;
+            }
         }
-        else {
-
-            FirebaseUtil.allChatroomCollectionRef().document(id).update("groupName",groupName,"desc",groupDesc)
-                    .addOnSuccessListener(v->{
-                       Toast.makeText(context,"Group updated !",Toast.LENGTH_SHORT).show();
-                    }).addOnFailureListener(v->{
-                        popupWindow.dismiss();
-                        Toast.makeText(context,"Couldn't edit Group ",Toast.LENGTH_SHORT).show();
-                        popupWindow.dismiss();
-                    });
+    }
+    private void selectChipByIconTag(ChipGroup chipGroup, String iconTag) {
+        for (int i = 0; i < chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) chipGroup.getChildAt(i);
+            if (chip.getTag() != null && chip.getTag().toString().equals(iconTag)) {
+                chip.setChecked(true);
+                break;
+            }
         }
     }
-});
-btnCancel.setOnClickListener(v->{popupWindow.dismiss();});
 
+
+    private void updateGroupInFirestore(String id, String groupName, String groupDesc, String privacy, String iconName, String iconColor) {
+        FirebaseUtil.allChatroomCollectionRef().document(id)
+                .update("groupName", groupName, "desc", groupDesc, "privacy", privacy, "icon", iconName, "iconColor", iconColor)
+                .addOnSuccessListener(v -> {
+                    Toast.makeText(context, "Group updated!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(v -> {
+                    Toast.makeText(context, "Couldn't edit Group", Toast.LENGTH_SHORT).show();
+                });
     }
+
+
     private void leaveGroup(String chatroomId) {
         if (chatroomId == null || chatroomId.isEmpty()) {
             Toast.makeText(context, "Invalid group ID", Toast.LENGTH_SHORT).show();
@@ -381,5 +513,6 @@ btnCancel.setOnClickListener(v->{popupWindow.dismiss();});
     public interface OnDataLoadedListener {
         void onDataLoaded();
     }
+
 }
 

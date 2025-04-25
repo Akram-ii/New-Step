@@ -1,7 +1,6 @@
 package com.example.newstep.Adapters;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,18 +19,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newstep.Models.DailyNoteModel;
 import com.example.newstep.R;
-import com.example.newstep.Util.DatabaseHelper;
-import com.example.newstep.Util.Utilities;
-import com.google.firebase.Timestamp;
+import com.example.newstep.Databases.MyHabitsDatabaseHelper;
 
 import java.util.List;
 
 public class DailyNotesAdapter extends RecyclerView.Adapter<DailyNotesAdapter.NoteViewHolder> {
     Context context;
     List<DailyNoteModel> list;
-    DatabaseHelper db;
+    MyHabitsDatabaseHelper db;
 
-    public DailyNotesAdapter(Context context, List<DailyNoteModel> noteList,DatabaseHelper db) {
+    public DailyNotesAdapter(Context context, List<DailyNoteModel> noteList, MyHabitsDatabaseHelper db) {
         this.context = context;
         this.list= noteList;
         this.db=db;

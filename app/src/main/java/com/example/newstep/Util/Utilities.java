@@ -5,7 +5,9 @@ import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.format.DateUtils;
+import android.util.Log;
 
+import com.example.newstep.R;
 import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
@@ -13,11 +15,46 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Utilities {
+    public static String hexCodeForColor(String colorName) {
+        switch(colorName){
+            case "pink":
+                return "#C9A6D6";
+            case "purple":
+                return "#877DE0";
+            case "blue":
+                return "#6A96E6";
+            case "green":
+                return "#91B2BD";
+            case "orange":
+                return "#F28B30";
+            case "darkBlue":
+                return "#3C3C64";
+
+            default :
+                return "#D7BDE2";
+        }
+    }
+    public static String getRandomHexColor() {
+        Random random = new Random();
+        List<String> list = new ArrayList<>();
+        list.add("#DDE6F2"); // soft desaturated blue-gray
+        list.add("#CFCDE7"); // gentle lavender-gray
+        list.add("#D9EAD3"); // soft sage green
+        list.add("#EDE0D4"); // light warm beige
+        list.add("#F6E7E7"); // dusty rose
+        list.add("#E4D1EC"); // pale mauve
+
+        return list.get(random.nextInt(list.size()));
+    }
+
     public static String getMonthFormat(int month) {
         switch (month){
             case 1:
@@ -85,5 +122,123 @@ public class Utilities {
         if (timestamp == null) return "";
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy", Locale.getDefault());
         return sdf.format(timestamp.toDate());
+    }
+    private static final int[] POINT_THRESHOLDS = {
+            0, 25, 75, 150, 300, 500, 1000, 2000, 4000, 10000
+    };
+
+    private static final int[] IMAGE_IDS = {
+            R.drawable.first_step_badge,
+            R.drawable.fog_badge,
+            R.drawable.fire_badge,
+            R.drawable.lighthouse_badge,
+            R.drawable.sun_badge,
+            R.drawable.nest_badge,
+            R.drawable.safe_badge,
+            R.drawable.star_badge,
+            R.drawable.healer_badge,
+            R.drawable.phoenix_badge
+    };
+    public static int getNextBadgeImageId(int points) {
+        for (int i = 0; i < POINT_THRESHOLDS.length; i++) {
+            if (points < POINT_THRESHOLDS[i]) {
+                return IMAGE_IDS[i];
+            }
+        }
+        return IMAGE_IDS[IMAGE_IDS.length - 1];
+    }
+    public static int getCurrBadgesImageId(int points){
+        if (points < 25) {
+            return R.drawable.first_step_badge;
+        } else if (points < 75) {
+            return R.drawable.fog_badge;
+        } else if (points < 150) {
+            return R.drawable.fire_badge;
+        } else if (points < 300) {
+            return R.drawable.lighthouse_badge;
+        } else if (points < 500) {
+            return R.drawable.sun_badge;
+        } else if (points < 1000) {
+            return R.drawable.nest_badge;
+        } else if (points < 2000) {
+            return R.drawable.safe_badge;
+        } else if (points < 4000) {
+            return R.drawable.star_badge;
+        } else if (points < 10000) {
+            return R.drawable.healer_badge;
+        } else {
+            return R.drawable.phoenix_badge;
+        }
+    }
+public static int getMinBadge(int points){
+    if (points < 25) {
+        return 0;
+    } else if (points < 75) {
+        return 25;
+    } else if (points < 150) {
+        return 75;
+    } else if (points < 300) {
+        return 150;
+    } else if (points < 500) {
+        return 300;
+    } else if (points < 1000) {
+        return 500;
+    } else if (points < 2000) {
+        return 1000;
+    } else if (points < 4000) {
+        return 2000;
+    } else if (points < 10000) {
+        return 4000;
+    } else {
+        return 10000;
+    }
+}
+    public static int getNextBadge(int points) {
+        if (points < 25) {
+            return 25;
+        } else if (points < 75) {
+            return 75;
+        } else if (points < 150) {
+            return 150;
+        } else if (points < 300) {
+            return 300;
+        } else if (points < 500) {
+            return 500;
+        } else if (points < 1000) {
+            return 1000;
+        } else if (points < 2000) {
+            return 2000;
+        } else if (points < 4000) {
+            return 4000;
+        } else if (points < 10000) {
+            return 10000;
+        } else {
+            return 10000;
+        }
+    }
+
+
+    public static void addPointsToUsers(String userId, int nbPoint) {
+
+        FirebaseUtil.allUserCollectionRef().document(userId).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                Long points = documentSnapshot.getLong("points");
+                long currentPoints;
+                if (points != null) {
+                    currentPoints = points;
+                } else {
+                    currentPoints = 0;
+                }
+
+                long newPoints = currentPoints + nbPoint;
+                if (newPoints < 0) newPoints = 0;
+
+                FirebaseUtil.allUserCollectionRef().document(userId).update("points", newPoints)
+                        .addOnSuccessListener(aVoid -> Log.d("PointsSystem","My point updated "))
+                        .addOnFailureListener(e -> Log.e("PointsSystem", "Failed to update MyPoints", e));
+            } else {
+                Log.e("PointsSystem", "User document not found. No update made.");
+            }
+        }).addOnFailureListener(e -> Log.e("PointsSystem", "Failed to get user document", e));
     }
 }

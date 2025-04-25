@@ -1,10 +1,7 @@
 package com.example.newstep.Fragments;
-
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,46 +12,49 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.support.annotation.Nullable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.example.newstep.Adapters.HabitsAdapter;
-import com.example.newstep.MainActivity;
 import com.example.newstep.Models.HabitModel;
 import com.example.newstep.R;
-import com.example.newstep.Util.DatabaseHelper;
-import com.google.firebase.Timestamp;
+import com.example.newstep.Databases.MyHabitsDatabaseHelper;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MyHabitsFragment extends Fragment {
     Button addBtn;
-    DatabaseHelper db;
+    MyHabitsDatabaseHelper db;
     RecyclerView habitsRecyclerView;
     List<HabitModel> list;
     HabitsAdapter adapter;
+    LinearLayout progress;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_my_habits, container, false);
-        db=new DatabaseHelper(getContext());
+        db=new MyHabitsDatabaseHelper(getContext());
         list=db.getAllHabits();
         habitsRecyclerView=rootView.findViewById(R.id.habits_recyclerView);
         addBtn=rootView.findViewById(R.id.addBtn);
+        progress=rootView.findViewById(R.id.linear_layout_progress);
+
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,11 +72,23 @@ public class MyHabitsFragment extends Fragment {
                 transaction.commitAllowingStateLoss();
             }
         });
+        progress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProgressPopupWindow();
+            }
+        });
 
 
         habitsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadHabits();
-   return rootView;
+
+
+
+
+
+
+        return rootView;
     }
 
 
@@ -85,6 +97,65 @@ public class MyHabitsFragment extends Fragment {
         super.onResume();
         loadHabits();
     }
+
+    private void showProgressPopupWindow() {
+        Dialog chartDialog = new Dialog(getContext());
+        chartDialog.setContentView(R.layout.bar_chart_popup);
+        chartDialog.setCancelable(true);
+
+        BarChart barChart = chartDialog.findViewById(R.id.popupBarChart);
+
+
+        List<HabitModel> habits = db.getAllHabits();
+
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        ArrayList<String> HabitsNames = new ArrayList<>();
+
+        for (int i = 0; i < habits.size(); i++) {
+            HabitModel habit = habits.get(i);
+            entries.add(new BarEntry(i, habit.getTotalDays()));
+            HabitsNames.add(habit.getHabit_name());
+        }
+
+        if (entries.isEmpty()) {
+            barChart.setNoDataText("No data yet, add a habit to view progress.");
+            chartDialog.show();
+            return;
+        }
+
+
+        BarDataSet barDataSet = new BarDataSet(entries, "Total Resistance Days");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+
+        BarData data = new BarData(barDataSet);
+        data.setBarWidth(0.9f);
+        barChart.setData(data);
+        barChart.setDragEnabled(true);
+        barChart.setScaleEnabled(false);
+        barChart.setVisibleXRangeMaximum(8);
+        barChart.getAxisRight().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
+        barChart.invalidate();
+
+        XAxis x = barChart.getXAxis();
+        x.setValueFormatter(new IndexAxisValueFormatter(HabitsNames));
+        x.setPosition(XAxis.XAxisPosition.BOTTOM);
+        x.setGranularity(1f);
+        x.setLabelRotationAngle(-45);
+        YAxis y = barChart.getAxisLeft();
+        y.setAxisMinimum(0f);
+        y.setGranularity(1f);
+        y.setGranularityEnabled(true);
+        y.setLabelCount(6, false);
+        y.setDrawGridLines(true);
+
+
+        chartDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        chartDialog.show();
+
+    }
+
 
     private void loadHabits() {
         List<HabitModel> models=db.getAllHabits();
