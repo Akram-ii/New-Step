@@ -178,22 +178,24 @@ public class MyPostsFragment extends Fragment {
 
                                 if (content != null && userId != null && userName != null && timestampPost != null) {
 
-                                    // جلب صورة البروفايل من Collection Users
+
                                     firestore.collection("Users")
                                             .document(userId)
                                             .get()
                                             .addOnSuccessListener(userDoc -> {
                                                 String profileImageUrl = userDoc.getString("profileImage");
+                                                String name = userDoc.getString("username");
 
-                                                PostModel post = new PostModel(postId, userId, content,
-                                                        likes.intValue(), userName, dislikes.intValue(),
+
+                                                PostModel post = new PostModel(userId, postId, content,
+                                                        likes.intValue(), name, dislikes.intValue(),
                                                         timestampPost, profileImageUrl,cat);
 
                                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                                 post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
 
                                                 profilePosts.add(post);
-                                                setupRecyclerView(profilePosts); // تحديث كل مرة
+                                                setupRecyclerView(profilePosts);
                                             })
                                             .addOnFailureListener(e -> {
                                                 Log.e("UserFetchError", "Failed to fetch user profile image", e);

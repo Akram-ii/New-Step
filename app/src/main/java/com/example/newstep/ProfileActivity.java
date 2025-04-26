@@ -34,6 +34,8 @@ import com.example.newstep.Fragments.EditProfile_Fragment;
 import com.example.newstep.Fragments.HomeFragment;
 import com.example.newstep.Fragments.MyPostsFragment;
 import com.example.newstep.Fragments.SettingsFragment;
+import com.example.newstep.Models.BadgeModel;
+import com.example.newstep.Util.FirebaseUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -51,6 +53,7 @@ import android.content.Intent;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
 
 
 public class ProfileActivity extends AppCompatActivity implements MyPostsFragment.CommentDialogListener {
@@ -67,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
     private ImageView Back_image;
     private ImageView pro_image;
     private TextView biooo;
+    private TextView Point;
+    private ImageView badge;
 
 
     @Override
@@ -94,6 +99,9 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
         Back_image = findViewById(R.id.backGround_image);
         pro_image = findViewById(R.id.profileImage);
         biooo = findViewById(R.id.bio);
+        //Point = findViewById(R.id.point);
+        //badge = findViewById(R.id.badge);
+
 
         loadUserProfile();
         getusername();
@@ -142,6 +150,8 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
         }).attach();
 
         getSupportActionBar().setTitle("");
+
+        //PointsManager.addPointsToUsers(userId, nbPoint, badges, Point, badge);
 
 
 
@@ -347,6 +357,58 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
     private void showToast(String message) {
         Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_SHORT).show();
     }
+
+
+
+    /*
+    public static void addPointsToUsers(String userId, int nbPoint, List<BadgeModel> badges, TextView pointView, ImageView badgeView) {
+
+        FirebaseUtil.allUserCollectionRef().document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Long points = documentSnapshot.getLong("points");
+                        long currentPoints = (points != null) ? points : 0;
+
+                        long newPoints = Math.max(0, currentPoints + nbPoint);
+
+                        FirebaseUtil.allUserCollectionRef().document(userId).update("points", newPoints)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("PointsSystem", "Points updated");
+
+                                    BadgeModel userBadge = getUserBadge(badges, (int) newPoints);
+
+
+                                    pointView.setText(String.valueOf(newPoints));
+                                    badgeView.setImageResource(userBadge.getImageId());
+
+                                })
+                                .addOnFailureListener(e -> Log.e("PointsSystem", "Failed to update points", e));
+                    } else {
+                        Log.e("PointsSystem", "User document not found. No update made.");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("PointsSystem", "Failed to get user document", e));
+    }
+
+
+
+
+    private static BadgeModel getUserBadge(List<BadgeModel> badges, int userPoints) {
+        BadgeModel userBadge = badges.get(0);
+
+        for (BadgeModel badge : badges) {
+            if (userPoints >= badge.getPoints()) {
+                userBadge = badge;
+            } else {
+                break;
+            }
+        }
+        return userBadge;
+    }
+
+     */
+
+
 
 
 

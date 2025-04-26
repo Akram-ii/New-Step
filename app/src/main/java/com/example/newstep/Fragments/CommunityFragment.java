@@ -246,9 +246,10 @@ public class CommunityFragment extends Fragment {
                                         .get()
                                         .addOnSuccessListener(userDoc -> {
                                             String profileImageUrl = userDoc.getString("profileImage");
+                                            String name = userDoc.getString("username");
 
                                             PostModel post = new PostModel(userId, postId, content,
-                                                    likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat);
+                                                    likes.intValue(), name, dislikes.intValue(), timestampPost, profileImageUrl,cat);
 
                                             post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                             post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
@@ -265,6 +266,7 @@ public class CommunityFragment extends Fragment {
 
                 });
     }
+
     private void showPopupWindowFilter() {
         if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {
             return;
@@ -481,6 +483,7 @@ public class CommunityFragment extends Fragment {
     }
 
 
+
     private void createPost(String content,String category, PopupWindow popupWindow) {
         // Obtenir l'utilisateur actuel via Firebase Authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -536,6 +539,9 @@ public class CommunityFragment extends Fragment {
                         Toast.makeText(requireContext(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show()
                 );
     }
+
+
+
 
     public void showCommentDialog(String postId) {
         Log.d("DEBUG_INTERFACE", "تم استدعاء showCommentDialog عبر Interface في Fragment A");
@@ -615,6 +621,30 @@ public class CommunityFragment extends Fragment {
                                            .addOnSuccessListener(aVoid -> {
                                                editTextComment.setText("");
                                                Utilities.addPointsToUsers(userId,5);
+
+                                               db.collection("posts").document(postId)
+                                                       .get()
+                                                       .addOnSuccessListener(postDoc -> {
+                                                           if (postDoc.exists()) {
+                                                               String postOwnerId = postDoc.getString("userId");
+
+                                                               if (postOwnerId != null && !userId.equals(postOwnerId)) {
+                                                                   db.collection("Users").document(postOwnerId)
+                                                                           .get()
+                                                                           .addOnSuccessListener(ownerDoc -> {
+                                                                               if (ownerDoc.exists()) {
+                                                                                   String ownerFCMToken = ownerDoc.getString("token");
+
+                                                                                   String title = "You have a new comment on your post";
+                                                                                   String body = username + " commented on your post";
+
+                                                                                   NotifOnline notif = new NotifOnline(ownerFCMToken, title, body, requireContext());
+                                                                                   notif.sendNotif();
+                                                                               }
+                                                                           });
+                                                               }
+                                                           }
+                                                       });
                                            });
                                });
                    }
@@ -628,6 +658,10 @@ public class CommunityFragment extends Fragment {
 
         dialog.show();
     }
+
+
+
+
     private void showPopupBanned() {
 
         LayoutInflater inflater = LayoutInflater.from(requireContext());
