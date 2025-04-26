@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
 
-    android:background="@drawable/textview_background"
-    android:elevation="2dp">
+    android:background="@drawable/goal_background_item"
+    android:elevation="10dp">
 
     <include layout="@layout/pfp"
         android:layout_height="52dp"

@@ -18,7 +18,22 @@ public class UserModel {
     private String id;
     int points;
 
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     private int availability;
+
+    public UserModel(String username,String profileImage,int points) {
+        this.username = username;
+        this.profileImage = profileImage;
+        this.points = points;
+
+    }
 
     public int getNb_reports() {
         return nb_reports;
