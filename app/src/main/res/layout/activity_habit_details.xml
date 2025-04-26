@@ -54,7 +54,7 @@
             android:layout_centerHorizontal="true"
             android:text="Log Today"
             android:textColor="@color/white"
-            android:backgroundTint="@color/lavender2"
+            android:backgroundTint="@color/purple"
             />
     </RelativeLayout>
 </RelativeLayout>

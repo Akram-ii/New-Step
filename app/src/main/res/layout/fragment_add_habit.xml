@@ -3,8 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
 
     tools:context=".Fragments.AddHabitFragment">
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="20dp"
+    android:layout_above="@id/name_EditText"
+    android:src="@drawable/habits_image"
+    />
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -13,44 +22,39 @@
         android:hint="What is your bad habit/addiction ?"
         android:textAlignment="center"
         android:maxLines="1"
+        android:layout_above="@+id/emergency_EditText"
         android:textColorHint="@color/gray"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/black"
         android:imeOptions="actionDone"
         android:id="@+id/name_EditText"
         />
 
-    <TextView
-        android:background="@drawable/textview_background"
+    <com.google.android.material.button.MaterialButton
+        app:cornerRadius="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="15dp"
+        android:elevation="10dp"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:hint="What does it affect in your life ?"
         android:textColorHint="@color/gray"
-        android:backgroundTint="@color/transparent"
+        app:backgroundTint="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/name_EditText"
+        android:layout_above="@+id/lastTime_TextView"
         android:id="@+id/cat_EditText"
         />
-    <View
-        android:layout_marginRight="7dp"
-        android:layout_marginLeft="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        android:layout_below="@id/cat_EditText"
-        android:layout_alignStart="@id/cat_EditText"
-        android:layout_alignEnd="@id/cat_EditText"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
         android:imeOptions="actionDone"
         android:layout_height="50dp"
         android:backgroundTint="@color/black"
+        android:layout_above="@+id/cat_EditText"
         android:textColor="@color/black"
         android:textAlignment="center"
         android:hint="Emergency message (optional)"
@@ -58,33 +62,37 @@
         android:layout_marginTop="20dp"
         android:maxLines="5"
         android:id="@+id/emergency_EditText"
-        android:layout_below="@+id/cat_EditText"
 
         />
-    <TextView
-        android:background="@drawable/edittext_onblue"
+    <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:padding="10dp"
+        android:elevation="10dp"
+        android:padding="5dp"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
+        android:layout_above="@id/addHabitBtn"
         android:textAlignment="center"
         android:textSize="15sp"
-        android:hint="When was the last time ?"
+        android:hint="When was the last time ?(optional)"
         android:textColorHint="@color/gray"
         android:backgroundTint="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/emergency_EditText"
+        android:layout_toLeftOf="@+id/v1"
         android:id="@+id/lastTime_TextView"
 
         />
-    <TextView
-        android:background="@drawable/edittext_onblue"
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/v1"
+        />
+    <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:padding="10dp"
+        android:elevation="10dp"
+        android:padding="5dp"
         android:textColor="@color/black"
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
@@ -93,18 +101,20 @@
         android:textColorHint="@color/gray"
         android:backgroundTint="@color/white"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/lastTime_TextView"
+        android:layout_toRightOf="@+id/v1"
+        android:layout_above="@id/addHabitBtn"
         android:id="@+id/reminderTime_TextView"
         />
 
     <Button
+        android:layout_alignParentBottom="true"
         android:elevation="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/reminderTime_TextView"
         android:layout_marginHorizontal="50dp"
-        android:text="Add Habit"
+        android:text="All done"
         android:backgroundTint="@color/blue"
+        android:layout_marginBottom="20dp"
         android:layout_marginTop="30dp"
         android:id="@+id/addHabitBtn"
 

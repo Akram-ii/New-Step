@@ -256,7 +256,7 @@ admin.setOnClickListener(new View.OnClickListener() {
         RelativeLayout profileButton = headerView.findViewById(R.id.Profile_button);
 
         profileButton.setOnClickListener(v -> {
-            if(userIsLoggedIn()){
+            if(FirebaseAuth.getInstance().getCurrentUser()!=null){
 
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
@@ -265,7 +265,7 @@ admin.setOnClickListener(new View.OnClickListener() {
 
                 LoginFragment loginFragment = new LoginFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, loginFragment).addToBackStack(null).commit();
-
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
 
         });

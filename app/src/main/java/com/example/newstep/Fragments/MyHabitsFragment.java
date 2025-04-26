@@ -12,11 +12,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.newstep.Adapters.HabitsAdapter;
 import com.example.newstep.Models.HabitModel;
@@ -30,13 +35,14 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MyHabitsFragment extends Fragment {
-    Button addBtn;
+FloatingActionButton addBtn;
     MyHabitsDatabaseHelper db;
     RecyclerView habitsRecyclerView;
     List<HabitModel> list;
@@ -210,5 +216,38 @@ public class MyHabitsFragment extends Fragment {
             builder.show();
         }
     };
+    private void add() {
+
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
+        dimBackground(0.5f);
+
+        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        View rootLayout = requireActivity().findViewById(android.R.id.content);
+        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams layoutParams = (getActivity()).getWindow().getAttributes();
+            layoutParams.alpha = 1.0f;
+            (getActivity()).getWindow().setAttributes(layoutParams);
+        });
+        ImageView back=popUpView.findViewById(R.id.back_imageView);
+        ImageView imageView=popUpView.findViewById(R.id.warningIcon);
+        TextView textView=popUpView.findViewById(R.id.textMessage1);
+        TextView title=popUpView.findViewById(R.id.title);
+        back.setOnClickListener(v->{popupWindow.dismiss();});
+        textView.setText("You have been temporarily suspended from Posting due to a violation of our community guidelines. This action was taken after a thorough review of your activity.");
+        title.setText("Posting Restricted");
+        imageView.setImageResource(R.drawable.icon_restriction_red);
+    }
+
+    private void dimBackground(float alpha) {
+        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
+        layoutParams.alpha = alpha;
+        requireActivity().getWindow().setAttributes(layoutParams);
+    }
 
 }
