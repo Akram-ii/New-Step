@@ -3,7 +3,7 @@ package com.example.newstep.Fragments;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.DialogInterface;
-
+import com.airbnb.lottie.LottieAnimationView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -53,13 +53,18 @@ public class HomeFragment extends Fragment {
     CardView ProgressCard,BadgesCard,GoalsCard,CommunityCard;
     long lastUpdatedTime;
     FirebaseFirestore fdb;
+    private LottieAnimationView progressAnimation;
+    private LottieAnimationView goalsAnimation;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         textViewQuote = rootView.findViewById(R.id.quote_textView);
         click=rootView.findViewById(R.id.clickIcon);
+        progressAnimation = rootView.findViewById(R.id.progressAnimation);
 
+        goalsAnimation = rootView.findViewById(R.id.goalsAnimation);
         GoalsCard=rootView.findViewById(R.id.goals_card);
         leaderBoard=rootView.findViewById(R.id.leader_board);
         CommunityCard=rootView.findViewById(R.id.commu_card);
@@ -73,7 +78,8 @@ loadUsersLeaderBoard();
         String[] quoteData = dbHelper.getQuote();
         quote = quoteData[0];
         lastUpdatedTime = Long.parseLong(quoteData[1]);
-
+        progressAnimation.playAnimation();
+        goalsAnimation.playAnimation();
         Calendar last = Calendar.getInstance();
         last.setTimeInMillis(lastUpdatedTime);
 
@@ -226,4 +232,31 @@ loadUsersLeaderBoard();
         SharedPreferences prefs = getActivity().getSharedPreferences("AppPrefs", MODE_PRIVATE);
         prefs.edit().putString("lastFragment", "HomeFragment").apply();
     }
-}
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (progressAnimation != null) {
+            progressAnimation.resumeAnimation();
+        }
+        if (goalsAnimation != null) {
+            goalsAnimation.resumeAnimation();
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (progressAnimation != null) {
+            progressAnimation.pauseAnimation();
+        }
+        if (goalsAnimation != null) {
+            goalsAnimation.pauseAnimation();
+        }
+    }
+
+    }
+
+

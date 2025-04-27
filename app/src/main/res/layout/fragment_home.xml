@@ -78,12 +78,14 @@
             android:padding="8dp"
             android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/goals"
-                    />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/goalsAnimation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                app:lottie_rawRes="@raw/goal"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -122,13 +124,15 @@
             android:orientation="vertical">
 
 
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/progress_ic"
-                    android:layout_gravity="center_horizontal"
-                    />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/progressAnimation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                app:lottie_rawRes="@raw/stats"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                />
 
                 <TextView
                     android:layout_width="wrap_content"
