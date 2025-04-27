@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -31,6 +32,8 @@ import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Util.NotifOnline;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,8 +55,8 @@ public class ConvActivity extends AppCompatActivity {
     ChatroomModel chatroomModel;
     ChatRecyclerAdapter adapter;
     String currentUserName;
+    String privacy;
     RecyclerView recyclerView, recyclerViewOther;
-    SearchUserRecyclerAdapter adapter2;
     UserModel otherUser;
 
     Boolean userSentAMsg;
@@ -75,6 +78,8 @@ public class ConvActivity extends AppCompatActivity {
 
         activity = findViewById(R.id.activity);
         recyclerView = findViewById(R.id.msgsRecyclerView);
+        privacy=getIntent().getStringExtra("privacy");
+        Log.d( "afhajdfha: ",privacy+"");
         back = findViewById(R.id.back_ImageButton);
         sendMSG = findViewById(R.id.send_ImageButton);
         otherUsername.setText(otherUser.getUsername());
@@ -88,17 +93,23 @@ public class ConvActivity extends AppCompatActivity {
 
         FirebaseUtil.loadPfp(otherUser.getId(), pfp);
 
+
         sendMSG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(privacy.equals("private")){
+                    Toast.makeText(ConvActivity.this,"This user does'nt allow messages",Toast.LENGTH_SHORT).show();
+
+                }else{
                 String message = msg.getText().toString().trim();
                 if (message == "" || message.isEmpty()) {
 
                 } else {
+
                     userSentAMsg = true;
                     sendMessageToUser(message);
 
-                }
+                }}
 
             }
         });

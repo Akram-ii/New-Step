@@ -15,8 +15,9 @@ public class UserModel {
     private boolean isBanned,isBannedPosts,isBannedComments,isRestricted;
 
     private String registerDate;
+    private String privacy;
     private String id;
-    int points;
+    private int points;
 
     public int getPoints() {
         return points;
@@ -24,6 +25,14 @@ public class UserModel {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public String getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(String privacy) {
+        this.privacy = privacy;
     }
 
     private int availability;

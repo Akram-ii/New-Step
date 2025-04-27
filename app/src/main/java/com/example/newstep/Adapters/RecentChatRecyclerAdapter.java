@@ -138,6 +138,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                             Intent intent = new Intent(context.getApplicationContext(), ConvActivity.class);
                             intent.putExtra("username", otherUser.getUsername());
                             intent.putExtra("userId", otherUser.getId());
+                            intent.putExtra("privacy", otherUser.getPrivacy());
                             intent.putExtra("availability", otherUser.getAvailability());
                             intent.putExtra("token", otherUser.getToken());
                             intent.putExtra("lastMsgId", model.getLastMsgSenderId());
