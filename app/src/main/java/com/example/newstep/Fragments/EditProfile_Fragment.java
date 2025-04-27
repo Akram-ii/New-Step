@@ -109,9 +109,9 @@ public class EditProfile_Fragment extends Fragment {
                 if (profile_image.getDrawable() != null) {
                     Uri profileImageUri = getUriFromImageView(profile_image);
                     uploadImageToCloudinary(profileImageUri, "profileImage");
-                } else {
-                        uploadDefaultImage("profileImage", DEFAULT_PROFILE_IMAGE);
-                }
+                } //else {
+                        //uploadDefaultImage("profileImage", DEFAULT_PROFILE_IMAGE);
+                //}
 
                 if (couverture_image.getDrawable() != null) {
                     Uri coverImageUri = getUriFromImageView(couverture_image);
@@ -394,7 +394,7 @@ public class EditProfile_Fragment extends Fragment {
         Uri imageUri = null;
 
         try {
-            // نحدد نوع الصورة ومكانها (MediaStore في الـ Pictures)
+
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.DISPLAY_NAME, "CapturedImage_" + System.currentTimeMillis() + ".jpg");
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
