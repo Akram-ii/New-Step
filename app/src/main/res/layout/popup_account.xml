@@ -35,7 +35,7 @@
         android:layout_marginHorizontal="10dp"
         android:id="@+id/r1"
         android:padding="4dp"
-        android:background="@drawable/textview_background"
+        android:background="@drawable/goal_background_item"
         >
 
         <RadioGroup

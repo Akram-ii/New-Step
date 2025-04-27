@@ -124,7 +124,10 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
 
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         View rootLayout = ((Activity) context).findViewById(android.R.id.content);
         popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
         popupWindow.setOnDismissListener(() -> {

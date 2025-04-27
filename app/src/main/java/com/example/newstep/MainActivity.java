@@ -359,6 +359,9 @@ popupAccount();
         );
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         layoutParams.alpha = 0.5f;
         getWindow().setAttributes(layoutParams);
         popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
@@ -585,6 +588,9 @@ popupAccount();
                 true
         );
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         layoutParams.alpha = 0.5f; // Reduce brightness
         getWindow().setAttributes(layoutParams);
@@ -663,6 +669,9 @@ popupAccount();
 
         // Set transparent background
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
         // Dim the background
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
@@ -720,8 +729,8 @@ popupAccount();
                         Glide.with(pfp.getContext())
                                 .load(profileImageUrl)
                                 .circleCrop()
-                                .placeholder(R.drawable.pfp_purple)
-                                .error(R.drawable.pfp_purple)
+                                .placeholder(R.drawable.pfp_light_blue)
+                                .error(R.drawable.pfp_light_blue)
                                 .into(pfp);
                     } else {
                         Log.e("Firestore", "Document not found");

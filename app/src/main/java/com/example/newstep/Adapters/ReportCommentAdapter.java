@@ -209,6 +209,9 @@ holder.dFromComment.setOnClickListener(new View.OnClickListener() {
         boolean focusable = true;
 
         final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         View rootLayout = ((Activity) context).findViewById(android.R.id.content);
         popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
         popupWindow.setOnDismissListener(() -> {

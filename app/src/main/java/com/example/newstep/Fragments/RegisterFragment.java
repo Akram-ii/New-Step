@@ -110,6 +110,7 @@ RadioGroup radioGroup;
                 if (txtUserName.length()<3 ) {
                     p.dismiss();
                     userName.setError("Too short");
+                    p.dismiss();
                 } else if (txtUserName.length()>15 ) {
                     p.dismiss();
                     userName.setError("Too long");

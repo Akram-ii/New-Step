@@ -86,6 +86,9 @@ public class HabitDetailsActivity extends AppCompatActivity {
         int height = ViewGroup.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         layoutParams.alpha = 0.5f;
         getWindow().setAttributes(layoutParams);

@@ -15,15 +15,7 @@
         android:layout_gravity="center"
         android:src="@drawable/ic_launcher_foreground" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="New Step"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="10dp" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

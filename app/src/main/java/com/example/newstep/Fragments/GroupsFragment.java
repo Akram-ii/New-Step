@@ -134,7 +134,9 @@ public class GroupsFragment extends Fragment {
         );
 
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         // Diminuer l'opacité de l'arrière-plan de l'activité lorsque la pop-up est ouverte
         WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
         layoutParams.alpha = 0.5f; // Réduire l'opacité à 50%
@@ -269,6 +271,9 @@ public class GroupsFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
 
         WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();

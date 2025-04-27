@@ -639,6 +639,9 @@ public class CommunityFragment extends Fragment {
         boolean focusable = true;
 
         final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         View rootLayout = requireActivity().findViewById(android.R.id.content);
         popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
         popupWindow.setOnDismissListener(() -> {
@@ -667,6 +670,9 @@ public class CommunityFragment extends Fragment {
         boolean focusable = true;
 
         final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         View rootLayout = requireActivity().findViewById(android.R.id.content);
         popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
         popupWindow.setOnDismissListener(() -> {

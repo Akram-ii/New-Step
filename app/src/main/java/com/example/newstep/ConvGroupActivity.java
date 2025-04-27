@@ -505,6 +505,10 @@ private void fetchUsers(List<String> userIds){
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
         int height = ViewGroup.LayoutParams.MATCH_PARENT;
         final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
+ popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -701,13 +705,16 @@ private void fetchUsers(List<String> userIds){
 
         View popupView = LayoutInflater.from(this).inflate(R.layout.chhatinwith, null);
 
+
         PopupWindow popupWindow = new PopupWindow(popupView,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         popupWindow.setElevation(10);
-        popupWindow.setOutsideTouchable(true);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
 
         popupWindow.setOnDismissListener(() -> {

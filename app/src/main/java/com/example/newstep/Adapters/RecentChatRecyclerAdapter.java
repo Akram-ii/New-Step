@@ -266,6 +266,9 @@ desc.setText(grpDesc);
        int width = ViewGroup.LayoutParams.MATCH_PARENT;
        int height = ViewGroup.LayoutParams.MATCH_PARENT;
        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, true);
+ popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
 
        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

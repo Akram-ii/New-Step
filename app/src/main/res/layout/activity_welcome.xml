@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome to NewStep!"
+        android:text="Welcome to Alter !"
         android:textAlignment="center"
         android:textColor="#3F51B5"
         android:textSize="26sp"
