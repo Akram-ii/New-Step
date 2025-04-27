@@ -55,6 +55,7 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore fdb;
     private LottieAnimationView progressAnimation;
     private LottieAnimationView goalsAnimation;
+    private LottieAnimationView badgeAnimation;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +64,7 @@ public class HomeFragment extends Fragment {
         textViewQuote = rootView.findViewById(R.id.quote_textView);
         click=rootView.findViewById(R.id.clickIcon);
         progressAnimation = rootView.findViewById(R.id.progressAnimation);
+        badgeAnimation = rootView.findViewById(R.id.badgeAnimation);
 
         goalsAnimation = rootView.findViewById(R.id.goalsAnimation);
         GoalsCard=rootView.findViewById(R.id.goals_card);
@@ -80,6 +82,7 @@ loadUsersLeaderBoard();
         lastUpdatedTime = Long.parseLong(quoteData[1]);
         progressAnimation.playAnimation();
         goalsAnimation.playAnimation();
+        badgeAnimation.playAnimation();
         Calendar last = Calendar.getInstance();
         last.setTimeInMillis(lastUpdatedTime);
 
@@ -242,6 +245,9 @@ loadUsersLeaderBoard();
         if (goalsAnimation != null) {
             goalsAnimation.resumeAnimation();
         }
+        if (badgeAnimation != null) {
+            badgeAnimation.resumeAnimation();
+        }
 
     }
 
@@ -254,6 +260,9 @@ loadUsersLeaderBoard();
         }
         if (goalsAnimation != null) {
             goalsAnimation.pauseAnimation();
+        }
+        if (badgeAnimation != null) {
+            badgeAnimation.pauseAnimation();
         }
     }
 
