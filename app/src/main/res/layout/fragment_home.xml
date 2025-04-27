@@ -253,7 +253,8 @@
         android:layout_width="match_parent"
         android:elevation="10dp"
         android:layout_below="@+id/grid"
-        android:layout_margin="5dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="5dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -308,7 +309,8 @@
         android:layout_marginHorizontal="10dp"
         android:layout_below="@+id/t2"
         android:layout_alignParentBottom="true"
-        android:padding="5dp"
+        android:paddingHorizontal="5dp"
+        android:paddingTop="5dp"
         android:elevation="10dp"
         android:id="@+id/leader_board"/>
     </RelativeLayout>

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newstep.Adapters.LeaderBoardAdapter;
+import com.example.newstep.MainActivity;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.ProgressActivity;
 import com.example.newstep.R;
@@ -33,10 +34,13 @@ import com.example.newstep.Util.FirebaseUtil;
 import com.example.newstep.Databases.QuoteDatabaseHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -115,7 +119,31 @@ loadUsersLeaderBoard();
                 transaction.commitAllowingStateLoss();
             }
         });
+        CommunityCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
+                Fragment existingFragment = fragmentManager.findFragmentByTag(GoalsFragment.class.getSimpleName());
+                if (existingFragment != null) {
+                    fragmentManager.beginTransaction().remove(existingFragment).commit();
+                }
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+                    CommunityFragment communityFragment = new CommunityFragment();
+                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    transaction.replace(R.id.fragment_container, communityFragment, CommunityFragment.class.getSimpleName());
+                    transaction.addToBackStack(null);
+                    transaction.commitAllowingStateLoss();
+                }else{
+                    LoginFragment loginFragment = new LoginFragment();
+                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    transaction.replace(R.id.fragment_container, loginFragment, LoginFragment.class.getSimpleName());
+                    transaction.addToBackStack(null);
+                    transaction.commitAllowingStateLoss();
+                }
+            }
+        });
         ProgressCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,7 +166,6 @@ loadUsersLeaderBoard();
         BadgesCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
                 Fragment existingFragment = fragmentManager.findFragmentByTag(BadgesFragment.class.getSimpleName());
@@ -147,12 +174,24 @@ loadUsersLeaderBoard();
                 }
 
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                BadgesFragment badgesFragment= new BadgesFragment();
-                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                transaction.replace(R.id.fragment_container, badgesFragment, BadgesFragment.class.getSimpleName());
-                transaction.addToBackStack(null);
-                transaction.commitAllowingStateLoss();
+                if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                    LoginFragment loginFragment = new LoginFragment();
+                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    transaction.replace(R.id.fragment_container, loginFragment, LoginFragment.class.getSimpleName());
+                    transaction.addToBackStack(null);
+                    transaction.commitAllowingStateLoss();
 
+                }else {
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (activity != null) {
+                        activity.badgesSelected();
+                    }
+                    BadgesFragment badgesFragment = new BadgesFragment();
+                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                    transaction.replace(R.id.fragment_container, badgesFragment, BadgesFragment.class.getSimpleName());
+                    transaction.addToBackStack(null);
+                    transaction.commitAllowingStateLoss();
+                }
             }
         });
         return rootView;

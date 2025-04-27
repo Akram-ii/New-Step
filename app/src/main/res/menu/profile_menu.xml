@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_account"
         android:title="Settings"
         android:icon="@drawable/icon_settings"
+        android:iconTint="@color/purple"
         app:showAsAction="never" />
 
     <item
+        android:iconTint="@color/purple"
         android:id="@+id/action_logout"
         android:title="Logout"
         android:icon="@drawable/icon_logout"

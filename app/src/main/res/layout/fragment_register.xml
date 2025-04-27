@@ -7,14 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    android:padding="20dp"
     tools:context=".Fragments.RegisterFragment">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_marginTop="60dp"
         android:src="@drawable/ic_launcher_foreground" />
 
     <TextView
@@ -25,12 +23,12 @@
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="10dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:hint="Username"
         android:textColorHint="#999999"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -43,6 +41,7 @@
             android:inputType="textCapSentences"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:layout_marginHorizontal="20dp"
             android:textColor="#000000"
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -50,7 +49,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:hint="E-mail"
         android:textColorHint="#999999"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -63,18 +62,21 @@
             android:inputType="textEmailAddress"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:layout_marginHorizontal="20dp"
             android:textColor="#000000"
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         app:endIconMode="password_toggle"
         app:passwordToggleTint="@android:color/black"
         android:hint="Password"
         android:textColorHint="#999999"
+        android:layout_marginHorizontal="20dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxBackgroundMode="none">
 
@@ -92,7 +94,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="0dp"
         app:endIconMode="password_toggle"
         app:passwordToggleTint="@android:color/black"
         android:hint="Confirm Password"
@@ -110,11 +113,45 @@
             android:textColor="#000000"
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Who can send me a message"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="#3F51B5"
+        android:textStyle="bold"
+        />
+    <RadioGroup
 
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/radioGroup"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <RadioButton
+            android:layout_marginRight="5dp"
+            android:layout_width="wrap_content"
+            android:checked="true"
+            android:id="@+id/radioPublic"
+            android:buttonTint="#3F51B5"
+            android:layout_height="wrap_content"
+            android:text="Everyone"/>
+        <RadioButton
+            android:buttonTint="#3F51B5"
+            android:id="@+id/radioPrivate"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nobody"/>
+    </RadioGroup>
     <Button
         android:id="@+id/registerBTN"
         android:layout_width="match_parent"
         android:layout_height="55dp"
+        android:layout_marginHorizontal="20dp"
         android:background="@drawable/button_backgroundd"
         android:text="Create Account"
         android:textColor="#FFFFFF"
@@ -128,7 +165,7 @@
         android:text="Already have an account?"
         android:textColor="#3F51B5"
         android:textSize="14sp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/loginTextView"

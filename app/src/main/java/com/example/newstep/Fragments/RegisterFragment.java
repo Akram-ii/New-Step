@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +51,8 @@ public class RegisterFragment extends Fragment {
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     ProgressDialog p;
     String token;
-
+    String  privacySetting="public";
+RadioGroup radioGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +61,7 @@ public class RegisterFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_register, container, false);
 
-
+        RadioGroup radioGroup=rootView.findViewById(R.id.radioGroup);
         p=new ProgressDialog(getContext());
         userName=rootView.findViewById(R.id.user);
         register=rootView.findViewById(R.id.registerBTN);
@@ -83,6 +85,18 @@ public class RegisterFragment extends Fragment {
                 transaction.addToBackStack(null);
                 transaction.commitAllowingStateLoss();
             }
+        });
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                if (checkedId == R.id.radioPublic) {
+                    privacySetting = "public";
+                } else if (checkedId == R.id.radioPrivate) {
+                    privacySetting = "private";
+                } else {
+                    return;
+                }}
         });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +159,7 @@ public class RegisterFragment extends Fragment {
                         intent.putExtra("pwd",pwd);
                         intent.putExtra("username",username);
                         intent.putExtra("token",token);
+                        intent.putExtra("privacy",privacySetting);
                         p.dismiss();
                         startActivity(intent);
                     }

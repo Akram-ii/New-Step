@@ -1,12 +1,14 @@
 package com.example.newstep;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -103,28 +107,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        if(FirebaseUtil.getCurrentUserId()!= null){// zidto bah maysrach null pointer exception ki maykonch user mdayer login
-
-
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        String newToken = task.getResult();
-                        FirebaseUtil.allUserCollectionRef()
-                                .document(FirebaseUtil.getCurrentUserId())
-                                .update("token", newToken);
-                    }
-                });}else{
-            Toast.makeText(this, "user not found !", Toast.LENGTH_SHORT).show();
-        }
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                Log.d( "token curr ",""+task.getResult());
-            }
-        });
-
-
         firebaseAuth=FirebaseAuth.getInstance();
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         lastFragment = sharedPreferences.getString("lastFragment", "default_value");
@@ -149,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         authStateListener = firebaseAuth -> {
             user = firebaseAuth.getCurrentUser();
             if (user == null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
             }
         };
 
@@ -167,9 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if(documentSnapshot.exists()){
                         if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isAdmin"))){
                             admin.setVisibility(View.VISIBLE);
-                        }
-                        if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBanned"))){
-                            FirebaseAuth.getInstance().signOut();
                         }
                         if(Boolean.TRUE.equals(documentSnapshot.getBoolean("isBanned"))){
                             FirebaseAuth.getInstance().signOut();
@@ -262,7 +240,7 @@ admin.setOnClickListener(new View.OnClickListener() {
                 startActivity(intent);
 
             }else{
-
+                Toast.makeText(MainActivity.this,"You need to log in first",Toast.LENGTH_SHORT).show();
                 LoginFragment loginFragment = new LoginFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, loginFragment).addToBackStack(null).commit();
                 drawerLayout.closeDrawer(GravityCompat.START);
@@ -291,9 +269,10 @@ admin.setOnClickListener(new View.OnClickListener() {
         super.onResume();
         loadUserProfile();
     }
-    private void checkUserAuthentication(Fragment fragment) {
+    public void checkUserAuthentication(Fragment fragment) {
+        String fragmentTag = fragment.getClass().getSimpleName();
         if (firebaseAuth.getCurrentUser() != null ) {
-            String fragmentTag = fragment.getClass().getSimpleName();
+
             if(fragmentTag.equals("CommunityFragment")){
                 navigationView.setCheckedItem(R.id.nav_community);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
@@ -304,39 +283,297 @@ admin.setOnClickListener(new View.OnClickListener() {
 
 
         } else {
-            navigationView.setCheckedItem(R.id.nav_chats);
+
+            if(fragmentTag.equals("CommunityFragment")){
+                navigationView.setCheckedItem(R.id.nav_community);
+
+            }
+            else{
+                navigationView.setCheckedItem(R.id.nav_chats);
+            }
+            Toast.makeText(MainActivity.this,"You need to log in first",Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
             drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
-
+public void badgesSelected(){
+    bottomView.setSelectedPosition(R.id.nav_my_badge);
+    navigationView.setCheckedItem(R.id.nav_my_badge);
+}
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.nav_home){
+            bottomView.setSelectedPosition(R.id.nav_home);
+            navigationView.setCheckedItem(R.id.nav_home);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
         }else if(item.getItemId()==R.id.nav_community){
             checkUserAuthentication(new CommunityFragment());
             navigationView.setCheckedItem(R.id.nav_community);
         }else if(item.getItemId()==R.id.nav_chats){
             checkUserAuthentication(new ChatsFragment());
-        }else if(item.getItemId()==R.id.nav_settings){
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new SettingsFragment()).commit();
+        }else if(item.getItemId()==R.id.nav_account){
+            if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new LoginFragment()).commit();
+            }else{
+                drawerLayout.closeDrawer(GravityCompat.START);
+popupAccount();
+            }
         }else if(item.getItemId()== R.id.nav_my_habits){
+            bottomView.setSelectedPosition(R.id.nav_my_habits);
+            navigationView.setCheckedItem(R.id.nav_my_habits);
             getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new MyHabitsFragment()).commit();
         }else if(item.getItemId()== R.id.nav_my_goals){
+            navigationView.setCheckedItem(R.id.nav_my_goals);
             getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new GoalsFragment()).commit();
         }else if(item.getItemId()== R.id.nav_profile){
-            startActivity(new Intent(MainActivity.this,ProfileActivity.class));
+            if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new LoginFragment()).commit();
+            }else{
+                startActivity(new Intent(MainActivity.this,ProfileActivity.class));
+            }
         }
         else if(item.getItemId()== R.id.nav_my_badge){
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new BadgesFragment()).commit();
+            checkUserAuthentication(new BadgesFragment());
         }else if(item.getItemId()== R.id.nav_contact){
-        popupContact();
+            if(FirebaseAuth.getInstance().getCurrentUser()==null){
+                Toast.makeText(MainActivity.this,"You need to log in first",Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+            else{
+                popupContact();
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+    private void popupAccount() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popUpView = inflater.inflate(R.layout.popup_account, null);
 
+        PopupWindow popupWindow = new PopupWindow(
+                popUpView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f;
+        getWindow().setAttributes(layoutParams);
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f;
+            getWindow().setAttributes(originalParams);
+        });
+
+        ImageView back = popUpView.findViewById(R.id.back);
+        ImageButton editEmail=popUpView.findViewById(R.id.emailEdit),editPwd=popUpView.findViewById(R.id.passwordEdit);
+        RadioGroup radioGroup=popUpView.findViewById(R.id.radioGroup);
+        Button logout=popUpView.findViewById(R.id.logout);
+        TextView delete=popUpView.findViewById(R.id.delete),email=popUpView.findViewById(R.id.emailTextView);
+        email.setText(user.getEmail());
+        FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                String privacy=documentSnapshot.getString("privacy");
+                if(privacy.equals("public")){
+                    radioGroup.check(R.id.radioPublic);
+                }else {
+                    radioGroup.check(R.id.radioPrivate);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                String privacySetting;
+
+                if (checkedId == R.id.radioPublic) {
+                    privacySetting = "public";
+                } else if (checkedId == R.id.radioPrivate) {
+                    privacySetting = "private";
+                } else {
+                    return;
+                }
+                FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId())
+                        .update("privacy", privacySetting)
+                        .addOnSuccessListener(aVoid ->
+                                Log.d("Firestore", "Privacy updated to " + privacySetting))
+                        .addOnFailureListener(e ->
+                                Log.e("Firestore", "Error updating privacy", e));
+
+            }
+        });
+        editPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText passwordEditText = new EditText(v.getContext());
+
+                AlertDialog.Builder updatePasswordDialog = new AlertDialog.Builder(v.getContext());
+                updatePasswordDialog.setTitle("Change password?");
+                updatePasswordDialog.setMessage("Enter your new password");
+                updatePasswordDialog.setView(passwordEditText);
+                updatePasswordDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newPassword = passwordEditText.getText().toString();
+                        if (newPassword.length() < 6) {
+                            Toast.makeText(MainActivity.this, "Password too short", Toast.LENGTH_SHORT).show();
+                        } else {
+                            user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MainActivity.this, "Password successfully updated", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                        }
+                    }
+                });
+                updatePasswordDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = updatePasswordDialog.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            }
+        });
+        editEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText emailEditText = new EditText(v.getContext());
+
+                AlertDialog.Builder updateEmailDialog = new AlertDialog.Builder(v.getContext());
+                updateEmailDialog.setTitle("Change E-mail?");
+                updateEmailDialog.setMessage("Enter your new E-mail");
+                updateEmailDialog.setView(emailEditText);
+                updateEmailDialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newEmail = emailEditText.getText().toString();
+                        if (!Patterns.EMAIL_ADDRESS.matcher(newEmail).matches()) {
+                            Toast.makeText(MainActivity.this, "Not a valid email", Toast.LENGTH_SHORT).show();
+                        } else if (newEmail == user.getEmail()) {
+                            Toast.makeText(MainActivity.this, "Already using " + newEmail, Toast.LENGTH_SHORT).show();
+                        } else {
+                            user.verifyBeforeUpdateEmail(newEmail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(MainActivity.this, "Verification email sent to " + newEmail, Toast.LENGTH_LONG).show();
+                                    FirebaseAuth.getInstance().signOut();
+                                    startActivity(new Intent(MainActivity.this, SplashActivity.class));
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(MainActivity.this, "Error sending verification email: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+
+                        }
+                    }
+                });
+                updateEmailDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog dialog = updateEmailDialog.create();
+                dialog.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                emailEditText.setText(user.getEmail());
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Logout");
+                builder.setMessage("Are you sure");
+                builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        firebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(MainActivity.this,SplashActivity.class));
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Are you sure ?");
+                builder.setMessage("Deleting your account will result in completely removing your data from the app");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseUtil.allUserCollectionRef().document(FirebaseUtil.getCurrentUserId()).delete();
+                        user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(MainActivity.this,"Account deleted",Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(MainActivity.this,SplashActivity.class);
+                                startActivity(intent);
+                                finish();
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this,"Error: "+e.getMessage(),Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog=builder.create();
+                dialog.show();
+            }
+        });
+
+        back.setOnClickListener(v -> popupWindow.dismiss());
+
+    }
     private void popupContact() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popUpView = inflater.inflate(R.layout.contact_us_popup, null);

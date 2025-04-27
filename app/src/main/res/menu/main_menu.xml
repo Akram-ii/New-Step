@@ -40,8 +40,8 @@
                     android:title="Profile" />
                 <item
                     android:icon="@drawable/icon_settings"
-                    android:id="@+id/nav_settings"
-                    android:title="Settings" />
+                    android:id="@+id/nav_account"
+                    android:title="Account" />
                 <item
                     android:icon="@drawable/icon_info"
                     android:id="@+id/nav_contact"

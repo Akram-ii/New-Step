@@ -75,6 +75,7 @@ ProgressDialog p;
         String pwd = getIntent().getStringExtra("pwd");
         String username = getIntent().getStringExtra("username");
         String token1 = getIntent().getStringExtra("token");
+        String privacy= getIntent().getStringExtra("privacy");
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         auth.createUserWithEmailAndPassword(email,pwd).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -92,6 +93,7 @@ ProgressDialog p;
                 userInfo.put("whenBannedComments",Timestamp.now());
                 userInfo.put("whenBannedPosts",Timestamp.now());
                 userInfo.put("points",0);
+                userInfo.put("privacy",privacy);
                 userInfo.put("isBannedComments",false);
                 userInfo.put("isBannedPosts",false);
                 userInfo.put("isRestricted",false);
@@ -108,6 +110,9 @@ ProgressDialog p;
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(RulesActivity.this, "A confirmation e-mail has been sent to "+email, Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(RulesActivity.this,MainActivity.class));
+                                    finish();
+                                    FirebaseAuth.getInstance().signOut();
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
