@@ -160,13 +160,13 @@ public class UserModel {
     }
 
 
-    public UserModel(String name, String date , String Bio , String profileImage , String coverImage ){
+    public UserModel(String name, String date , String Bio , String profileImage , String coverImage , int point ){
         this.username = name;
         this.registerDate = date;
         this.Bio = Bio;
         this.coverImage = coverImage;
         this.profileImage = profileImage;
-
+        this.points = point;
     }
 
     public String getProfileImage() {
