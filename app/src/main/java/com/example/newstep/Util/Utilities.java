@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.text.style.StyleSpan;
 import android.util.Log;
 
 import com.example.newstep.R;
@@ -21,6 +24,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utilities {
     public static String hexCodeForColor(String colorName) {
@@ -240,5 +245,29 @@ public static int getMinBadge(int points){
                 Log.e("PointsSystem", "User document not found. No update made.");
             }
         }).addOnFailureListener(e -> Log.e("PointsSystem", "Failed to get user document", e));
+    }
+    public static SpannableString formatMarkdown(String input) {
+        SpannableString spannable = new SpannableString(input);
+        Pattern pattern = Pattern.compile("\\*\\*(.*?)\\*\\*");
+        Matcher matcher = pattern.matcher(input);
+
+        while (matcher.find()) {
+            int start = matcher.start();
+            int end = matcher.end();
+            spannable.setSpan(
+                    new StyleSpan(android.graphics.Typeface.BOLD),
+                    start,
+                    end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+
+        // Remove the ** markers
+        matcher = pattern.matcher(spannable);
+        while (matcher.find()) {
+            spannable = new SpannableString(spannable.toString().replaceAll("\\*\\*(.*?)\\*\\*", "$1"));
+        }
+
+        return spannable;
     }
 }

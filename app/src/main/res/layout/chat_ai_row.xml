@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingBottom="8dp"
+    android:paddingTop="3dp"
+    android:paddingRight="8dp"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:id="@+id/left_chat_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/received_message_background"
+        android:backgroundTint="@color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/left_chat_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/left_like_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/left_chat_layout"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/left_like_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="❤️"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/left_like_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/gray"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/left_date_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/left_like_container"
+        android:layout_alignStart="@id/left_chat_layout"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/darkGray"
+        android:textSize="12sp"
+        android:visibility="gone"/>
+
+    <!-- Message envoyé (côté droit) -->
+    <LinearLayout
+        android:id="@+id/right_chat_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="80dp"
+        android:background="@drawable/sent_message_background"
+        android:backgroundTint="@color/lavender2"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/right_chat_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -334,6 +334,9 @@ popupAccount();
         }
         else if(item.getItemId()== R.id.nav_my_badge){
             checkUserAuthentication(new BadgesFragment());
+        }else if(item.getItemId()== R.id.nav_ai){
+            navigationView.setCheckedItem(R.id.nav_ai);
+            startActivity(new Intent(MainActivity.this,ConvAIActivity.class));
         }else if(item.getItemId()== R.id.nav_contact){
             if(FirebaseAuth.getInstance().getCurrentUser()==null){
                 Toast.makeText(MainActivity.this,"You need to log in first",Toast.LENGTH_SHORT).show();

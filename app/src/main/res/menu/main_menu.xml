@@ -31,6 +31,12 @@
             android:id="@+id/nav_my_badge"
             android:title="My Badge"
             />
+        <item
+            android:icon="@drawable/ai_2"
+            android:id="@+id/nav_ai"
+            android:iconTint="@color/transparent"
+            android:title="Milo,Your AI Assistant"
+            />
 
         <item android:title="Account &amp; Support">
             <menu>
