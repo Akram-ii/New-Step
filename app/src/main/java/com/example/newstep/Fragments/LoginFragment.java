@@ -1,5 +1,6 @@
 package com.example.newstep.Fragments;
 
+import android.adservices.ondevicepersonalization.UserData;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -19,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,9 +36,11 @@ import android.widget.Toast;
 
 import com.example.newstep.MainActivity;
 import com.example.newstep.R;
+import com.example.newstep.SplashActivity;
 import com.example.newstep.Util.Utilities;
 import com.google.android.gms.common.SignInButton;
 import com.example.newstep.Util.FirebaseUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -68,7 +72,7 @@ import java.util.Map;
 public class LoginFragment extends Fragment {
     TextInputEditText password,email;
     TextInputLayout i;
-    Button login;
+    Button login,anon;
     TextView forgot,register;
     FirebaseAuth auth= FirebaseAuth.getInstance();
     ProgressDialog p;
@@ -86,6 +90,7 @@ public class LoginFragment extends Fragment {
         p=new ProgressDialog(getContext());
         i=rootView.findViewById(R.id.ptexti);
         login=rootView.findViewById(R.id.loginBTN);
+        anon=rootView.findViewById(R.id.anon);
         email=rootView.findViewById(R.id.email);
         password=rootView.findViewById(R.id.password);
         forgot=rootView.findViewById(R.id.forgotPassword);
@@ -94,7 +99,7 @@ public class LoginFragment extends Fragment {
         SignInButton googleSignInButton = rootView.findViewById(R.id.btnGoogleSignIn);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        anon.setOnClickListener(v->{signInAnon();});
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -192,6 +197,69 @@ public class LoginFragment extends Fragment {
         });
         return rootView;
     }
+
+   /* private void signInAnon() {
+        FirebaseAuth.getInstance().signInAnonymously().addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // Signed in successfully
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    Log.d("AUTH", "Signed in anonymously as: " + user.getUid());
+
+                    // Fetch the ID token first
+                    user.getIdToken(true).addOnCompleteListener(tokenTask -> {
+                        if (tokenTask.isSuccessful()) {
+                            String token = tokenTask.getResult().getToken();
+
+                            Map<String, Object> userData = new HashMap<>();
+                            userData.put("username", "Anonymous");
+                            userData.put("name", "Anonymous");
+                            userData.put("id", user.getUid());
+                            userData.put("registerDate", Timestamp.now());
+                            userData.put("token", token);
+                            userData.put("profileImage", null);
+                            userData.put("isBanned", false);
+                            userData.put("nb_reports", 0);
+                            userData.put("whenBannedComments", Timestamp.now());
+                            userData.put("whenBannedPosts", Timestamp.now());
+                            userData.put("points", 0);
+                            userData.put("privacy", "public");
+                            userData.put("isBannedComments", false);
+                            userData.put("isBannedPosts", false);
+                            userData.put("isRestricted", false);
+                            userData.put("isAdmin", false);
+
+                            FirebaseUtil.allUserCollectionRef().document(user.getUid())
+                                    .set(userData)
+                                    .addOnSuccessListener(aVoid -> Log.d("FIRESTORE", "Document added"))
+                                    .addOnFailureListener(e -> Log.w("FIRESTORE", "Error adding document", e));
+
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                            Fragment existingFragment = fragmentManager.findFragmentByTag(GoalsFragment.class.getSimpleName());
+                            if (existingFragment != null) {
+                                fragmentManager.beginTransaction().remove(existingFragment).commit();
+                            }
+
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
+                            HomeFragment homeFragment=new HomeFragment();
+                            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                            transaction.replace(R.id.fragment_container, homeFragment, HomeFragment.class.getSimpleName());
+                            transaction.addToBackStack(null);
+                            transaction.commitAllowingStateLoss();
+
+                        } else {
+                            Log.w("AUTH", "Failed to get token", tokenTask.getException());
+                        }
+                    });
+
+                } else {
+                    Log.w("AUTH", "Anonymous sign-in failed", task.getException());
+                }
+            }
+        });
+    }*/
     private void loginUser(String email, String password) {
         p.setMessage("Please wait");
         p.show();
@@ -377,7 +445,7 @@ public class LoginFragment extends Fragment {
                                 userData.put("isBannedComments",false);
                                 userData.put("isBannedPosts",false);
                                 userData.put("isRestricted",false);
-                                userData.put("isAdmin",true);
+                                userData.put("isAdmin",false);
 
 
                                 userRef.set(userData, SetOptions.merge())

@@ -97,7 +97,7 @@ ProgressDialog p;
                 userInfo.put("isBannedComments",false);
                 userInfo.put("isBannedPosts",false);
                 userInfo.put("isRestricted",false);
-                userInfo.put("isAdmin",true);
+                userInfo.put("isAdmin",false);
                 userInfo.put("token",token1);
 
                 FirebaseUtil.allUserCollectionRef().document(auth.getCurrentUser().getUid()).set(userInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
