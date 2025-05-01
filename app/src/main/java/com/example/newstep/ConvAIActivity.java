@@ -53,12 +53,7 @@ public class ConvAIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conv_aiactivity);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        EdgeToEdge.enable(this);
+
         msg = findViewById(R.id.msg_EditText);
         recyclerView = findViewById(R.id.msgsRecyclerView);
         back = findViewById(R.id.back_ImageButton);
