@@ -20,6 +20,7 @@
 
 
   <ImageButton
+
       android:id="@+id/back_ImageButton"
       android:layout_width="35dp"
       android:layout_height="35dp"
@@ -35,7 +36,7 @@
       android:id="@+id/pfp"
       android:layout_width="60dp"
       android:layout_height="60dp"
-      android:layout_marginStart="40dp"
+      android:layout_marginStart="50dp"
       android:layout_alignTop="@id/toolbar"
       android:src="@drawable/ai" />
 
@@ -50,7 +51,7 @@
 
 
   <TextView
-      android:id="@+id/usernameTextView"
+      android:id="@+id/milo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_toEndOf="@id/pfp"

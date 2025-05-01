@@ -6,9 +6,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newstep.Adapters.MessageAdapterAI;
 import com.example.newstep.Models.MessageAI;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -38,14 +42,19 @@ import okhttp3.Response;
 public class ConvAIActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageButton sendMSG, back;
-    TextView intr;
+    TextView intr,milo;
+    ImageView pfp;
     EditText msg;
     List<MessageAI> messageList;
     MessageAdapterAI adapter;
     List<JSONObject> conversationHistory;
     public static final MediaType JSON = MediaType.get("application/json");
 
-    OkHttpClient client = new OkHttpClient();
+    OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .build();
 
 
     @Override
@@ -55,6 +64,14 @@ public class ConvAIActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conv_aiactivity);
 
         msg = findViewById(R.id.msg_EditText);
+        milo = findViewById(R.id.milo);
+        pfp = findViewById(R.id.pfp);
+        pfp.setOnClickListener(v->{
+            setupBottomDialog("Meet Milo, Your Personal Support AI","✦ Milo is your friendly AI companion in Alter, here to support you through habits, struggles, and self-improvement.\n✦ Whether you're feeling stuck, need motivation, or just someone to talk to, Milo’s always here to help, judgment-free, 24/7.\n");
+        });
+        milo.setOnClickListener(v->{
+            setupBottomDialog("Meet Milo, Your Personal Support AI","✦ Milo is your friendly AI companion in Alter, here to support you through habits, struggles, and self-improvement.\n✦ Whether you're feeling stuck, need motivation, or just someone to talk to, Milo’s always here to help, judgment-free, 24/7.\n");
+        });
         recyclerView = findViewById(R.id.msgsRecyclerView);
         back = findViewById(R.id.back_ImageButton);
         sendMSG = findViewById(R.id.send_ImageButton);
@@ -105,8 +122,9 @@ public void addResponse(String msg){
             try {
                 JSONObject systemMsg = new JSONObject();
                 systemMsg.put("role", "system");
-                systemMsg.put("content", "You are an AI assistant named Milo in the app called Alter.Alter is a social media app for people with bad habits/addictions,be friendly,helpful and motivatiing" +
-                        "Never say you're from DeepSeek or mention the model you are based on.");
+                systemMsg.put("content", "You are an AI assistant named Milo in the app called Alter. " +
+                        "Alter is a social media app for people with bad habits/addictions. Be friendly, helpful, and motivating. " +
+                        "Never say you're from Llama or mention the model you are based on.");
                 conversationHistory.add(systemMsg);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -129,7 +147,7 @@ public void addResponse(String msg){
         // Create request JSON
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("model", "deepseek/deepseek-chat-v3-0324:free");
+            jsonObject.put("model", "llama-3.3-70b-versatile");
             jsonObject.put("messages", messageArr);
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -137,42 +155,60 @@ public void addResponse(String msg){
 
         RequestBody body = RequestBody.create(jsonObject.toString(), JSON);
         Request request = new Request.Builder()
-                .url("https://openrouter.ai/api/v1/chat/completions")
-                .header("Authorization", "Bearer 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")
-                .header("HTTP-Referer", "https://newstep.app")
+                .url("https://api.groq.com/openai/v1/chat/completions")
+                .header("Authorization", "Bearer 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")
                 .post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                addResponse("Failed to load response due to " + e.getMessage());
+                addResponse("Failed to load response due to: " + e.getMessage());
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    try {
-                        JSONObject jsonObject = new JSONObject(response.body().string());
+                String resBody = response.body().string();
+
+                try {
+                    JSONObject jsonObject = new JSONObject(resBody);
+
+                    if (jsonObject.has("choices")) {
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
-                        String result = jsonArray.getJSONObject(0).getJSONObject("message").getString("content");
+                        String result = jsonArray.getJSONObject(0)
+                                .getJSONObject("message")
+                                .getString("content");
+
                         addResponse(result.trim());
 
-                        // Add assistant response to conversation history
+                        // Add assistant reply to conversation
                         JSONObject botReply = new JSONObject();
                         botReply.put("role", "assistant");
                         botReply.put("content", result.trim());
                         conversationHistory.add(botReply);
 
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                    } else if (jsonObject.has("error")) {
+                        String err = jsonObject.getJSONObject("error")
+                                .optString("message", "Unknown error");
+                        addResponse("API Error: " + err);
+                    } else {
+                        addResponse("Unexpected response format: " + resBody);
                     }
-                } else {
-                    addResponse("Failed to respond due to " + response.body().string());
+                } catch (JSONException e) {
+                    addResponse("JSON parse error: " + e.getMessage());
                 }
             }
         });
     }
+    public void setupBottomDialog(String title,String desc){
+        BottomSheetDialog bottomSheetDialog=new BottomSheetDialog(this);
+        View view1= LayoutInflater.from(this).inflate(R.layout.bottom_dialog,null);
+        bottomSheetDialog.setContentView(view1);
+        TextView title1=view1.findViewById(R.id.title),desc1=view1.findViewById(R.id.desc);
+        title1.setText(title);
+        desc1.setText(desc);
+        bottomSheetDialog.show();
 
+    }
 
 }
