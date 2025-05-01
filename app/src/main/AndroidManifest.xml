@@ -25,6 +25,9 @@
             android:name=".RulesActivity"
             android:exported="false" />
         <activity
+            android:name=".ConvAIActivity"
+            android:exported="false" />
+        <activity
             android:name=".WelcomeOfflineActivity"
             android:exported="false" />
         <activity
