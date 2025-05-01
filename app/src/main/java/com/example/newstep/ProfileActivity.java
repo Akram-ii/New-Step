@@ -67,7 +67,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.newstep.Models.BadgeModel;
+import com.example.newstep.Util.FirebaseUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProfileActivity extends AppCompatActivity implements MyPostsFragment.CommentDialogListener {
@@ -84,6 +88,8 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
     private ImageView Back_image;
     private ImageView pro_image;
     private TextView biooo;
+    private TextView Point;
+    private ImageView badge;
 
 
     @Override
@@ -111,9 +117,13 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
         Back_image = findViewById(R.id.backGround_image);
         pro_image = findViewById(R.id.profileImage);
         biooo = findViewById(R.id.bio);
+        Point = findViewById(R.id.point);
+        badge = findViewById(R.id.badge);
 
         loadUserProfile();
         getusername();
+
+        loadUserBadge();
 
         BackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,9 +131,6 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
                 finish();
             }
         });
-
-
-
 
 
 
@@ -574,6 +581,67 @@ popupAccount();
 
     private void showToast(String message) {
         Toast.makeText(ProfileActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void fetchUserBadge(String userId, List<BadgeModel> badges, ImageView badgeView, TextView pointView) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Users").document(userId).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Long points = documentSnapshot.getLong("points");
+                        int currentPoints = (points != null) ? points.intValue() : 0;
+
+                        BadgeModel userBadge = getUserBadge(badges, currentPoints);
+
+                        badgeView.setImageResource(userBadge.getImageId());
+                        pointView.setText(String.valueOf(currentPoints));
+                    } else {
+                        Log.e("BadgeSystem", "User document not found.");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("BadgeSystem", "Failed to fetch user points", e));
+    }
+
+
+
+
+    private static BadgeModel getUserBadge(List<BadgeModel> badges, int userPoints) {
+        BadgeModel selectedBadge = badges.get(0);
+
+        for (BadgeModel badge : badges) {
+            if (userPoints >= badge.getPoints()) {
+                selectedBadge = badge;
+            } else {
+                break;
+            }
+        }
+        return selectedBadge;
+    }
+
+
+    private void loadUserBadge() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+
+            List<BadgeModel> badges = new ArrayList<>();
+            badges.add(new BadgeModel("First Step", 0, R.drawable.first_step_badge));
+            badges.add(new BadgeModel("Starting to See", 25, R.drawable.fog_badge));
+            badges.add(new BadgeModel("Inner Spark", 75, R.drawable.fire_badge));
+            badges.add(new BadgeModel("Steady Glow", 150, R.drawable.lighthouse_badge));
+            badges.add(new BadgeModel("Beacon", 300, R.drawable.sun_badge));
+            badges.add(new BadgeModel("Warm Shelter", 500, R.drawable.nest_badge));
+            badges.add(new BadgeModel("Safe Place", 1000, R.drawable.safe_badge));
+            badges.add(new BadgeModel("Gathering Light", 2000, R.drawable.star_badge));
+            badges.add(new BadgeModel("Healer", 4000, R.drawable.healer_badge));
+            badges.add(new BadgeModel("Phoenix", 10000, R.drawable.phoenix_badge));
+
+            fetchUserBadge(userId, badges, badge, Point);
+        }else {
+
+            Log.e("BadgeSystem", "User is not logged in");
+        }
     }
 
 
