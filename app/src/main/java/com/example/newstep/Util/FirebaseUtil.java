@@ -140,6 +140,9 @@ public static String getCurrentUsername(Context context){
                                 user.setBio(documentSnapshot.getString("bio"));
                                 user.setRegisterDate(documentSnapshot.getString("registerDate"));
                                 user.setCoverImage(documentSnapshot.getString("coverImage"));
+                                Long pointsLong = documentSnapshot.getLong("points");
+                                int points = pointsLong != null ? pointsLong.intValue() : 0;
+                                user.setPoints(points);
 
                                 UserProfilePopup.show(context, v, user);
                             } else {

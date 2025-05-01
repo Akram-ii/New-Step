@@ -38,9 +38,13 @@ public class UserProfilePopup {
         TextView bioText = popupView.findViewById(R.id.bio);
         TextView memberSinceText = popupView.findViewById(R.id.memberSince);
         ImageView backimage = popupView.findViewById(R.id.headerBackground);
-
         Button messageButton = popupView.findViewById(R.id.messageButton);
+        TextView  point = popupView.findViewById(R.id.point);
+        ImageView  badge = popupView.findViewById(R.id.badge);
 
+
+        badge.setImageResource(Utilities.getCurrBadgesImageId(user.getPoints()));
+        point.setText(Integer.toString(user.getPoints()));
 
         Glide.with(context)
                 .load(user.getProfileImage())

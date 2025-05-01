@@ -127,9 +127,14 @@ if(post.getUserId()==FirebaseUtil.getCurrentUserId()){
                                 String bio = documentSnapshot.getString("bio");
                                 String registerDate = documentSnapshot.getString("registerDate");
                                 String coverImage = documentSnapshot.getString("coverImage");
+                                Long pointsLong = documentSnapshot.getLong("points");
+                                int points = pointsLong != null ? pointsLong.intValue() : 0;
+
                                 user.setBio(bio);
                                 user.setRegisterDate(registerDate);
                                 user.setCoverImage(coverImage);
+                                user.setPoints(points);
+
 
                             }else{
                                 Toast.makeText(context, "nooooo", Toast.LENGTH_SHORT).show();
