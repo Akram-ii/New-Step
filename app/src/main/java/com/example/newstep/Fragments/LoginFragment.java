@@ -367,6 +367,17 @@ public class LoginFragment extends Fragment {
                                 userData.put("registerDate", registerDate);
                                 userData.put("token", token1);
                                 userData.put("profileImage", profileImageUrl);
+                                userData.put("isBanned",false);
+                                userData.put("nb_reports",0);
+                                userData.put("isBanned",false);
+                                userData.put("whenBannedComments",Timestamp.now());
+                                userData.put("whenBannedPosts",Timestamp.now());
+                                userData.put("points",0);
+                                userData.put("privacy","public");
+                                userData.put("isBannedComments",false);
+                                userData.put("isBannedPosts",false);
+                                userData.put("isRestricted",false);
+                                userData.put("isAdmin",true);
 
 
                                 userRef.set(userData, SetOptions.merge())
