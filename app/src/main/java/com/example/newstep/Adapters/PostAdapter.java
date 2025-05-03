@@ -102,17 +102,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 if(post.getUserId()==FirebaseUtil.getCurrentUserId()){
     holder.btnReport.setVisibility(View.GONE);
 }
-        Glide.with(holder.itemView.getContext())
-                .load(post.getProfileImageUrl())
-                .placeholder(R.drawable.pfp_purple)
-                .error(R.drawable.pfp_purple)
-                .circleCrop()
-                .into(holder.P_image);
-
+if(!post.getAnonymous()) {
+    Glide.with(holder.itemView.getContext())
+            .load(post.getProfileImageUrl())
+            .placeholder(R.drawable.pfp_purple)
+            .error(R.drawable.pfp_purple)
+            .circleCrop()
+            .into(holder.P_image);
+}
         holder.P_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+if(post.getAnonymous()){
+    return;
+}
                 UserModel user = new UserModel();
                 user.setId(post.getUserId());
                 user.setUsername(post.getUserName());
@@ -154,8 +157,11 @@ if(post.getUserId()==FirebaseUtil.getCurrentUserId()){
 if(post.getCategory()!=null){
         holder.cat.setText(post.getCategory());}
         holder.postContent.setText(post.getContent());
-        holder.username.setText(post.getUserName());
-
+if(post.getAnonymous()){
+    holder.username.setText("Anonymous User");
+}else {
+    holder.username.setText(post.getUserName());
+}
         holder.username.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

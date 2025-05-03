@@ -118,20 +118,4 @@
         android:layout_gravity="center"
         android:layout_margin="16dp"
         />
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:drawableTint="@color/white"
-        android:layout_height="wrap_content"
-        android:text="Sign in Anonymously"
-        android:padding="10dp"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal"
-        android:drawableLeft="@drawable/pfp_purple"
-        android:id="@+id/anon"
-        android:elevation="10dp"
-        android:backgroundTint="@color/blue"
-        android:textColor="@color/white"
-        app:cornerRadius="15dp"
-        android:layout_marginHorizontal="8dp"
-        />
 </LinearLayout>

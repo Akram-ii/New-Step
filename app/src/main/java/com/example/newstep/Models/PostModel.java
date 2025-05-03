@@ -10,6 +10,7 @@ public class PostModel {
     private String userName;
     private String content,userId;
     private Timestamp timestamp;
+    private Boolean anonymous;
     private int likes;
     private int dislikes;
     private List<String> likedBy;
@@ -19,16 +20,29 @@ public class PostModel {
     public PostModel() {
     }
 
-    public PostModel(String userId,String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp , String profileImageUrl,String cat) {
+    public PostModel(String userId,String id, String content,  int likes,String userName, int dislikes,Timestamp timestamp , String profileImageUrl,String cat,Boolean anonymous) {
         this.id = id;
         this.content = content;
         this.userName=userName;
         this.likes = likes;
+        this.anonymous=anonymous;
         this.dislikes = dislikes;
         this.timestamp= timestamp;
         this.profileImageUrl = profileImageUrl;
         this.userId=userId;
         this.category=cat;
+    }
+
+    public Boolean getAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(Boolean anonymous) {
+        this.anonymous = anonymous;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getId() {

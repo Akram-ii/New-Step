@@ -150,6 +150,7 @@ public class LikedPostsFragment extends Fragment {
                                 String postId = doc.getId();
                                 String content = doc.getString("content");
                                 String userId = doc.getString("userId");
+                                Boolean anon = doc.getBoolean("anonymous");
                                 String userName = doc.getString("username");
                                 String cat = doc.getString("category");
                                 Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
@@ -170,7 +171,7 @@ public class LikedPostsFragment extends Fragment {
 
                                                 PostModel post = new PostModel(userId, postId, content,
                                                         likes.intValue(), name, dislikes.intValue(),
-                                                        timestampPost, profileImageUrl,cat);
+                                                        timestampPost, profileImageUrl,cat,anon);
 
                                                 post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                                 post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());

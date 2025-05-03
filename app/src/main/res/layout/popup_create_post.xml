@@ -45,7 +45,29 @@
             android:layout_height="wrap_content"
             android:id="@+id/spinner_category"
             android:background="@drawable/spinner_category_background"/>
+        <RadioGroup
 
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:id="@+id/radioNamed"
+                android:checked="true"
+                android:buttonTint="@color/purple"
+                android:layout_height="wrap_content"
+                android:text="Named"/>
+            <RadioButton
+                android:buttonTint="@color/purple"
+                android:id="@+id/radioAnon"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anonymous"/>
+        </RadioGroup>
         <LinearLayout
             android:id="@+id/buttonLayout"
             android:layout_width="match_parent"

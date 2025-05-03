@@ -17,6 +17,7 @@
     import android.widget.ImageButton;
     import android.widget.ImageView;
     import android.widget.PopupWindow;
+    import android.widget.RadioGroup;
     import android.widget.Spinner;
     import android.widget.TextView;
     import android.widget.Toast;
@@ -231,6 +232,7 @@ public class CommunityFragment extends Fragment {
                             String userId = doc.getString("userId");
                             String userName = doc.getString("username");
                             String cat = doc.getString("category");
+                            Boolean anon= doc.getBoolean("anonymous");
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
                             Timestamp timestampPost = doc.getTimestamp("timestamp");
@@ -249,7 +251,7 @@ public class CommunityFragment extends Fragment {
                                             String name = userDoc.getString("username");
 
                                             PostModel post = new PostModel(userId, postId, content,
-                                                    likes.intValue(), name, dislikes.intValue(), timestampPost, profileImageUrl,cat);
+                                                    likes.intValue(), name, dislikes.intValue(), timestampPost, profileImageUrl,cat,anon);
 
                                             post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                             post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
@@ -376,6 +378,7 @@ public class CommunityFragment extends Fragment {
                             String userId = doc.getString("userId");
                             String userName = doc.getString("username");
                             String cat = doc.getString("category");
+                            Boolean anon= doc.getBoolean("anonymous");
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
                             Timestamp timestampPost = doc.getTimestamp("timestamp");
@@ -393,7 +396,7 @@ public class CommunityFragment extends Fragment {
                                             String profileImageUrl = userDoc.getString("profileImage");
 
                                             PostModel post = new PostModel(userId, postId, content,
-                                                    likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat);
+                                                    likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat,anon);
 
                                             post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                             post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
@@ -449,6 +452,7 @@ public class CommunityFragment extends Fragment {
         Button buttonCancel = popUpView.findViewById(R.id.buttonCancel);
         Button buttonPost = popUpView.findViewById(R.id.buttonPost);
         Spinner spinnerCategory= popUpView.findViewById(R.id.spinner_category);
+        RadioGroup radioGroup=popUpView.findViewById(R.id.radioGroup);
         List<String> categories = new ArrayList<>();
         categories.add("My Experience");
         categories.add("Ask for help");
@@ -472,10 +476,21 @@ public class CommunityFragment extends Fragment {
             String postContent = editTextPostContent.getText().toString().trim();
 
             if (!postContent.isEmpty()) {
-                String selectCategory =spinnerCategory.getSelectedItem().toString();
-                createPost(postContent,selectCategory, popupWindow); // Créer le post
+                int checkedId = radioGroup.getCheckedRadioButtonId();
+                Boolean anon;
+
+                if (checkedId == R.id.radioNamed) {
+                    anon = false;
+                } else if (checkedId == R.id.radioAnon) {
+                    anon = true;
+                } else {
+                    return;
+                }
+
+                String selectCategory = spinnerCategory.getSelectedItem().toString();
+                createPost(postContent,selectCategory,anon,popupWindow);
                 popupWindow.dismiss();
-            } else {
+            }else {
                 // Afficher un message d'erreur si le post est vide
                 Toast.makeText(requireContext(), "Post cannot be empty", Toast.LENGTH_SHORT).show();
             }
@@ -484,7 +499,7 @@ public class CommunityFragment extends Fragment {
 
 
 
-    private void createPost(String content,String category, PopupWindow popupWindow) {
+    private void createPost(String content,String category,Boolean anon, PopupWindow popupWindow) {
         // Obtenir l'utilisateur actuel via Firebase Authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
@@ -511,6 +526,7 @@ public class CommunityFragment extends Fragment {
                         Map<String, Object> post = new HashMap<>();
                         post.put("content", content);
                         post.put("userId", userId);
+                        post.put("anonymous", anon);
                         post.put("username", username);
                         post.put("category",category);
                         post.put("profileImage" , profileImageUrl);
