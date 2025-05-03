@@ -52,14 +52,16 @@ android:layout_centerHorizontal="true"
                 android:id="@+id/radioPublic"
                 android:buttonTint="@color/blue"
                 android:layout_height="wrap_content"
-                android:text="Everyone"/>
+                android:text="Everyone"
+                android:textColor="@color/black"/>
             <RadioButton
                 android:buttonTint="@color/blue"
                 android:id="@+id/radioPrivate"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nobody"/>
+                android:text="Nobody"
+                android:textColor="@color/black"/>
         </RadioGroup>
     </RelativeLayout>
     <View
@@ -138,10 +140,10 @@ android:layout_centerHorizontal="true"
         android:layout_height="25dp"
         android:id="@+id/passwordEdit"
         android:layout_below="@id/dive"
-        android:backgroundTint="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/edit"
         android:layout_alignParentRight="true"
-        app:tint="@color/black" />
+        app:tint="@color/black"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
     <TextView
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
