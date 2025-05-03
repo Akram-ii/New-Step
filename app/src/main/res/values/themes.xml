@@ -5,6 +5,13 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/white</item>
+        <item name="backgroundColor">@color/white</item>
+        <item name="color">@color/blue</item>
+
+
+
+
+
     </style>
 
     <style name="Theme.NewStep" parent="Base.Theme.NewStep" />
@@ -23,6 +30,7 @@
     </style>
 
 
+
     <style name="PopupSmoothAnimation">
         <item name="android:windowEnterAnimation">@anim/popup_in</item>
         <item name="android:windowExitAnimation">@anim/popup_out</item>
@@ -31,5 +39,42 @@
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
+
+    <style name="Screan">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="Text">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="Image">
+        <item name="tint">@color/black</item>
+    </style>
+    <style name="Widget.MyApp.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="android:backgroundTint">@color/offWhite</item>
+        <item name="itemIconTint">@color/blue</item>
+        <item name="itemTextColor">@color/blue</item>
+        <item name="itemRippleColor">@color/purple</item>
+        <item name="subheaderColor">@color/black</item>
+        <item name="itemIconSize">@dimen/_20sdp</item>
+        <item name="itemTextAppearanceActiveBoldEnabled">true</item>
+    </style>
+
+
+    <style name="BlueColorToolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/blue</item>
+        <item name="titleTextColor">@color/black</item>
+    </style>
+    <style name="BlueColor" >
+        <item name="android:background">@color/blue</item>
+
+    </style>
+
+
+
+
+
+
+
 
 </resources>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/lavender2"
+    android:background="@color/blue"
     tools:context=".ConvActivity">
 
 
@@ -71,7 +71,7 @@
         android:layout_marginBottom="10dp"
         android:layout_above="@id/input_layout"
         android:background="@drawable/chat_background"
-        android:backgroundTint="@color/white"
+        style="@style/Screan"
         android:layout_marginHorizontal="2dp">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:padding="6dp"
-        android:background="@color/lavender2">
+        android:background="@color/blue">
 
         <EditText
             android:id="@+id/msg_EditText"

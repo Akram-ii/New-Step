@@ -64,7 +64,7 @@
             android:text="Private"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            app:chipBackgroundColor="@color/blue"
+             app:chipBackgroundColor="@color/blue"
             android:textColor="@color/white"
             app:checkedIconTint="@color/white" />
 

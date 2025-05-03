@@ -98,7 +98,7 @@
         android:layout_below="@id/toolbar"
         android:layout_above="@id/input_layout"
         android:background="@drawable/chat_background"
-        android:backgroundTint="@color/white"
+        style="@style/Screan"
         android:layout_margin="4dp">
 
         <androidx.recyclerview.widget.RecyclerView

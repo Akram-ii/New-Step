@@ -61,8 +61,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        /*
         textViewQuote = rootView.findViewById(R.id.quote_textView);
-        click=rootView.findViewById(R.id.clickIcon);
+        click=rootView.findViewById(R.id.clickIcon);*/
 
         GoalsCard=rootView.findViewById(R.id.goals_card);
         leaderBoard=rootView.findViewById(R.id.leader_board);
@@ -73,7 +74,7 @@ public class HomeFragment extends Fragment {
 
         String currentUserId = FirebaseUtil.getCurrentUserId();
 loadUsersLeaderBoard();
-        dbHelper = new QuoteDatabaseHelper(getContext());
+       /* dbHelper = new QuoteDatabaseHelper(getContext());
         String[] quoteData = dbHelper.getQuote();
         quote = quoteData[0];
         lastUpdatedTime = Long.parseLong(quoteData[1]);
@@ -98,7 +99,7 @@ loadUsersLeaderBoard();
               showQuoteEditDialog(quote);
               return true;
           }
-      });
+      });*/
 
 
         GoalsCard.setOnClickListener(new View.OnClickListener() {

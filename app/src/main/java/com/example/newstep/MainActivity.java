@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -23,9 +24,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -35,6 +38,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -76,6 +80,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -95,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int test;
     FirebaseAuth firebaseAuth;
     CurvedBottomNavigationView bottomView;
+    boolean nightMODE;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     static Boolean isMediaInit=false;
     @Override
@@ -107,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
         firebaseAuth=FirebaseAuth.getInstance();
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
         lastFragment = sharedPreferences.getString("lastFragment", "default_value");
@@ -346,6 +356,9 @@ popupAccount();
             else{
                 popupContact();
             }
+        } else if (item.getItemId()== R.id.nav_settings) {
+            showSettingsPopup();
+
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -751,5 +764,116 @@ popupAccount();
 
 
     }
+
+    private void showSettingsPopup() {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
+
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+
+
+        Switch modeSwitch = popupView.findViewById(R.id.modeSwitch);
+
+
+
+
+        sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE);
+        nightMODE =sharedPreferences.getBoolean("night", false);
+        if(nightMODE){
+            modeSwitch.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        modeSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(nightMODE){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("night", false);
+                    editor.apply();
+                    nightMODE = false;
+
+                }else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor =sharedPreferences.edit();
+                    editor.putBoolean("night",true);
+                    editor.apply();
+                    nightMODE = true;
+                }
+                modeSwitch.setChecked(nightMODE);
+            }
+        });
+
+
+        RadioGroup langGroup = popupView.findViewById(R.id.langGroup);
+        RadioButton langEnglish = popupView.findViewById(R.id.langEnglish);
+        RadioButton langFrench = popupView.findViewById(R.id.langFrench);
+        RadioButton langArabic = popupView.findViewById(R.id.langArabic);
+
+        SharedPreferences langPrefs = getSharedPreferences("Language", Context.MODE_PRIVATE);
+        String savedLang = langPrefs.getString("lang", "en");
+
+        switch (savedLang) {
+            case "en":
+                langEnglish.setChecked(true);
+                break;
+            case "fr":
+                langFrench.setChecked(true);
+                break;
+            case "ar":
+                langArabic.setChecked(true);
+                break;
+        }
+
+        langGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String langCode = "en";
+            if (checkedId == R.id.langEnglish) langCode = "en";
+            else if (checkedId == R.id.langFrench) langCode = "fr";
+            else if (checkedId == R.id.langArabic) langCode = "ar";
+
+            langPrefs.edit().putString("lang", langCode).apply();
+            setLocale(langCode);
+            recreate();
+        });
+
+
+
+
+
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
+
+
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.alpha = 0.5f;
+        getWindow().setAttributes(layoutParams);
+
+
+        popupWindow.setOnDismissListener(() -> {
+            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
+            originalParams.alpha = 1.0f;
+            getWindow().setAttributes(originalParams);
+        });
+
+
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+    }
+
+
+    private void setLocale(String langCode) {
+        Locale locale = new Locale(langCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+    }
+
+
 
 }

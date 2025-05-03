@@ -7,7 +7,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    style="@style/Screan"
     tools:context=".ProfileActivity">
 
 
@@ -16,7 +16,7 @@
         android:id="@+id/ToolBar_Profile"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        style="@style/Screan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="15dp"
         android:text="User name"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -55,6 +55,7 @@
         android:layout_marginStart="4dp"
         android:background="@drawable/ripple_back_button"
         android:padding="10dp"
+        style="@style/Image"
         android:scaleType="center"
         android:src="@drawable/arrow_back_24dp_1f1f1f_fill0_wght400_grad0_opsz24"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="User"
-        android:textColor="#000000"
+        style="@style/Text"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +170,7 @@
         app:tabIndicatorColor="@color/purple"
         app:tabTextColor="@color/gray"
         app:tabSelectedTextColor="@color/purple"
-        android:background="@color/white"
+        style="@style/Screan"
         >
 
         <com.google.android.material.tabs.TabItem

@@ -59,14 +59,16 @@
                 android:checked="true"
                 android:buttonTint="@color/purple"
                 android:layout_height="wrap_content"
-                android:text="Named"/>
+                android:text="Named"
+                android:textColor="@color/black"/>
             <RadioButton
                 android:buttonTint="@color/purple"
                 android:id="@+id/radioAnon"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Anonymous"/>
+                android:text="Anonymous"
+                android:textColor="@color/black"/>
         </RadioGroup>
         <LinearLayout
             android:id="@+id/buttonLayout"

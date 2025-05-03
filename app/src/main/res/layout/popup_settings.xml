@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Mode"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+    <Switch
+        android:id="@+id/modeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dark Mode"
+        android:textColor="@color/black"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"
+        android:layout_marginVertical="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Language"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+
+    <RadioGroup
+        android:id="@+id/langGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/langEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="English"
+            android:textColor="@color/black" />
+
+        <RadioButton
+            android:id="@+id/langFrench"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Frensh"
+            android:textColor="@color/black" />
+        <RadioButton
+            android:id="@+id/langArabic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="العربية"
+            android:textColor="@color/black" />
+    </RadioGroup>
+
+</LinearLayout>

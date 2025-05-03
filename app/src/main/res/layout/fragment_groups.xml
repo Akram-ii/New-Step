@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/Screan"
     android:visibility="visible"
     tools:context=".Fragments.GroupsFragment">
 
@@ -19,9 +20,9 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="Filter"
+            style="@style/Text"
             android:layout_marginLeft="20dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             android:layout_marginTop="5dp"
             />
         <ImageButton
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_filter"
             android:id="@+id/filter_group"
-            app:tint="@color/black"
+            style="@style/Image"
            />
 
         <androidx.recyclerview.widget.RecyclerView

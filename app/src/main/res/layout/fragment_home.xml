@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/Screan"
     xmlns:tools="http://schemas.android.com/tools"
     android:fillViewport="true"
     >
@@ -28,290 +29,292 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"/>
 
-        <TextView
-            android:id="@+id/quote_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Write your quote"
-            android:padding="10dp"
-            android:background="@drawable/quote_background"
-            android:textColor="@color/offWhite"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            android:maxLines="2"
-            />
-
-
-        <ImageView
-            android:id="@+id/clickIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/click"
-            android:layout_marginStart="5dp"
-/>
-    </LinearLayout>
-
-<GridLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:rowCount="2"
-    android:columnCount="2"
-    android:id="@+id/grid"
-    android:layout_centerHorizontal="true"
-    android:layout_marginHorizontal="10dp"
-    android:layout_below="@+id/l1">
-    <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="12dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        android:padding="16dp"
-        android:id="@+id/goals_card"
-        app:cardBackgroundColor="@color/white">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/goals"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Your Goals"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+        <!--  <TextView
+              android:id="@+id/quote_textView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Write your quote"
+              android:padding="10dp"
+              android:background="@drawable/quote_background"
+              android:textColor="@color/offWhite"
+              android:textSize="18sp"
+              android:textStyle="italic"
+              android:maxLines="2"
+              />
 
 
+          <ImageView
+              android:id="@+id/clickIcon"
+              android:layout_width="30dp"
+              android:layout_height="30dp"
+              android:src="@drawable/click"
+              android:layout_marginStart="5dp"
+  />
+      </LinearLayout>  -->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Small steps make big changes! Track your goals!"
-                android:textSize="14sp"
-                android:textColor="@color/darkGray"/>
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_margin="12dp"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
-        android:id="@+id/progress_card"
-        app:cardBackgroundColor="@color/white">
+  <GridLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:rowCount="2"
+      android:columnCount="2"
+      android:id="@+id/grid"
+      android:layout_centerHorizontal="true"
+      android:layout_marginHorizontal="10dp"
+      android:layout_below="@+id/l1">
+      <androidx.cardview.widget.CardView
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          android:layout_margin="12dp"
+          app:cardCornerRadius="16dp"
+          app:cardElevation="8dp"
+          android:padding="16dp"
+          android:id="@+id/goals_card"
+          app:cardBackgroundColor="@color/white">
 
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="8dp"
+              android:orientation="vertical">
+
+                  <ImageView
+                      android:layout_width="50dp"
+                      android:layout_height="50dp"
+                      android:layout_gravity="center_horizontal"
+                      android:src="@drawable/goals"
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Your Goals"
+                      android:layout_gravity="center_horizontal"
+                      android:textSize="16sp"
+                      android:textStyle="bold"
+                      android:textColor="@color/black"/>
 
 
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/progress_ic"
-                    android:layout_gravity="center_horizontal"
-                    />
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Small steps make big changes! Track your goals!"
+                  android:textSize="14sp"
+                  android:textColor="@color/darkGray"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Milstones"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+          </LinearLayout>
+      </androidx.cardview.widget.CardView>
+      <androidx.cardview.widget.CardView
+          android:layout_margin="12dp"
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          app:cardCornerRadius="20dp"
+          app:cardElevation="8dp"
+          android:id="@+id/progress_card"
+          app:cardBackgroundColor="@color/white">
 
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Keep pushing forward! You're doing great!💪"
-                android:textColor="@color/darkGray"
-                android:textSize="14sp" />
-
-
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
-        android:id="@+id/badges_card"
-        app:cardBackgroundColor="@color/white">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
-
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/badge2"
-                    android:layout_gravity="center_horizontal"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Your Badges"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Collect more badges as you make progress! "
-                android:textColor="@color/darkGray"
-                android:textSize="14sp" />
+          <LinearLayout
+              android:gravity="center_vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="10dp"
+              android:orientation="vertical">
 
 
 
+                  <ImageView
+                      android:layout_width="50dp"
+                      android:layout_height="50dp"
+                      android:src="@drawable/progress_ic"
+                      android:layout_gravity="center_horizontal"
+                      />
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="8dp"
-        android:id="@+id/commu_card"
-        app:cardBackgroundColor="@color/white">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="vertical">
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Milstones"
+                      android:layout_gravity="center_horizontal"
+                      android:textSize="15sp"
+                      android:textStyle="bold"
+                      android:textColor="@color/black"/>
 
 
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/commu_icon_home"
-                    android:layout_gravity="center_horizontal"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Connect &amp; Grow"
-                    android:textSize="16sp"
-                    android:layout_gravity="center_horizontal"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="8dp"
+                  android:text="Keep pushing forward! You're doing great!💪"
+                  android:textColor="@color/darkGray"
+                  android:textSize="14sp" />
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="See how others are doing, share your wins"
-                android:textColor="@color/darkGray"
-                android:textSize="14sp" />
+
+          </LinearLayout>
+      </androidx.cardview.widget.CardView>
+      <androidx.cardview.widget.CardView
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          android:layout_margin="8dp"
+          app:cardCornerRadius="20dp"
+          app:cardElevation="8dp"
+          android:id="@+id/badges_card"
+          app:cardBackgroundColor="@color/white">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="10dp"
+              android:orientation="vertical">
+
+
+                  <ImageView
+                      android:layout_width="50dp"
+                      android:layout_height="50dp"
+                      android:src="@drawable/badge2"
+                      android:layout_gravity="center_horizontal"
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Your Badges"
+                      android:layout_gravity="center_horizontal"
+                      android:textSize="18sp"
+                      android:textStyle="bold"
+                      android:textColor="@color/black"/>
+
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="8dp"
+                  android:text="Collect more badges as you make progress! "
+                  android:textColor="@color/darkGray"
+                  android:textSize="14sp" />
 
 
 
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</GridLayout>
+          </LinearLayout>
+      </androidx.cardview.widget.CardView>
+      <androidx.cardview.widget.CardView
+          android:layout_width="150dp"
+          android:layout_height="150dp"
+          android:layout_margin="8dp"
+          app:cardCornerRadius="20dp"
+          app:cardElevation="8dp"
+          android:id="@+id/commu_card"
+          app:cardBackgroundColor="@color/white">
 
-    <RelativeLayout
-        android:background="@drawable/leaderboard_cornertop"
-        android:layout_width="match_parent"
-        android:elevation="10dp"
-        android:layout_below="@+id/grid"
-        android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_height="match_parent">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="10dp"
+              android:orientation="vertical">
 
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginVertical="5dp"
-            android:layout_height="wrap_content"
-            android:text="Top Achievers"
-            android:textSize="17sp"
 
-            android:id="@+id/t1"
-            />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:id="@+id/a1"
-            android:layout_centerHorizontal="true"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rank"
-            android:layout_below="@+id/t1"
-            android:textSize="15sp"
-            android:layout_marginLeft="15dp"
-            android:textColor="@color/black"
-            android:id="@+id/t2"
-            />
-        <TextView
-            android:layout_below="@+id/t1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textSize="15sp"
-            android:layout_toLeftOf="@+id/a1"
-            android:textColor="@color/black"
-            />
-        <TextView
-            android:layout_below="@+id/t1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Points"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp"
-        android:layout_below="@+id/t2"
-        android:layout_alignParentBottom="true"
-        android:paddingHorizontal="5dp"
-        android:paddingTop="5dp"
-        android:elevation="10dp"
-        android:id="@+id/leader_board"/>
-    </RelativeLayout>
-</RelativeLayout>
+
+                  <ImageView
+                      android:layout_width="50dp"
+                      android:layout_height="50dp"
+                      android:src="@drawable/commu_icon_home"
+                      android:layout_gravity="center_horizontal"
+                      />
+
+                  <TextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="Connect &amp; Grow"
+                      android:textSize="16sp"
+                      android:layout_gravity="center_horizontal"
+                      android:textStyle="bold"
+                      android:textColor="@color/black"/>
+
+
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="8dp"
+                  android:text="See how others are doing, share your wins"
+                  android:textColor="@color/darkGray"
+                  android:textSize="14sp" />
+
+
+
+
+          </LinearLayout>
+      </androidx.cardview.widget.CardView>
+  </GridLayout>
+
+      <RelativeLayout
+          android:background="@drawable/leaderboard_cornertop"
+          android:layout_width="match_parent"
+          android:elevation="10dp"
+          android:layout_below="@+id/grid"
+          android:layout_marginHorizontal="5dp"
+          android:layout_marginTop="5dp"
+          android:layout_height="wrap_content">
+
+          <TextView
+              android:layout_centerHorizontal="true"
+              android:layout_width="wrap_content"
+             style="@style/Text"
+              android:textStyle="bold"
+              android:layout_marginVertical="5dp"
+              android:layout_height="wrap_content"
+              android:text="Top Achievers"
+              android:textSize="17sp"
+
+              android:id="@+id/t1"
+              />
+          <View
+              android:layout_width="0dp"
+              android:layout_height="0dp"
+              android:id="@+id/a1"
+              android:layout_centerHorizontal="true"/>
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Rank"
+              android:layout_below="@+id/t1"
+              android:textSize="15sp"
+              android:layout_marginLeft="15dp"
+             style="@style/Text"
+              android:id="@+id/t2"
+              />
+          <TextView
+              android:layout_below="@+id/t1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Name"
+              android:textSize="15sp"
+              android:layout_toLeftOf="@+id/a1"
+              style="@style/Text"
+              />
+          <TextView
+              android:layout_below="@+id/t1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Points"
+              android:textSize="15sp"
+              style="@style/Text"
+              android:layout_alignParentRight="true"
+              android:layout_marginRight="20dp"
+              />
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_marginHorizontal="10dp"
+          android:layout_below="@+id/t2"
+          android:layout_alignParentBottom="true"
+          android:paddingHorizontal="5dp"
+          android:paddingTop="5dp"
+          android:elevation="10dp"
+          style="@style/Screan"
+          android:id="@+id/leader_board"/>
+      </RelativeLayout>
+  </RelativeLayout>

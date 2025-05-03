@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/Screan"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
     tools:context=".Fragments.AddHabitFragment">
@@ -25,7 +26,7 @@
         android:layout_above="@+id/emergency_EditText"
         android:textColorHint="@color/gray"
         android:layout_marginTop="10dp"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:imeOptions="actionDone"
         android:id="@+id/name_EditText"
         />
@@ -55,7 +56,7 @@
         android:layout_height="50dp"
         android:backgroundTint="@color/black"
         android:layout_above="@+id/cat_EditText"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:textAlignment="center"
         android:hint="Emergency message (optional)"
         android:textColorHint="@color/gray"
