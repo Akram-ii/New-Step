@@ -3,10 +3,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="5dp"
+    android:padding="10dp"
     android:elevation="10dp"
     android:layout_margin="20dp"
-    android:backgroundTint="@color/light_blue"
+    android:backgroundTint="@color/white"
     android:background="@drawable/goal_background_item"
     >
     <ImageView
@@ -35,7 +35,7 @@
         android:layout_marginBottom="20dp" />
     <EditText
         android:inputType="textCapWords"
-        android:backgroundTint="@color/light_blue"
+        android:backgroundTint="@color/white"
         android:layout_below="@+id/t1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,6 +58,7 @@
         android:imeOptions="actionDone"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="10dp"
+        android:backgroundTint="@color/white"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:elevation="10dp"
@@ -98,6 +99,7 @@
     android:padding="5dp"
     android:layout_marginHorizontal="10dp"
     android:layout_below="@+id/cat"
+    android:backgroundTint="@color/white"
     android:layout_height="wrap_content"
 
     />
@@ -111,6 +113,7 @@
         android:layout_marginTop="20dp"
         android:elevation="10dp"
         android:text="Send"
+        android:layout_marginBottom="5dp"
         android:layout_below="@+id/spinner"
         android:textSize="16sp"
         android:layout_centerHorizontal="true"

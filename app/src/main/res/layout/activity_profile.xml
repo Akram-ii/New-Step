@@ -134,12 +134,11 @@
 
     <ImageView
         android:id="@+id/badge"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.069"
-        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintStart_toStartOf="@id/fullName"
         app:layout_constraintTop_toBottomOf="@id/fullName" />
 
 
@@ -147,14 +146,14 @@
         android:id="@+id/point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:textColor="#555555"
         android:textSize="14sp"
         android:text="point"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fullName" />
+        android:layout_marginLeft="10dp"
+        app:layout_constraintLeft_toRightOf="@id/badge"
+        app:layout_constraintTop_toTopOf="@id/badge"
+        app:layout_constraintBottom_toBottomOf="@id/badge"
+        />
 
 
 
@@ -162,7 +161,7 @@
         android:id="@+id/profileTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="10dp"
 
         app:layout_constraintTop_toBottomOf="@id/bio"
         tools:layout_editor_absoluteX="0dp"

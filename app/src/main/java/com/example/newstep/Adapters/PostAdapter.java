@@ -117,7 +117,7 @@ if(!post.getAnonymous()) {
             public void onClick(View v) {
 if(post.getAnonymous()){
     return;
-}
+}else{
                 UserModel user = new UserModel();
                 user.setId(post.getUserId());
                 user.setUsername(post.getUserName());
@@ -153,7 +153,7 @@ if(post.getAnonymous()){
 
                             UserProfilePopup.show(context, v, user);
                         });
-            }
+            }}
         });
 
 if(post.getCategory()!=null){

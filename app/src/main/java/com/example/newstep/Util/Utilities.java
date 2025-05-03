@@ -270,4 +270,27 @@ public static int getMinBadge(int points){
 
         return spannable;
     }
+    public static String getCurrBadgesName(int points) {
+        if (points < 25) {
+            return "First Step";
+        } else if (points < 75) {
+            return "Starting to See";
+        } else if (points < 150) {
+            return "Inner Spark";
+        } else if (points < 300) {
+            return "Steady Glow";
+        } else if (points < 500) {
+            return "Beacon";
+        } else if (points < 1000) {
+            return "Warm Shelter";
+        } else if (points < 2000) {
+            return "Safe Place";
+        } else if (points < 4000) {
+            return "Gathering Light";
+        } else if (points < 10000) {
+            return "Healer";
+        } else {
+            return "Phoenix";
+        }
+    }
 }

@@ -44,7 +44,7 @@ public class UserProfilePopup {
 
 
         badge.setImageResource(Utilities.getCurrBadgesImageId(user.getPoints()));
-        point.setText(Integer.toString(user.getPoints()));
+        point.setText(Utilities.getCurrBadgesName(user.getPoints()));
 
         Glide.with(context)
                 .load(user.getProfileImage())

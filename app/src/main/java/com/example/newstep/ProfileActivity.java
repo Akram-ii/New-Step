@@ -595,7 +595,7 @@ popupAccount();
                         BadgeModel userBadge = getUserBadge(badges, currentPoints);
 
                         badgeView.setImageResource(userBadge.getImageId());
-                        pointView.setText(String.valueOf(currentPoints));
+                        pointView.setText(currentPoints+" Points");
                     } else {
                         Log.e("BadgeSystem", "User document not found.");
                     }
