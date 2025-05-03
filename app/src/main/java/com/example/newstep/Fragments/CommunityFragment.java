@@ -49,6 +49,7 @@
     import org.apache.commons.logging.LogFactory;
 
     import java.text.SimpleDateFormat;
+    import java.util.Collections;
     import java.util.Date;
     import java.util.Locale;
     import java.util.TimeZone;
@@ -149,7 +150,7 @@ public class CommunityFragment extends Fragment {
         ;
 
 
-        loadPosts();
+
             filter.setOnClickListener(v ->  {selectedCategories.clear();
                 showPopupWindowFilter();});
         // Set up the "Add Post" button
@@ -171,7 +172,8 @@ public class CommunityFragment extends Fragment {
                 });
             }
         });
-    }
+            loadPosts();
+        }
 
     /*
     private void loadPosts() {
@@ -216,8 +218,8 @@ public class CommunityFragment extends Fragment {
                 });
     }*/
     private void loadPosts() {
-
-        firestore.collection("posts").orderBy("timestamp", Query.Direction.DESCENDING)
+        firestore.collection("posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         Log.e("FirestoreError", "Error loading posts: ", error);
@@ -225,6 +227,7 @@ public class CommunityFragment extends Fragment {
                     }
 
                     postList.clear();
+
                     if (value != null) {
                         for (DocumentSnapshot doc : value.getDocuments()) {
                             String postId = doc.getId();
@@ -232,7 +235,8 @@ public class CommunityFragment extends Fragment {
                             String userId = doc.getString("userId");
                             String userName = doc.getString("username");
                             String cat = doc.getString("category");
-                            Boolean anon= doc.getBoolean("anonymous");
+                            String pfp = doc.getString("profileImage");
+                            Boolean anon = doc.getBoolean("anonymous");
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
                             Timestamp timestampPost = doc.getTimestamp("timestamp");
@@ -241,31 +245,21 @@ public class CommunityFragment extends Fragment {
                             List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
                             if (content != null && userId != null && userName != null && timestampPost != null) {
+                                PostModel post = new PostModel(
+                                        userId, postId, content,
+                                        likes.intValue(), userName,
+                                        dislikes.intValue(), timestampPost,
+                                        pfp, cat, anon
+                                );
 
+                                post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                                post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
 
-                                FirebaseFirestore.getInstance().collection("Users")
-                                        .document(userId)
-                                        .get()
-                                        .addOnSuccessListener(userDoc -> {
-                                            String profileImageUrl = userDoc.getString("profileImage");
-                                            String name = userDoc.getString("username");
-
-                                            PostModel post = new PostModel(userId, postId, content,
-                                                    likes.intValue(), name, dislikes.intValue(), timestampPost, profileImageUrl,cat,anon);
-
-                                            post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
-                                            post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
-
-                                            postList.add(post);
-                                            postAdapter.notifyDataSetChanged();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Log.e("UserFetchError", "Failed to fetch user profile image", e);
-                                        });
+                                postList.add(post);
                             }
                         }
+                        postAdapter.notifyDataSetChanged();
                     }
-
                 });
     }
 
@@ -355,6 +349,7 @@ public class CommunityFragment extends Fragment {
             if(!selectedCategories.isEmpty()){
                 setupRecycler(selectedCategories);
                 popupWindow.dismiss();
+                selectedCategories.clear();
             }
             else{
                 Toast.makeText(getContext(),"You need to select at least one category",Toast.LENGTH_SHORT).show();
@@ -378,6 +373,7 @@ public class CommunityFragment extends Fragment {
                             String userId = doc.getString("userId");
                             String userName = doc.getString("username");
                             String cat = doc.getString("category");
+                            String pfp = doc.getString("profileImage");
                             Boolean anon= doc.getBoolean("anonymous");
                             Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
                             Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
@@ -389,26 +385,19 @@ public class CommunityFragment extends Fragment {
                             if (content != null && userId != null && userName != null && timestampPost != null) {
 
 
-                                FirebaseFirestore.getInstance().collection("Users")
-                                        .document(userId)
-                                        .get()
-                                        .addOnSuccessListener(userDoc -> {
-                                            String profileImageUrl = userDoc.getString("profileImage");
+
 
                                             PostModel post = new PostModel(userId, postId, content,
-                                                    likes.intValue(), userName, dislikes.intValue(), timestampPost, profileImageUrl,cat,anon);
+                                                    likes.intValue(), userName, dislikes.intValue(), timestampPost, pfp,cat,anon);
 
                                             post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
                                             post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
 
                                             postList.add(post);
-                                            postAdapter.notifyDataSetChanged();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Log.e("UserFetchError", "Failed to fetch user profile image", e);
-                                        });
+
                             }
                         }
+                        postAdapter.notifyDataSetChanged();
                     }
 
                 });

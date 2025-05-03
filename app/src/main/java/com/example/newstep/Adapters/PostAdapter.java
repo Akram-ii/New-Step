@@ -109,6 +109,8 @@ if(!post.getAnonymous()) {
             .error(R.drawable.pfp_purple)
             .circleCrop()
             .into(holder.P_image);
+}else{
+    holder.P_image.setImageResource(R.drawable.pfp_purple);
 }
         holder.P_image.setOnClickListener(new View.OnClickListener() {
             @Override
