@@ -202,6 +202,11 @@ public class UserModel {
         this.Bio = Bio;
     }
 
+    public UserModel(String name, String profileImage){
+        this.username = name;
+        this.profileImage = profileImage;
+    }
+
 
 }
 

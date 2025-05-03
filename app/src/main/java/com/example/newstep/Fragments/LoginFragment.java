@@ -1,15 +1,17 @@
 package com.example.newstep.Fragments;
 
-import android.adservices.ondevicepersonalization.UserData;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
+import android.util.Log;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -36,17 +39,22 @@ import android.widget.Toast;
 
 import com.example.newstep.MainActivity;
 import com.example.newstep.R;
-import com.example.newstep.SplashActivity;
 import com.example.newstep.Util.Utilities;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.example.newstep.Util.FirebaseUtil;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -65,8 +73,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import com.facebook.AccessToken;
 
 
 public class LoginFragment extends Fragment {
@@ -81,11 +92,15 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 100;
     private String token1;
+    private CallbackManager callbackManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+
+        FacebookSdk.sdkInitialize(requireContext());
+
 
         p=new ProgressDialog(getContext());
         i=rootView.findViewById(R.id.ptexti);
@@ -94,10 +109,14 @@ public class LoginFragment extends Fragment {
         password=rootView.findViewById(R.id.password);
         forgot=rootView.findViewById(R.id.forgotPassword);
         register=rootView.findViewById(R.id.registerTextView);
+        callbackManager = CallbackManager.Factory.create();
 
         SignInButton googleSignInButton = rootView.findViewById(R.id.btnGoogleSignIn);
+        LoginButton facebookLoginButton = rootView.findViewById(R.id.btnFacebookLogin);
+        facebookLoginButton.setPermissions("email", "public_profile");
 
         firebaseAuth = FirebaseAuth.getInstance();
+
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -193,7 +212,58 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+
+        facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                firebaseAuthWithFacebook(loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getContext(), "Facebook login canceled", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getContext(), "Facebook login failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        try {
+            PackageInfo info = requireActivity()
+                    .getPackageManager()
+                    .getPackageInfo(requireActivity().getPackageName(), PackageManager.GET_SIGNING_CERTIFICATES);
+
+            Signature[] signatures;
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                signatures = info.signingInfo.getApkContentsSigners();
+            } else {
+                signatures = info.signatures;
+            }
+
+            for (Signature signature : signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String keyHash = Base64.encodeToString(md.digest(), Base64.NO_WRAP);
+                Log.d("KeyHash", "KeyHash: " + keyHash);
+            }
+        } catch (PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
+
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -254,6 +324,10 @@ public class LoginFragment extends Fragment {
         });
     }
 
+
+
+
+
     private void showAlertDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(getContext());
         builder.setTitle("Email not verified yet");
@@ -300,10 +374,12 @@ public class LoginFragment extends Fragment {
     }
 
 
+
     private void signInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         googleSignInLauncher.launch(signInIntent);
     }
+
 
 
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
@@ -405,6 +481,81 @@ public class LoginFragment extends Fragment {
                 });
     }
 
+
+
+
+    private void firebaseAuthWithFacebook(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user != null) {
+                            String userId = user.getUid();
+                            String defaultUsername = user.getDisplayName() != null ? user.getDisplayName() : "Unknown";
+                            String registerDate = Utilities.timestampToStringNoDetail(Timestamp.now());
+
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference userRef = db.collection("Users").document(userId);
+
+                            userRef.get().addOnSuccessListener(documentSnapshot -> {
+                                String profileImageUrl;
+                                String username;
+
+                                if (documentSnapshot.exists()) {
+                                    String storedProfileImage = documentSnapshot.getString("profileImage");
+                                    profileImageUrl = (storedProfileImage != null && !storedProfileImage.isEmpty())
+                                            ? storedProfileImage
+                                            : (user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
+
+                                    String storedUsername = documentSnapshot.getString("username");
+                                    username = (storedUsername != null && !storedUsername.isEmpty())
+                                            ? storedUsername
+                                            : defaultUsername;
+                                } else {
+                                    profileImageUrl = user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "";
+                                    username = defaultUsername;
+                                }
+
+
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("username", username);
+                                userData.put("id", userId);
+                                userData.put("registerDate", registerDate);
+                                userData.put("profileImage", profileImageUrl);
+                                userData.put("isBanned",false);
+                                userData.put("nb_reports",0);
+                                userData.put("isBanned",false);
+                                userData.put("whenBannedComments",Timestamp.now());
+                                userData.put("whenBannedPosts",Timestamp.now());
+                                userData.put("points",0);
+                                userData.put("privacy","public");
+                                userData.put("isBannedComments",false);
+                                userData.put("isBannedPosts",false);
+                                userData.put("isRestricted",false);
+                                userData.put("isAdmin",false);
+
+                                userRef.set(userData, SetOptions.merge())
+                                        .addOnSuccessListener(aVoid -> {
+                                            Toast.makeText(getContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(getContext(), MainActivity.class));
+                                            requireActivity().finish();
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(getContext(), "Failed to save user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Failed to fetch existing user data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
 }

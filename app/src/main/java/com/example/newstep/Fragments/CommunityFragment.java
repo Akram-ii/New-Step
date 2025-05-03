@@ -32,6 +32,7 @@
     import com.example.newstep.Adapters.PostAdapter;
     import com.example.newstep.Models.Comment;
     import com.example.newstep.Models.PostModel;
+    import com.example.newstep.Models.UserModel;
     import com.example.newstep.R;
     import com.example.newstep.Util.NotifOnline;
     import com.example.newstep.Util.Utilities;
@@ -172,7 +173,7 @@ public class CommunityFragment extends Fragment {
                 });
             }
         });
-            loadPosts();
+            prepareAndLoadPosts();
         }
 
     /*
@@ -217,7 +218,8 @@ public class CommunityFragment extends Fragment {
 
                 });
     }*/
-    private void loadPosts() {
+
+    /*private void loadPosts() {
         firestore.collection("posts")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
                 .addSnapshotListener((value, error) -> {
@@ -228,40 +230,112 @@ public class CommunityFragment extends Fragment {
 
                     postList.clear();
 
-                    if (value != null) {
-                        for (DocumentSnapshot doc : value.getDocuments()) {
-                            String postId = doc.getId();
-                            String content = doc.getString("content");
-                            String userId = doc.getString("userId");
-                            String userName = doc.getString("username");
-                            String cat = doc.getString("category");
-                            String pfp = doc.getString("profileImage");
-                            Boolean anon = doc.getBoolean("anonymous");
-                            Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
-                            Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
-                            Timestamp timestampPost = doc.getTimestamp("timestamp");
+                    for (DocumentSnapshot doc : value.getDocuments()) {
+                        String postId = doc.getId();
+                        String content = doc.getString("content");
+                        String userId = doc.getString("userId");
+                        String cat = doc.getString("category");
+                        Boolean anon = doc.getBoolean("anonymous");
+                        Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
+                        Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
+                        Timestamp timestampPost = doc.getTimestamp("timestamp");
 
-                            List<String> likedBy = (List<String>) doc.get("likedBy");
-                            List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+                        List<String> likedBy = (List<String>) doc.get("likedBy");
+                        List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
 
-                            if (content != null && userId != null && userName != null && timestampPost != null) {
-                                PostModel post = new PostModel(
-                                        userId, postId, content,
-                                        likes.intValue(), userName,
-                                        dislikes.intValue(), timestampPost,
-                                        pfp, cat, anon
-                                );
+                        if (content != null && userId != null && timestampPost != null) {
 
-                                post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
-                                post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+                            firestore.collection("Users").document(userId).get()
+                                    .addOnSuccessListener(userDoc -> {
+                                        String userName = userDoc.getString("username");
+                                        String pfp = userDoc.getString("profileImage");
 
-                                postList.add(post);
-                            }
+                                        PostModel post = new PostModel(
+                                                userId, postId, content,
+                                                likes.intValue(), userName,
+                                                dislikes.intValue(), timestampPost,
+                                                pfp, cat, anon
+                                        );
+
+                                        post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                                        post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+
+                                        postList.add(post);
+                                        postAdapter.notifyDataSetChanged();
+                                    })
+                                    .addOnFailureListener(e -> Log.e("FirestoreError", "Error loading user info: ", e));
                         }
-                        postAdapter.notifyDataSetChanged();
                     }
                 });
     }
+
+     */
+
+
+
+    private void loadPosts(Map<String, UserModel> usersMap) {
+        firestore.collection("posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(value -> {
+                    postList.clear();
+
+                    for (DocumentSnapshot doc : value.getDocuments()) {
+                        String postId = doc.getId();
+                        String content = doc.getString("content");
+                        String userId = doc.getString("userId");
+                        String cat = doc.getString("category");
+                        Boolean anon = doc.getBoolean("anonymous");
+                        Long likes = doc.contains("likes") ? doc.getLong("likes") : 0;
+                        Long dislikes = doc.contains("dislikes") ? doc.getLong("dislikes") : 0;
+                        Timestamp timestampPost = doc.getTimestamp("timestamp");
+
+                        List<String> likedBy = (List<String>) doc.get("likedBy");
+                        List<String> dislikedBy = (List<String>) doc.get("dislikedBy");
+
+
+                        UserModel user = usersMap.get(userId);
+
+                        if (user != null && content != null && timestampPost != null) {
+                            PostModel post = new PostModel(
+                                    userId, postId, content,
+                                    likes.intValue(), user.getUsername(),
+                                    dislikes.intValue(), timestampPost,
+                                    user.getProfileImage(), cat, anon
+                            );
+
+                            post.setLikedBy(likedBy != null ? likedBy : new ArrayList<>());
+                            post.setDislikedBy(dislikedBy != null ? dislikedBy : new ArrayList<>());
+
+                            postList.add(post);
+                        }
+                    }
+
+                    postAdapter.notifyDataSetChanged();
+                });
+    }
+
+
+    private void prepareAndLoadPosts() {
+        firestore.collection("Users")
+                .get()
+                .addOnSuccessListener(usersSnapshot -> {
+                    Map<String, UserModel> usersMap = new HashMap<>();
+                    for (DocumentSnapshot userDoc : usersSnapshot) {
+                        String uid = userDoc.getId();
+                        String username = userDoc.getString("username");
+                        String profileImage = userDoc.getString("profileImage");
+
+                        if (username != null && profileImage != null) {
+                            usersMap.put(uid, new UserModel(username, profileImage));
+                        }
+                    }
+
+                    loadPosts(usersMap);
+                });
+    }
+
+
 
     private void showPopupWindowFilter() {
         if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {

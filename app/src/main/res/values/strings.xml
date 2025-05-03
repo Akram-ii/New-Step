@@ -8,6 +8,7 @@
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="facebook_app_id">609884615194728</string>
     <string name="default_web_client_id">513429518236-k1muk0q7sgdgosfjhcdmj6761q3r848l.apps.googleusercontent.com</string>
+    <string name="facebook_client_token">your_client_token_here</string>
 
     <string-array name="languages">
         <item>العربية</item>
