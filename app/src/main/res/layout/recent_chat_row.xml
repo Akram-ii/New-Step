@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
 
-    android:background="@drawable/goal_background_item"
+    android:background="@drawable/recent_chat_item_background"
     android:elevation="10dp">
 
     <include layout="@layout/pfp"

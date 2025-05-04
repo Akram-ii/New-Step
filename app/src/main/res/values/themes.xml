@@ -7,6 +7,8 @@
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="backgroundColor">@color/white</item>
         <item name="color">@color/blue</item>
+        <item name="background">@color/light_blue</item>
+
 
 
 
@@ -69,6 +71,15 @@
         <item name="android:background">@color/blue</item>
 
     </style>
+    <style name="purpleColor" >
+        <item name="android:background">@color/lavender2</item>
+
+    </style>
+    <style name="groups_items_colors" >
+        <item name="android:background">@color/light_blue</item>
+
+    </style>
+
 
 
 

@@ -3,7 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@drawable/goal_background_item"
+    android:backgroundTint="@color/white"
     android:padding="16dp">
 
     <TextView

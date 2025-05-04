@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/blue"
+    android:background="?attr/color"
     tools:context=".ConvActivity">
 
 
@@ -89,15 +89,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="6dp"
-        android:background="@color/blue">
+        android:layout_marginBottom="3dp"
+        android:background="?attr/color"
+        android:padding="6dp">
 
         <EditText
             android:id="@+id/msg_EditText"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:layout_marginEnd="60dp"
             android:layout_marginStart="10dp"
+            android:layout_marginEnd="60dp"
             android:background="@drawable/popupbg"
             android:backgroundTint="@color/white"
             android:hint="Message..."
@@ -110,8 +111,8 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="10dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:elevation="8dp"
             android:rotation="90"

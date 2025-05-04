@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.NewStep" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <item name="background">@color/black</item>
+        <item name="background">@color/blueDark</item>
         <item name="backgroundColor">@color/black</item>
         <item name="color">@color/blueDark</item>
 
@@ -27,8 +27,8 @@
     </style>
     <style name="Widget.MyApp.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="android:backgroundTint">@color/black</item>
-        <item name="itemIconTint">@color/blue</item>
-        <item name="itemTextColor">@color/blue</item>
+        <item name="itemIconTint">@color/blueDark</item>
+        <item name="itemTextColor">@color/blueDark</item>
         <item name="itemRippleColor">@color/blue</item>
         <item name="subheaderColor">@color/white</item>
         <item name="itemIconSize">@dimen/_20sdp</item>
@@ -43,6 +43,16 @@
         <item name="android:background">@color/blueDark</item>
 
     </style>
+    <style name="purpleColor" >
+        <item name="android:background">@color/DarkPurple</item>
+
+    </style>
+    <style name="groups_items_colors" >
+        <item name="android:background">@color/black</item>
+
+    </style>
+
+
 
 
 

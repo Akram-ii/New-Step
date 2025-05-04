@@ -9,11 +9,12 @@
     <color name="red">#F80707</color>
 
     <color name="blue">#6A96E6</color>
-    <color name="blueDark">#3366CC</color>
+    <color name="blueDark">#1A3366</color>
     <color name="green">#A2D2E9</color>
     <color name="light_blue">#E0DEFE</color>
     <color name="lavender">#DFC7FB</color>
     <color name="purple">#877DE0</color>
+    <color name="DarkPurple">#2F297A</color>
     <color name="lavender2">#CCCCFF</color>
     <color name="RED">#FF0000</color>
     <color name="orange">#F28B30</color>
