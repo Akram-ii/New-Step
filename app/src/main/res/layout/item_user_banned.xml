@@ -37,7 +37,7 @@
         android:layout_marginTop="5dp"
         >
         <TextView
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="This user got reported "
@@ -73,6 +73,7 @@
             android:clickable="false"
             android:src="@drawable/icon_lock"
             android:layout_width="25dp"
+            style="@style/icons"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="25dp"
             app:tint="@color/black" />
@@ -80,12 +81,13 @@
             android:clickable="false"
             android:src="@drawable/pfp_blue"
             android:layout_width="25dp"
+            style="@style/icons"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_height="25dp"
 
             app:tint="@color/black" />
         <TextView
-            android:textColor="@color/black"
+            style="@style/Text"
             android:id="@+id/time_ban_account"
             android:layout_gravity="center"
             android:layout_width="wrap_content"

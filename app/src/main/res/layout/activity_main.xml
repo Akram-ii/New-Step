@@ -50,7 +50,8 @@
             android:paddingTop="0dp"
             android:layout_marginTop="0dp"
             app:menu="@menu/bottom_menu"
-            android:background="@color/light_blue"
+            app:itemBackground="@drawable/bottomnav"
+            style="@style/BlueColorToolbar"
             app:itemIconTint="@drawable/nav"
 
 

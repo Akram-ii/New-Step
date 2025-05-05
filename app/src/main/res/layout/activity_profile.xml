@@ -147,7 +147,7 @@
         android:id="@+id/point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#555555"
+        style="@style/Text"
         android:textSize="14sp"
         android:text="point"
         android:layout_marginLeft="10dp"

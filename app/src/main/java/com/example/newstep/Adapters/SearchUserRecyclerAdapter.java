@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,10 +17,12 @@ import com.example.newstep.ConvActivity;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.R;
 import com.example.newstep.Util.FirebaseUtil;
+import com.example.newstep.Util.UserProfilePopup;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserModel, SearchUserRecyclerAdapter.UserModelViewHolder> {
     Context context;
@@ -38,7 +41,46 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<UserMode
         holder.date.setText("Member since "+model.getRegisterDate());
 
         FirebaseUtil.loadPfp(model.getId(),holder.pfp);
+        holder.pfp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserModel user = new UserModel();
+                user.setId(model.getId());
+                user.setUsername(model.getUsername());
+                user.setProfileImage(model.getProfileImage());
 
+                FirebaseFirestore.getInstance().collection("Users")
+                        .document(model.getId())
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+
+                                String bio = documentSnapshot.getString("bio");
+                                String registerDate = documentSnapshot.getString("registerDate");
+                                String coverImage = documentSnapshot.getString("coverImage");
+                                Long pointsLong = documentSnapshot.getLong("points");
+                                int points = pointsLong != null ? pointsLong.intValue() : 0;
+
+                                user.setBio(bio);
+                                user.setRegisterDate(registerDate);
+                                user.setCoverImage(coverImage);
+                                user.setPoints(points);
+
+
+                            }else{
+                                Toast.makeText(context, "nooooo", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            UserProfilePopup.show(context.getApplicationContext(), v, user);
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("PopupUser", "Error getting info", e);
+
+                            UserProfilePopup.show(context, v, user);
+                        });
+            }
+    });
 
         if (model.getId().equals(user.getUid())) {
             Log.d("RecyclerDebug", "Current user UID: " + user.getUid());

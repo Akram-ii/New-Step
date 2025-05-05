@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
+    android:backgroundTint="@color/transparent"
     app:cardElevation="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lavender2"
+        android:background="@drawable/textview_background"
         android:padding="12dp">
 
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="User Name"
             android:textSize="14sp"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:textStyle="bold"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@id/userPicture"
@@ -46,7 +46,8 @@
             android:layout_height="wrap_content"
             android:text="content"
             android:textSize="14sp"
-            android:textColor="@color/black"
+            style="@style/Text"
+            app:layout_constraintRight_toLeftOf="@+id/infoIconPost"
             android:ellipsize="end"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,9 +60,8 @@
             android:src="@drawable/icon_info"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            style="@style/icons" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

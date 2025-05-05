@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:text="2min ago"
             android:textSize="12sp"
-            android:textColor="@color/darkGray"
+            style="@style/TextSec"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="4dp"
             android:layout_gravity="bottom"/>
@@ -44,6 +44,7 @@
             android:layout_height="32dp"
             android:src="@drawable/delete_post"
             android:layout_marginEnd="12dp"
+            style="@style/icons"
             android:layout_marginBottom="2dp"
             android:layout_gravity="bottom"/>
     </LinearLayout>

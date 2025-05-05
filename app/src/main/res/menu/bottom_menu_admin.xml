@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_posts"
-        android:title="Posts"
         android:icon="@drawable/icon_community"
         android:iconTint="@color/purple"
         />
@@ -10,25 +9,21 @@
     <item
         android:icon="@drawable/comment"
         android:id="@+id/nav_comments"
-        android:title="Comments"
         android:iconTint="@color/purple"
         />
     <item
         android:icon="@drawable/icon_restrict"
         android:id="@+id/nav_restricted"
-        android:title="Restricted accounts"
         android:iconTint="@color/purple"
         />
     <item
         android:icon="@drawable/icon_banned"
         android:id="@+id/nav_Banned"
-        android:title="Banned accounts"
         android:iconTint="@color/purple"
         />
     <item
         android:icon="@drawable/icon_info"
         android:id="@+id/nav_contactRep"
-        android:title="Contact Report"
         android:iconTint="@color/purple"
         />
 </menu>

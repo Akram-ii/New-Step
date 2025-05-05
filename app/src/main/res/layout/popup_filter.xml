@@ -22,7 +22,7 @@
         android:text="Filter Reports"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
+        style="@style/Text"
         android:paddingBottom="12dp"
         android:layout_centerHorizontal="true"/>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/popupbg"
-        app:backgroundTint="#9073CE"
+     app:backgroundTint="@color/blue"
         android:text="Ascending"
         android:textColor="@android:color/white"
         android:layout_margin="3dp"/>
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/popupbg"
-        app:backgroundTint="#9073CE"
+     app:backgroundTint="@color/blue"
         android:text="Newest"
         android:textColor="@android:color/white"
         android:layout_margin="3dp"/>
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/popupbg"
-        app:backgroundTint="#9073CE"
+     app:backgroundTint="@color/blue"
         android:text="Descending"
         android:textColor="@android:color/white"
         android:layout_margin="3dp"/>
@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@drawable/popupbg"
-        app:backgroundTint="#9073CE"
+     app:backgroundTint="@color/blue"
         android:text="Oldest"
         android:textColor="@android:color/white"
         android:layout_margin="3dp"/>

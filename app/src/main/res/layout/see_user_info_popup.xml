@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="10dp"
     android:layout_margin="20dp"
-    app:cardCornerRadius="20dp"
-    android:backgroundTint="@color/light_blue"
-    android:background="@color/transparent">
+   android:background="@drawable/textview_background"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -102,4 +101,4 @@
     </RelativeLayout>
 
 
-</androidx.cardview.widget.CardView>
+</RelativeLayout>

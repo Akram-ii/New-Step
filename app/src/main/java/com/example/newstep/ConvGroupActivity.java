@@ -692,7 +692,7 @@ private void fetchUsers(List<String> userIds){
 
     private void showGroupMembersPopup() {
 
-        View overlayView = new View(this);
+        View overlayView = new View(ConvGroupActivity.this);
         overlayView.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
@@ -703,7 +703,7 @@ private void fetchUsers(List<String> userIds){
         rootView.addView(overlayView);
 
 
-        View popupView = LayoutInflater.from(this).inflate(R.layout.chhatinwith, null);
+        View popupView = LayoutInflater.from(ConvGroupActivity.this).inflate(R.layout.chhatinwith, null);
 
 
         PopupWindow popupWindow = new PopupWindow(popupView,
@@ -729,7 +729,7 @@ private void fetchUsers(List<String> userIds){
 
 
         RecyclerView recyclerView = popupView.findViewById(R.id.chattinWith);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(ConvGroupActivity.this));
 
         FirebaseUtil.getChatroomRef(chatroomId).get().addOnSuccessListener(doc -> {
             ChatroomModel chatroomModel = doc.toObject(ChatroomModel.class);
@@ -741,7 +741,7 @@ private void fetchUsers(List<String> userIds){
                     .setQuery(query, UserModel.class)
                     .build();
 
-            SearchUserRecyclerAdapter adapter = new SearchUserRecyclerAdapter(options, this);
+            SearchUserRecyclerAdapter adapter = new SearchUserRecyclerAdapter(options, getApplicationContext());
             recyclerView.setAdapter(adapter);
             adapter.startListening();
 

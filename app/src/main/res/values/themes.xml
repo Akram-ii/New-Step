@@ -63,6 +63,9 @@
     </style>
 
 
+    <style name="TextSec" >
+        <item name="android:textColor">@color/darkGray</item>
+    </style>
     <style name="BlueColorToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/blue</item>
         <item name="titleTextColor">@color/black</item>
@@ -73,11 +76,18 @@
     </style>
     <style name="purpleColor" >
         <item name="android:background">@color/lavender2</item>
-
     </style>
+
+<style name="Card" >
+<item name="cardBackgroundColor">@color/white</item>
+
+</style>
     <style name="groups_items_colors" >
         <item name="android:background">@color/light_blue</item>
 
+    </style>
+    <style name="icons" >
+        <item name="tint">@color/black</item>
     </style>
 
 

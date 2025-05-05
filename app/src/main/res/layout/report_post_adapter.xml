@@ -29,7 +29,8 @@
             android:text="Reported by:"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black" />
+            style="@style/Text"
+            />
 
 
         <TextView
@@ -52,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Last report was 2 min ago"
         android:textSize="12sp"
-        android:textColor="@android:color/darker_gray"
+        style="@style/TextSec"
         android:gravity="center"
         android:layout_marginBottom="8dp" />
 
@@ -69,6 +70,7 @@
             android:id="@+id/btn_delete_post"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            style="@style/icons"
             android:src="@drawable/delete_post"
             android:layout_marginEnd="12dp" />
 
@@ -77,6 +79,7 @@
             android:id="@+id/ban_user_from_post"
             android:layout_width="32dp"
             android:layout_height="32dp"
+            style="@style/icons"
             android:src="@drawable/block_icon"
             android:layout_marginEnd="12dp"
          />

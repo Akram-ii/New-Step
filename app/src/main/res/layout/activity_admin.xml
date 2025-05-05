@@ -15,6 +15,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
         android:id="@+id/back_ImageButton"
+        style="@style/icons"
         android:src="@drawable/icon_back"
         android:background="?attr/selectableItemBackgroundBorderless"
         />
@@ -34,13 +35,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_blue"
+        style="@style/Screan"
         >
 
        <RelativeLayout
            android:layout_width="match_parent"
            android:layout_height="55dp"
-           android:background="@color/blue"
+            style="@style/BlueColor"
            android:id="@+id/toolbar">
             <ImageButton
                 android:layout_centerVertical="true"
@@ -72,16 +73,11 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
             android:id="@+id/bottomMenu"
-            app:backgroundTint="@color/blue"
             android:layout_height="wrap_content"
-            app:itemIconTint="@color/light_blue"
-            app:itemBackground="@color/blue"
-            app:itemTextColor="@color/light_blue"
+            app:itemIconTint="@color/white"
             app:menu="@menu/bottom_menu_admin"
+            style="@style/BlueColorToolbar"
             android:layout_alignParentBottom="true"
-
-
-            android:background="@color/white"
             />
     </RelativeLayout>
 </RelativeLayout>

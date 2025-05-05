@@ -74,20 +74,24 @@ public class PrivateChatsFragment extends Fragment {
     }
 
     public void SetupRecyclerView() {
+        if (recyclerView == null) {
+            Log.e("PrivateChatsFragment", "RecyclerView is null, skipping SetupRecyclerView");
+            return;
+        }
 
         Query query = FirebaseUtil.allChatroomCollectionRef()
-                .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId()).orderBy("lastMsgTimeStamp", Query.Direction.DESCENDING)
-              ;
+                .whereArrayContains("userIds", FirebaseUtil.getCurrentUserId())
+                .orderBy("lastMsgTimeStamp", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>().setQuery(query, ChatroomModel.class).build();
-        adapter = new RecentChatRecyclerAdapter(options, requireContext());
+        FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>()
+                .setQuery(query, ChatroomModel.class).build();
+
+        adapter = new RecentChatRecyclerAdapter(options, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
         recyclerView.requestLayout();
         adapter.startListening();
         adapter.notifyDataSetChanged();
-
-
     }
 
     @Override

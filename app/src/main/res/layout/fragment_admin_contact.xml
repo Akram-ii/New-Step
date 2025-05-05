@@ -19,11 +19,12 @@
             android:text="Reports"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            style="@style/Text"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"/>
 
         <ImageView
+            style="@style/icons"
             android:id="@+id/buttonFilterID"
             android:layout_width="30dp"
             android:layout_height="30dp"

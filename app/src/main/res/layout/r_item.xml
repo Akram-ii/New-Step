@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
+    android:backgroundTint="@color/transparent"
     app:cardElevation="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/lavender2"
+        android:background="@drawable/textview_background"
         android:padding="12dp">
 
 
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="User Name"
             android:textSize="14sp"
-            android:textColor="@color/black"
+           style="@style/Text"
             android:textStyle="bold"
             android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@id/RuserPicture"
@@ -57,7 +57,8 @@
             android:layout_height="24dp"
             android:src="@drawable/icon_info"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/icons" />
 
 
         <TextView
@@ -67,7 +68,7 @@
             android:text=" Title"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/RuserPicture"
@@ -80,7 +81,7 @@
             android:layout_height="wrap_content"
             android:text="description"
             android:textSize="14sp"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/Rtitle"

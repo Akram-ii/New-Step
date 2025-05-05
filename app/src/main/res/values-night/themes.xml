@@ -41,6 +41,12 @@
     </style>
     <style name="BlueColor" >
         <item name="android:background">@color/blueDark</item>
+    </style>
+    <style name="TextSec" >
+        <item name="android:textColor">@color/light_blue</item>
+    </style>
+    <style name="Card" >
+        <item name="cardBackgroundColor">@color/blueDark</item>
 
     </style>
     <style name="purpleColor" >
@@ -52,7 +58,9 @@
 
     </style>
 
-
+    <style name="icons" >
+        <item name="tint">@color/white</item>
+    </style>
 
 
 

@@ -19,7 +19,7 @@
             android:text="Restricted  Accounts"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            style="@style/Text"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"/>
 
@@ -29,6 +29,7 @@
             android:layout_height="30dp"
             android:src="@drawable/ic_filter"
             android:contentDescription="Filter"
+            style="@style/icons"
             android:padding="5dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"/>

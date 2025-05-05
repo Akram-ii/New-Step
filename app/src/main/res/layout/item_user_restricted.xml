@@ -37,7 +37,7 @@
         android:layout_marginTop="5dp"
         >
         <TextView
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="This user got reported "
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:text="times"
             android:id="@+id/times_textview"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:textStyle="bold"
             />
     </LinearLayout>
@@ -93,19 +93,19 @@
            android:clickable="false"
            android:src="@drawable/icon_lock"
            android:layout_width="25dp"
-           android:background="?attr/selectableItemBackgroundBorderless"
+             style="@style/icons"
            android:layout_height="25dp"
-           app:tint="@color/black" />
+           />
        <ImageView
            android:clickable="false"
            android:src="@drawable/icon_community"
            android:layout_width="25dp"
-           android:background="?attr/selectableItemBackgroundBorderless"
+             style="@style/icons"
            android:layout_height="25dp"
 
-           app:tint="@color/black" />
+            />
        <TextView
-           android:textColor="@color/black"
+             style="@style/Text"
            android:id="@+id/time_ban_posts"
            android:layout_gravity="center"
            android:layout_width="wrap_content"
@@ -132,9 +132,9 @@
         android:orientation="horizontal">
         <ImageView
             android:clickable="false"
-            app:tint="@color/black"
+
             android:layout_width="25dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+              style="@style/icons"
             android:layout_height="25dp"
             android:src="@drawable/icon_lock"
            />
@@ -142,11 +142,11 @@
             android:src="@drawable/comment"
             android:layout_width="25dp"
             android:clickable="false"
-            android:background="?attr/selectableItemBackgroundBorderless"
+              style="@style/icons"
             android:layout_height="25dp"
-            app:tint="@color/black" />
+             />
         <TextView
-            android:textColor="@color/black"
+              style="@style/Text"
 
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -174,7 +174,7 @@
             android:clickable="false"
             app:tint="@color/purple"
             android:layout_width="25dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+              style="@style/icons"
             android:layout_height="25dp"
             android:src="@drawable/icon_unlock"
             />
@@ -182,7 +182,7 @@
             android:src="@drawable/icon_community"
             android:layout_width="25dp"
             android:clickable="false"
-            android:background="?attr/selectableItemBackgroundBorderless"
+              style="@style/icons"
             android:layout_height="25dp"
             app:tint="@color/purple" />
     </LinearLayout>
@@ -199,7 +199,7 @@ android:layout_marginLeft="10dp"
             android:clickable="false"
             app:tint="@color/purple"
             android:layout_width="25dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+              style="@style/icons"
             android:layout_height="25dp"
             android:src="@drawable/icon_unlock"
             />
@@ -207,7 +207,7 @@ android:layout_marginLeft="10dp"
             android:src="@drawable/comment"
             android:layout_width="25dp"
             android:clickable="false"
-            android:background="?attr/selectableItemBackgroundBorderless"
+              style="@style/icons"
             android:layout_height="25dp"
             app:tint="@color/purple" />
     </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.newstep.CustomViews;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.example.newstep.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class CurvedBottomNavigationView extends BottomNavigationView {
@@ -25,15 +27,21 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
 
     public CurvedBottomNavigationView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
         mPath = new Path();
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        mPaint.setColor(0xB36A96E6);
         mPaint.setAntiAlias(true);
+        int[] attrsArray = new int[]{android.R.attr.background};
+        TypedArray ta = getContext().obtainStyledAttributes(attrs, attrsArray);
+        int defaultColor = 0xB36A96E6;
+        int backgroundColor = ta.getColor(0, defaultColor);
+        ta.recycle();
+
+        mPaint.setColor(backgroundColor);
     }
 
     public void setSelectedPosition(int index) {
@@ -73,7 +81,7 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child.getClass().getSimpleName().equals("BottomNavigationMenuView")) {
-                child.setBackgroundColor(Color.parseColor("#E0DEFE"));
+
 
 
                 child.setPadding(20, 20, 20, 20);

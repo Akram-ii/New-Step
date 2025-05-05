@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -48,6 +49,11 @@ public class SplashActivity extends AppCompatActivity {
                 SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
                 Boolean firstTime = sharedPreferences.getBoolean("firstTime", true);
                 if(!firstTime){
+                    sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE);
+                    Boolean nightMODE =sharedPreferences.getBoolean("night", false);
+                    if(nightMODE){
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    }
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();}
                 else{
