@@ -123,8 +123,13 @@
         <item name="cardBackgroundColor">@color/blueDark</item>
     </style>
 
-    <style name="backgroundTintpopupprofile" >
-        <item name="backgroundColor">@color/black</item>
+    <style name="backgroundPopupChattingWith" >
+        <item name="android:backgroundTint">@color/DarkPurple</item>
+
+    </style>
+
+    <style name="PurpleBackg" >
+        <item name="android:background">@color/DarkPurple</item>
 
     </style>
 

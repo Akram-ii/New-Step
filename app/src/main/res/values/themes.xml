@@ -138,9 +138,14 @@
     </style>
 
 
-    <style name="backgroundTintpopupprofile" >
-        <item name="backgroundColor">@color/light_blue</item>
+    <style name="backgroundPopupChattingWith" >
+        <item name="android:backgroundTint">@color/lavender2</item>
 
+    </style>
+
+
+    <style name="PurpleBackg" >
+        <item name="android:background">@color/purple</item>
 
     </style>
 
