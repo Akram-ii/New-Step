@@ -141,7 +141,11 @@
     <string name="what_do_you_want">Que voulez-vous ?</string>
     <string name="search_group_hint">Rechercher un groupe par nom</string>
     <string name="filter_now">Filtrer maintenant</string>
-
+    <string name="select_mode">Sélectionner le mode</string>
+    <string name="dark_mode">Mode sombre</string>
+    <string name="select_language">Sélectionner la langue</string>
+    <string name="milo_intro">Salut, je suis Milo! N\'hésite pas à discuter avec moi de tout, je suis là pour t\'aider</string>
+    <string name="hint_message">Message...</string>
 
 
 </resources>

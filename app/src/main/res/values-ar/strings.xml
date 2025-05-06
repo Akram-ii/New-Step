@@ -141,5 +141,10 @@
     <string name="what_do_you_want">ماذا تريد؟</string>
     <string name="search_group_hint">ابحث عن مجموعة بالاسم</string>
     <string name="filter_now">تصفية الآن</string>
+    <string name="select_mode">اختر الوضع</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="select_language">اختر اللغة</string>
+    <string name="milo_intro">مرحبًا، أنا ميلو! لا تتردد في الدردشة معي عن أي شيء، أنا هنا للمساعدة</string>
+    <string name="hint_message">رسالة...</string>
 
 </resources>

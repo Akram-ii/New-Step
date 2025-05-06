@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Mode"
+        android:text="@string/select_mode"
         android:textStyle="bold"
         android:textSize="18sp"
         style="@style/Text" />
@@ -19,7 +19,7 @@
         android:id="@+id/modeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dark Mode"
+        android:text="@string/dark_mode"
         style="@style/Text"/>
 
     <View
@@ -31,7 +31,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Language"
+        android:text="@string/select_language"
         android:textStyle="bold"
         android:textSize="18sp"
         style="@style/Text" />
