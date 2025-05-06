@@ -23,6 +23,7 @@
         android:layout_marginBottom="12dp"
         android:padding="16dp"
         android:background="@drawable/quote_background"
+        android:backgroundTint="?attr/color"
         android:gravity="center">
 
         <TextView

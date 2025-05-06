@@ -8,7 +8,9 @@
         <item name="backgroundColor">@color/white</item>
         <item name="color">@color/blue</item>
         <item name="background">@color/light_blue</item>
-
+        <item name="chipBackgroundColor">@color/blue</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="backgroundTint">@color/white</item>
 
 
 
@@ -46,8 +48,22 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="Screan2">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="icons3" >
+        <item name="tint">@color/purple</item>
+    </style>
+
     <style name="Text">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="text2">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="titlePopup">
+        <item name="android:textColor">@color/blue</item>
     </style>
     <style name="Image">
         <item name="tint">@color/black</item>
@@ -66,6 +82,9 @@
     <style name="TextSec" >
         <item name="android:textColor">@color/darkGray</item>
     </style>
+    <style name="blueText" >
+        <item name="android:textColor">@color/blue</item>
+    </style>
     <style name="BlueColorToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/blue</item>
         <item name="titleTextColor">@color/black</item>
@@ -76,6 +95,10 @@
     </style>
     <style name="purpleColor" >
         <item name="android:background">@color/lavender2</item>
+    </style>
+    <style name="purpleTextView" >
+        <item name="android:textColor">@color/purple</item>
+
     </style>
 
 <style name="Card" >
@@ -89,7 +112,37 @@
     <style name="icons" >
         <item name="tint">@color/black</item>
     </style>
+    <style name="icons2" >
+        <item name="tint">@color/purple</item>
+    </style>
 
+    <style name="bluebackgroundTint" >
+        <item name="backgroundTint">@color/blue</item>
+    </style>
+
+    <style name="popupbackground" >
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="blueicons" >
+        <item name="tint">@color/blue</item>
+    </style>
+
+    <style name="backgroundTintGroupPopup" >
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <style name="backgroundTintEditText" >
+        <item name="backgroundTint">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="backgroundTintpopupprofile" >
+        <item name="backgroundColor">@color/light_blue</item>
+
+
+    </style>
 
 
 

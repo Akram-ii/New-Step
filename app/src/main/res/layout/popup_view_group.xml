@@ -8,12 +8,14 @@
     app:cardElevation="10dp"
     android:layout_margin="20dp"
     app:cardCornerRadius="20dp"
-    android:backgroundTint="@color/white"
-    android:background="@color/transparent">
+    style="@style/popupbackground"
+
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Screan2"
         android:layout_margin="20dp">
 
 
@@ -32,6 +34,7 @@
     android:layout_height="30dp"
     android:src="@drawable/icon_back_purple"
     android:id="@+id/back"
+    style="@style/icons3"
     android:background="?attr/selectableItemBackgroundBorderless"
     />
         <TextView
@@ -40,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:textColor="@color/purple"
+            style="@style/purpleTextView"
             android:textSize="24dp"
             android:textStyle="bold" />
 
@@ -59,7 +62,7 @@
             android:maxLines="4"
             android:padding="15dp"
             android:textSize="17sp"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:textColorHint="@color/gray" />
     </RelativeLayout>
 

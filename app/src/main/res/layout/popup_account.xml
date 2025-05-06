@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="10dp"
     android:padding="10dp"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="?attr/backgroundColor"
     android:background="@drawable/goal_background_item"
     android:layout_height="wrap_content">
 <ImageView
@@ -12,7 +12,7 @@
     android:layout_height="wrap_content"
     android:src="@drawable/back_ic"
     android:layout_margin="10dp"
-    app:tint="@color/black"
+    style="@style/icons"
     android:id="@+id/back"
     />
     <TextView
@@ -24,7 +24,7 @@
         android:id="@+id/t1"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:textStyle="bold"
         />
     <RelativeLayout
@@ -36,7 +36,7 @@
         android:id="@+id/r1"
         android:padding="4dp"
         android:background="@drawable/goal_background_item"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/backgroundColor"
         >
 
         <RadioGroup
@@ -53,7 +53,7 @@ android:layout_centerHorizontal="true"
                 android:buttonTint="@color/blue"
                 android:layout_height="wrap_content"
                 android:text="@string/everyone"
-                android:textColor="@color/black"/>
+                style="@style/Text"/>
             <RadioButton
                 android:buttonTint="@color/blue"
                 android:id="@+id/radioPrivate"
@@ -61,7 +61,7 @@ android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/nobody"
-                android:textColor="@color/black"/>
+                style="@style/Text"/>
         </RadioGroup>
     </RelativeLayout>
     <View
@@ -83,7 +83,7 @@ android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:textStyle="bold"
         />
 <RelativeLayout
@@ -99,20 +99,22 @@ android:layout_centerHorizontal="true"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/icmail"
-        android:background="@drawable/mail"
-        app:tint="@color/black" />
+       android:src="@drawable/mail"
+        style="@style/icons" />
     <ImageButton
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/emailEdit"
         android:layout_alignParentRight="true"
-        android:background="@drawable/edit"/>
+       android:src="@drawable/edit"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        style="@style/icons"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/emailTextView"
         android:textColorHint="@color/black"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:layout_alignStart="@id/icmail"
         android:hint="Loading..."
         android:paddingLeft="50dp"
@@ -133,7 +135,7 @@ android:layout_centerHorizontal="true"
         android:id="@+id/icpass"
         android:layout_below="@id/dive"
         android:background="@drawable/icon_admin"
-        app:tint="@color/black" />
+        style="@style/icons" />
     <ImageButton
         android:layout_marginTop="10dp"
         android:layout_width="25dp"
@@ -142,7 +144,7 @@ android:layout_centerHorizontal="true"
         android:layout_below="@id/dive"
         android:src="@drawable/edit"
         android:layout_alignParentRight="true"
-        app:tint="@color/black"
+        style="@style/icons"
         android:background="?attr/selectableItemBackgroundBorderless"/>
     <TextView
         android:layout_marginTop="10dp"
@@ -152,7 +154,7 @@ android:layout_centerHorizontal="true"
         android:inputType="textPassword"
         android:textColor="@color/black"
         android:layout_below="@id/dive"
-        android:textColorHint="@color/black"
+       style="@style/icons"
         android:layout_alignStart="@id/icpass"
         android:hint="******"
         android:paddingLeft="50dp"
@@ -177,7 +179,7 @@ android:layout_centerHorizontal="true"
     android:layout_below="@+id/v2"
     android:textStyle="bold"
     android:textSize="18sp"
-    android:textColor="@color/black"
+    style="@style/Text"
     android:layout_marginLeft="5dp"
     />
     <TextView
@@ -188,6 +190,7 @@ android:layout_centerHorizontal="true"
         android:gravity="center_vertical"
         android:layout_marginLeft="20dp"
         android:textSize="15sp"
+        style="@style/Text"
         android:layout_alignBottom="@+id/t3"
         android:layout_toRightOf="@+id/t3"
         android:layout_marginRight="10dp"
@@ -205,7 +208,7 @@ android:layout_centerHorizontal="true"
     android:textAlignment="textStart"
     android:textColor="@color/black"
     android:layout_below="@+id/t3"
-    android:drawableTint="@color/black"
+    android:drawableTint="?attr/backgroundColor"
     android:drawableRight="@drawable/ic_arrow_right"
 
     android:backgroundTint="@color/white"

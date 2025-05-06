@@ -5,13 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+   style="@style/Screan"
     tools:context=".Fragments.SearchFragment">
 <ImageButton
     android:layout_width="50dp"
     android:background="@color/transparent"
     android:id="@+id/reset_ImageButton"
     android:layout_height="50dp"
+    style="@style/icons2"
     android:src="@drawable/icon_cancel"
    android:layout_marginLeft="10dp"
     android:layout_marginTop="35dp"
@@ -22,13 +23,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="80dp"
-        android:backgroundTint="@color/black"
+        style="@style/backgroundTintEditText"
         android:layout_marginLeft="60dp"
         android:textSize="18sp"
         android:maxLines="1"
-
         android:inputType="textCapSentences"
-        android:textColor="@color/black"
         android:hint="Username"
         android:textColorHint="@color/gray"
         android:id="@+id/user_EditText"
@@ -42,6 +41,7 @@
         android:layout_marginTop="35dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="25dp"
+        style="@style/icons2"
         android:background="?attr/selectableItemBackgroundBorderless"/>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

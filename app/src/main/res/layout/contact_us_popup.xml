@@ -6,7 +6,7 @@
     android:padding="10dp"
     android:elevation="10dp"
     android:layout_margin="20dp"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="?attr/backgroundColor"
     android:background="@drawable/goal_background_item"
     >
     <ImageView
@@ -17,7 +17,7 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:id="@+id/back"
         android:src="@drawable/back_ic"
-        app:tint="@color/blue"
+        style="@style/blueicons"
 
         />
     <TextView
@@ -30,12 +30,12 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:id="@+id/t1"
-        android:textColor="@color/blue"
+        style="@style/blueText"
         android:gravity="center"
         android:layout_marginBottom="20dp" />
     <EditText
         android:inputType="textCapWords"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/backgroundColor"
         android:layout_below="@+id/t1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         android:imeOptions="actionDone"
         android:layout_marginHorizontal="15dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/backgroundColor"
         android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:elevation="10dp"
@@ -72,11 +72,12 @@
         android:maxLines="4"
         android:lines="5"
         android:text=""
-        android:textColor="@color/black"
+        style="@style/Text"
         android:textColorHint="@color/gray"
         android:padding="15dp"
         android:layout_margin="10dp"
         android:background="@drawable/button_background"
+
         />
     <TextView
         android:layout_marginBottom="3dp"
@@ -84,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:id="@+id/cat"
-        android:textColor="@color/blue"
+        style="@style/blueText"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_below="@+id/desc"
@@ -119,7 +120,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginRight="5dp"
         app:cornerRadius="20dp"
-        android:backgroundTint="@color/blue"
+        style="@style/bluebackgroundTint"
         android:textColor="@android:color/white"/>
 
 </RelativeLayout>

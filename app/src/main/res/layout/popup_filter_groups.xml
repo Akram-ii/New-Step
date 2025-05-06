@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@drawable/filter_background"
+    android:backgroundTint="?attr/background"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp">
@@ -22,7 +23,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/back_ic"
-            app:tint="@color/black"
+            style="@style/icons"
             android:layout_marginEnd="8dp"
              />
 
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="@string/what_do_you_want"
             android:textSize="18sp"
-            android:textColor="@color/black" />
+           style="@style/Text" />
     </LinearLayout>
 
 
@@ -41,10 +42,12 @@
         android:layout_marginTop="20dp"
         android:layout_height="45dp"
         android:hint="@string/search_group_hint"
+        style="@style/Text"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:background="@drawable/quote_background"
         android:drawableStart="@drawable/icon_cancel"
+
         android:layout_marginBottom="12dp"
         android:layout_below="@id/layout"
         android:drawablePadding="12dp" />

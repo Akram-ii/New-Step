@@ -5,6 +5,7 @@
     android:padding="10dp"
     android:background="@drawable/goal_background_item"
     android:layout_height="wrap_content"
+    android:backgroundTint="?attr/background"
     android:layout_margin="10dp"
 
     >
@@ -13,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/back_ic"
-        app:tint="@color/blue"
+        style="@style/icons"
         android:id="@+id/backBtn"
         android:layout_marginBottom="10dp"
         />
@@ -23,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/setting30"
         android:textSize="20sp"
-        android:textColor="@color/blue"
+        style="@style/Text"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         />
@@ -44,7 +45,7 @@
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:text="My Experience"
             app:chipBackgroundColor="@color/blue"
-            android:textColor="@color/white"
+           android:textColor="@color/white"
             android:textSize="14sp"
             />
         <com.google.android.material.chip.Chip
@@ -168,6 +169,7 @@
         android:textAlignment="center"
         android:layout_below="@+id/forText"
         android:id="@+id/selectText"
+        style="@style/Text"
         android:layout_centerHorizontal="true"
         />
 

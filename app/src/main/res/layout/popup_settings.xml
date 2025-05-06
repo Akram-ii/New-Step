@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/goal_background_item"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="?attr/backgroundColor"
     android:padding="16dp">
 
     <TextView
@@ -13,14 +13,14 @@
         android:text="Select Mode"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:textColor="@color/black" />
+        style="@style/Text" />
 
     <Switch
         android:id="@+id/modeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dark Mode"
-        android:textColor="@color/black"/>
+        style="@style/Text"/>
 
     <View
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
         android:text="Select Language"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:textColor="@color/black" />
+        style="@style/Text" />
 
     <RadioGroup
         android:id="@+id/langGroup"
@@ -47,20 +47,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="English"
-            android:textColor="@color/black" />
+            style="@style/Text"/>
 
         <RadioButton
             android:id="@+id/langFrench"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Frensh"
-            android:textColor="@color/black" />
+            style="@style/Text" />
         <RadioButton
             android:id="@+id/langArabic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="العربية"
-            android:textColor="@color/black" />
+           style="@style/Text"/>
     </RadioGroup>
 
 </LinearLayout>
