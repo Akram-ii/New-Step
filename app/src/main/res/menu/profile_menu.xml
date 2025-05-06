@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_account"
-        android:title="Settings"
+        android:title="@string/setting8"
         android:icon="@drawable/icon_settings"
         android:iconTint="@color/purple"
         app:showAsAction="never" />
@@ -12,7 +12,7 @@
     <item
         android:iconTint="@color/purple"
         android:id="@+id/action_logout"
-        android:title="Logout"
+        android:title="@string/setting9"
         android:icon="@drawable/icon_logout"
         app:showAsAction="never" />
 

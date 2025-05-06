@@ -46,15 +46,14 @@
         android:layout_height="200dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/habits_details_shape">
+
         <Button
-            android:layout_marginTop="10dp"
+            android:id="@+id/logBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/logBtn"
             android:layout_centerHorizontal="true"
-            android:text="Log Today"
-            android:textColor="@color/white"
             android:backgroundTint="@color/purple"
-            />
+            android:text="@string/log_today"
+            android:textColor="@color/white" />
     </RelativeLayout>
 </RelativeLayout>

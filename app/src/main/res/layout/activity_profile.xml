@@ -66,7 +66,7 @@
         android:id="@+id/editProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
+        android:text="@string/setting1"
         android:layout_marginTop="12dp"
         android:textColor="@color/black"
         android:backgroundTint="@color/white"
@@ -149,7 +149,7 @@
         android:layout_height="wrap_content"
         style="@style/Text"
         android:textSize="14sp"
-        android:text="point"
+        android:text="@string/setting4"
         android:layout_marginLeft="10dp"
         app:layout_constraintLeft_toRightOf="@id/badge"
         app:layout_constraintTop_toTopOf="@id/badge"
@@ -177,13 +177,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabMyPosts"
-            android:text="My Posts" />
+            android:text="@string/setting2" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabLikedPosts"
-            android:text="Liked Posts" />
+            android:text="@string/setting3" />
 
     </com.google.android.material.tabs.TabLayout>
 

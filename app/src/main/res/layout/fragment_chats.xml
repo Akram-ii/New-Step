@@ -22,13 +22,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabGroupChats"
-            android:text="My Chats" />
+            android:text="@string/my_chats"
+            />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tabLikedPosts"
-            android:text="Group Chats" />
+            android:text="@string/group_chats"
+            />
 
     </com.google.android.material.tabs.TabLayout>
 

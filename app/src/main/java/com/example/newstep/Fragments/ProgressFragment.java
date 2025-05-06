@@ -72,11 +72,11 @@ public class ProgressFragment extends Fragment {
         }
 
         if (entries.isEmpty()) {
-            barChart.setNoDataText("No data yet, add a habit to view progress.");
+            barChart.setNoDataText(getString(R.string.no_data_text));
             return view;
         }
 
-        BarDataSet barDataSet = new BarDataSet(entries, "Total Resistance Days");
+        BarDataSet barDataSet = new BarDataSet(entries, getString(R.string.resistance_days_label));
         barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
         BarData data = new BarData(barDataSet);
@@ -127,6 +127,24 @@ public class ProgressFragment extends Fragment {
 
 
         ArrayList<String> bestHabits = new ArrayList<>();
+
+        for (int i = 0; i < habits.size(); i++) {
+            HabitModel habit = habits.get(i);
+            if (habit.getTotalDays() == maxDays) {
+                String dayText;
+
+                if (maxDays == 1) {
+                    dayText = getString(R.string.day_singular, habit.getTotalDays());
+                } else {
+                    dayText = getString(R.string.day_plural, habit.getTotalDays());
+                }
+
+                bestHabits.add(habit.getHabit_name() + ": " + dayText);
+            }
+        }
+
+
+        /*ArrayList<String> bestHabits = new ArrayList<>();
        for(int i =0 ;i< habits.size();i++){
            HabitModel habit =habits.get(i);
            if(habit.getTotalDays()== maxDays ){
@@ -140,6 +158,8 @@ public class ProgressFragment extends Fragment {
            }
        }
 
+         */
+
 
         TextView topHabitNames = view.findViewById(R.id.topHabitNames);
         StringBuilder topHabitText = new StringBuilder();
@@ -150,7 +170,7 @@ public class ProgressFragment extends Fragment {
         }
         topHabitNames.setText(topHabitText.toString().trim());
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Total Resistance Days");
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, getString(R.string.resistance_days_label));
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         pieDataSet.setSliceSpace(2f);
         pieDataSet.setValueTextSize(12f);
@@ -159,7 +179,7 @@ public class ProgressFragment extends Fragment {
         pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setEntryLabelTextSize(10f);
-        pieChart.setCenterText("Habits Progress");
+        pieChart.setCenterText(getString(R.string.center_text));
         pieChart.setCenterTextSize(14f);
         pieChart.animateY(1000);
         pieChart.invalidate();

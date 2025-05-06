@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="setting1">تعديل الملف</string>
+    <string name="setting2">منشوراتي</string>
+    <string name="setting3">المقالات المفضلة</string>
+    <string name="setting4">النقاط</string>
+    <string name="setting5">حفظ</string>
+    <string name="setting6">السيرة الذاتية</string>
+    <string name="setting7">اسم المستخدم</string>
+    <string name="setting8">الاعدادات</string>
+    <string name="setting9">تسجيل الخروج</string>
+    <string name="setting10">الرئيسية</string>
+    <string name="setting11">الاستعادة</string>
+    <string name="setting12">الأهداف</string>
+    <string name="setting13">المجتمع</string>
+    <string name="setting14">الدردشات</string>
+    <string name="setting15">شاراتي</string>
+    <string name="setting16">ميلو، مساعدك الذكي</string>
+    <string name="setting17">الحساب والدعم</string>
+    <string name="setting18">الملف الشخصي</string>
+    <string name="setting19">الحساب</string>
+    <string name="setting20">الإعدادات</string>
+    <string name="setting21">اتصل بنا</string>
+    <string name="setting22">تجربتي</string>
+    <string name="setting23">طلب المساعدة</string>
+    <string name="setting24">التحفيز</string>
+    <string name="setting25">تأمل</string>
+    <string name="setting26">تحديث التقدم</string>
+    <string name="setting27">التحديات</string>
+    <string name="setting28">نصائح</string>
+    <string name="setting29">أخرى</string>
+    <string name="setting30">ماذا تحب اليوم؟</string>
+    <string name="setting31">جميع</string>
+    <string name="setting32">تصفية الآن</string>
+    <string name="setting33">نحن ننمو من خلال دعم بعضنا البعض</string>
+    <string name="setting34">الشارات</string>
+    <string name="setting35">الأسئلة الشائعة</string>
+    <string name="setting36">ما فائدة الشارات؟</string>
+    <string name="setting37">ما هي الأفعال التي تمنحني نقاطًا؟</string>
+    <string name="setting38">هل يمكنني رؤية شارات الآخرين؟</string>
+    <string name="setting39">لماذا أحتاج إلى النقاط؟</string>
+    <string name="badges_description">الشارات هي إنجازات خاصة يمكنك الحصول عليها من خلال نشاطك في المجتمع ودعم رحلة نموك الخاصة.\n\nإنها ليست مجرد مظهر - بل هي طريقة لتتبع تقدمك، والاحتفال باستمرارك، وتشجيع العادات الإيجابية.</string>
+    <string name="points_earning_info">تكسب النقاط من خلال:\n\n✦ الإعجاب بالمنشورات أو التعليقات\n\n✦ نشر تحديثاتك أو تأملاتك الخاصة\n\n✦ التعليق على منشورات الآخرين\n\n✦ تلقي الإعجابات على منشوراتك أو تعليقاتك\n\n✦ الاستمرار في النشاط بانتظام</string>
+    <string name="badges_see_info">
+    نعم! عند عرض ملف شخص ما أو أحد منشوراته، سترى الشارة \uD83C\uDFC5 التي حصل عليها حتى الآن.\n\nإنها طريقة ممتعة وذات مغزى لـ:\n✦ الاحتفال بتقدم بعضنا البعض\n✦ تقدير الجهود التي يبذلها الآخرون\n✦ الشعور بترابط أكبر مع المجتمع\n\nكل شارة تروي قصة — تذكير بأننا جميعًا ننمو \uD83C\uDF31، خطوة بخطوة، معًا \uD83E\uDD1D.
+    </string>
+    <string name="points_info">
+    النقاط هي وسيلة لتتبع نموك ونشاطك داخل المجتمع. في كل مرة تنشر، تعلق، تعجب بشيء، أو تحصل على دعم من الآخرين، تكسب نقاطًا.\n\n▪ تساعدك هذه النقاط على فتح الشارات، التي تمثل مراحل مختلفة من رحلتك. وهي موجودة لتحفيزك، وإظهار تقدمك، وتذكيرك بأن حتى الأفعال الصغيرة لها قيمة.\n\n▪ كلما تفاعلت أكثر، زاد نموك — وتنعكس نقاطك ذلك.
+    </string>
+    <string name="badges_title">ما هي الشارات؟</string>
+    <string name="points_earning_title">ما هي الأنشطة التي تمنحني نقاطًا؟</string>
+    <string name="badges_see_title">هل يمكنني رؤية شارات الآخرين؟</string>
+    <string name="points_need_title">لماذا أحتاج إلى النقاط؟</string>
+    <string name="in_progress">قيد التقدم</string>
+    <string name="average_progress">تقدم متوسط</string>
+    <string name="completed">مكتمل</string>
+    <string name="goal_first_step">هدفك الأول هو الخطوة الأولى نحو العظمة!</string>
+    <string name="ambition_looks_good">الطموح يليق بك!</string>
+    <string name="dedication_inspiring">تفانيك ملهم!</string>
+    <string name="points_display">%1$d نقطة</string>
+    <string name="set_goal">حدد هدفًا</string>
+    <string name="goal_name_hint">اسم الهدف</string>
+    <string name="goal_description_hint">أضف وصفًا للهدف</string>
+    <string name="progress_question">ما مدى تقدمك حتى الآن؟</string>
+    <string name="finish">إنهاء</string>
+    <string name="proud_of_progress">فخور بتقدمك</string>
+    <string name="better_habits">عادات أفضل، أنت أفضل</string>
+    <string name="no_data_text">لا توجد بيانات بعد، أضف عادة لعرض التقدم.</string>
+    <string name="center_text">تقدّم العادات</string>
+    <string name="resistance_days_label">إجمالي أيام المقاومة</string>
+    <string name="day_singular">%1$d يوم</string>
+    <string name="day_plural">%1$d ايام</string>
+    <string name="your_goals">أهدافك</string>
+    <string name="small_steps">الخطوات الصغيرة تصنع تغييرات كبيرة! تتبع أهدافك!</string>
+    <string name="milestones">المعالم</string>
+    <string name="keep_pushing">واصل التقدم! أنت تقوم بعمل رائع! 💪</string>
+    <string name="your_badges">شاراتك</string>
+    <string name="collect_badges">اجمع المزيد من الشارات أثناء تقدمك!</string>
+    <string name="connect_grow">تواصل وتطوّر</string>
+    <string name="see_others">شاهد تقدم الآخرين وشارك إنجازاتك</string>
+    <string name="top_achievers">أفضل المنجزين</string>
+    <string name="rank">الترتيب</string>
+    <string name="name">الاسم</string>
+    <string name="points">النقاط</string>
+    <string name="hint_bad_habit">ما هي عادتك السيئة / إدمانك؟</string>
+    <string name="hint_emergency_message">رسالة طارئة (اختياري)</string>
+    <string name="hint_effect_on_life">ما الذي يؤثر عليه في حياتك؟</string>
+    <string name="hint_last_time">متى كانت آخر مرة؟ (اختياري)</string>
+    <string name="hint_reminder_time">وقت التذكير (اختياري)</string>
+    <string name="text_all_done">تم كل شيء</string>
+    <!--<string name="title_my_health">صحتي</string>
+    <string name="title_my_money">أموالي</string>
+    <string name="title_everything">كل شيء</string>
+    <string name="title_something_else">شيء آخر</string>-->
+    <string name="log_today">سجل اليوم</string>
+    <string name="today">اليوم</string>
+    <string name="mood_hint">كيف كانت حالتك المزاجية؟</string>
+    <string name="happened_hint">ماذا حدث؟</string>
+    <string name="cancel">إلغاء</string>
+    <string name="save">حفظ</string>
+    <string name="progress_overview">نظرة عامة على التقدم</string>
+    <string name="report_comment">الإبلاغ عن هذا التعليق</string>
+    <string name="report_confirmation">هل أنت متأكد أنك تريد الإبلاغ عن هذا التعليق؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="no">لا</string>
+    <string name="yes">نعم</string>
+    <string name="report_this_post">الإبلاغ عن هذا المنشور</string>
+    <string name="are_you_sure_report_post">هل أنت متأكد أنك تريد الإبلاغ عن هذا المنشور؟ هذه العملية لا يمكن التراجع عنها.</string>
+    <string name="post_hint">بماذا تفكر؟...</string>
+    <string name="select_category">اختر الفئة :</string>
+    <string name="named">باسمك</string>
+    <string name="anonymous">مجهول</string>
+    <string name="cancel2">إلغاء</string>
+    <string name="post_it">انشرها</string>
+    <string name="who_can_message_me">من يمكنه إرسال رسالة لي</string>
+    <string name="everyone">الجميع</string>
+    <string name="nobody">لا أحد</string>
+    <string name="edit_credentials">تعديل بيانات الدخول</string>
+    <string name="account_created_on">تم إنشاء الحساب في</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="delete_account">حذف الحساب</string>
+    <string name="send_us_message">أرسل لنا رسالة</string>
+    <string name="message_title_hint">عنوان رسالتك</string>
+    <string name="message_details_hint">يرجى تقديم مزيد من التفاصيل</string>
+    <string name="choose_message_type">اختر نوع الرسالة</string>
+    <string name="send">إرسال</string>
+    <string name="submit">إرسال</string>
+    <string name="my_chats">محادثاتي</string>
+    <string name="group_chats">محادثات المجموعات</string>
+    <string name="filter">تصفية</string>
+    <string name="feeling_text">كنت تشعر بـ %1$s</string>
+    <string name="create_group">إنشاء مجموعة</string>
+    <string name="group_name_hint">اسم المجموعة</string>
+    <string name="group_description_hint">أضف وصفًا للمجموعة</string>
+    <string name="public_group">عام</string>
+    <string name="private_group">خاص</string>
+    <string name="choose_group_icon">اختر رمزًا للمجموعة</string>
+    <string name="choose_icon_color">اختر لون الرمز</string>
+    <string name="create">إنشاء</string>
+    <string name="what_do_you_want">ماذا تريد؟</string>
+    <string name="search_group_hint">ابحث عن مجموعة بالاسم</string>
+    <string name="filter_now">تصفية الآن</string>
+
+</resources>

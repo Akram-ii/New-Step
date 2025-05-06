@@ -2,23 +2,23 @@
 <menu  xmlns:android="http://schemas.android.com/apk/res/android">
 <item
     android:id="@+id/cat_health"
-    android:title="My Health"
+    android:title="@string/title_my_health"
 
     />
     <item
         android:id="@+id/cat_money"
-        android:title="My Money"
+        android:title="@string/title_my_money"
 
 
         />
     <item
         android:id="@+id/cat_everything"
-        android:title="Eveything"
+        android:title="@string/title_everything"
 
         />
     <item
         android:id="@+id/cat_other"
-        android:title="Something else"
+        android:title="@string/title_something_else"
 
         />
 

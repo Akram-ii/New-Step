@@ -3,59 +3,59 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:title="Home"
+            android:title="@string/setting10"
             android:icon="@drawable/icon_home"
             />
         <item
             android:icon="@drawable/icon_my_habits"
             android:id="@+id/nav_my_habits"
-            android:title="Recovery"
+            android:title="@string/setting11"
             />
         <item
             android:icon="@drawable/goal10"
             android:id="@+id/nav_my_goals"
-            android:title="Goals"
+            android:title="@string/setting12"
             />
 
         <item
             android:icon="@drawable/icon_community"
             android:id="@+id/nav_community"
-            android:title="Community"/>
+            android:title="@string/setting13"/>
         <item
             android:icon="@drawable/icon_chats"
             android:id="@+id/nav_chats"
-            android:title="Chats"
+            android:title="@string/setting14"
             />
         <item
             android:icon="@drawable/group12"
             android:id="@+id/nav_my_badge"
-            android:title="My Badge"
+            android:title="@string/setting15"
             />
         <item
             android:icon="@drawable/ai_2"
             android:id="@+id/nav_ai"
             android:iconTint="@color/transparent"
-            android:title="Milo,Your AI Assistant"
+            android:title="@string/setting16"
             />
 
-        <item android:title="Account &amp; Support">
+        <item android:title="@string/setting17">
             <menu>
                 <item
                     android:icon="@drawable/pfp_blue"
                     android:id="@+id/nav_profile"
-                    android:title="Profile" />
+                    android:title="@string/setting18" />
                 <item
                     android:icon="@drawable/icon_settings"
                     android:id="@+id/nav_account"
-                    android:title="Account" />
+                    android:title="@string/setting19" />
                 <item
                     android:icon="@drawable/sett"
                     android:id="@+id/nav_settings"
-                    android:title="Settings" />
+                    android:title="@string/setting20" />
                 <item
                     android:icon="@drawable/icon_info"
                     android:id="@+id/nav_contact"
-                    android:title="Contact Us" />
+                    android:title="@string/setting21" />
             </menu>
 
         </item>

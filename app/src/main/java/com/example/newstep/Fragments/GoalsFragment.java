@@ -59,11 +59,11 @@ GoalsAdapter adapter;
         recycler_goals=rootView.findViewById(R.id.recycler_goals);
         textUnder=rootView.findViewById(R.id.text_under_nb);
 if(goals.size()==0){
-    textUnder.setText("Your first goal is the first step toward greatness!");
+    textUnder.setText(getString(R.string.goal_first_step));
 }else  if(goals.size()>0 && goals.size()<5){
-    textUnder.setText("Ambition looks good on you!");
+    textUnder.setText(getString(R.string.ambition_looks_good));
 }else if (goals.size()>5 ){
-    textUnder.setText("Your dedication is inspiring!");
+    textUnder.setText(getString(R.string.dedication_inspiring));
 }
 
         nb_goals.setText(""+db.getTotalGoals());
@@ -206,11 +206,11 @@ add_goal.setOnClickListener(new View.OnClickListener() {
         average_progress.setText(db.getAverageProgress() + "%");
 
         if (goals.size() == 0) {
-            textUnder.setText("Your first goal is the first step toward greatness!");
+            textUnder.setText(getString(R.string.goal_first_step));
         } else if (goals.size() < 5) {
-            textUnder.setText("Ambition looks good on you!");
+            textUnder.setText(getString(R.string.ambition_looks_good));
         } else {
-            textUnder.setText("Your dedication is inspiring!");
+            textUnder.setText(getString(R.string.dedication_inspiring));
         }
     }
 }

@@ -156,8 +156,51 @@ if(post.getAnonymous()){
             }}
         });
 
-if(post.getCategory()!=null){
-        holder.cat.setText(post.getCategory());}
+
+        //String cat = post.getCategory().toLowerCase();
+        String cat = (post.getCategory() != null) ? post.getCategory().toLowerCase() : "";
+        int resId;
+
+        switch (cat) {
+            case "my experience":
+                resId = R.string.setting22;
+                break;
+            case "ask for help":
+                resId = R.string.setting23;
+                break;
+            case "motivation":
+                resId = R.string.setting24;
+                break;
+            case "reflection":
+                resId = R.string.setting25;
+                break;
+            case "progress update":
+                resId = R.string.setting26;
+                break;
+            case "challenges":
+                resId = R.string.setting27;
+                break;
+            case "advices":
+                resId = R.string.setting28;
+                break;
+            case "other":
+                resId = R.string.setting29;
+                break;
+            default:
+                resId = R.string.setting22;
+                break;
+        }
+
+
+
+        if(post.getCategory()!=null){
+            //holder.cat.setText(post.getCategory());
+            holder.cat.setText(context.getString(resId));
+        }
+
+
+
+
         holder.postContent.setText(post.getContent());
 if(post.getAnonymous()){
     holder.username.setText("Anonymous User");

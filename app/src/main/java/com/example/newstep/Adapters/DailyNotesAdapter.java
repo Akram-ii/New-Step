@@ -48,7 +48,10 @@ public class DailyNotesAdapter extends RecyclerView.Adapter<DailyNotesAdapter.No
 
         holder.day.setText(dailyNoteModel.getDate());
 
-        holder.mood.setText("You were feeling "+dailyNoteModel.getMood());
+        //holder.mood.setText("You were feeling "+dailyNoteModel.getMood());
+        String moodText = context.getString(R.string.feeling_text, dailyNoteModel.getMood());
+        holder.mood.setText(moodText);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){

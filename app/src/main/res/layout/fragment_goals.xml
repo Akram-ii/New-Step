@@ -53,7 +53,7 @@
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Average progress"
+            android:text="@string/average_progress"
             android:layout_above="@+id/average_progress"
             android:layout_centerHorizontal="true"
             />
@@ -75,7 +75,7 @@
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="In-progress"
+            android:text="@string/in_progress"
             android:id="@+id/t1"
             android:layout_above="@+id/nb_in_progress"
             />
@@ -100,7 +100,7 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Completed"
+            android:text="@string/completed"
             android:id="@+id/t3"
             android:layout_above="@+id/nb_in_progress"
             />

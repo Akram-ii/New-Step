@@ -51,43 +51,20 @@ ProgressBar pBar;
     currBadge=rootView.findViewById(R.id.currbadge);
 
     q1=rootView.findViewById(R.id.q1);
-    q1.setOnClickListener(v->{setupBottomDialog("What are Badges",
-            "Badges are special milestones you earn by being active in the community and supporting your own growth journey.\n" +
-                    "\n" +
-                    "They're not just for show — they’re a way to track your progress, celebrate your consistency, and encourage positive habits."
-            );});
+    q1.setOnClickListener(v->{setupBottomDialog(getString(R.string.badges_title),
+            getString(R.string.badges_description)
+    );});
     q2=rootView.findViewById(R.id.q2);
-    q2.setOnClickListener(v->{setupBottomDialog("What actions give me points?",
-            "You earn points by:\n" +
-                    "\n" +
-                    "✦ Liking posts or comments\n" +
-                    "\n" +
-                    "✦ Posting your own updates or reflections\n" +
-                    "\n" +
-                    "✦ Commenting on others’ posts\n" +
-                    "\n" +
-                    "✦ Receiving likes on your posts or comments\n" +
-                    "\n" +
-                    "✦ Being consistent in your activity\n"
+    q2.setOnClickListener(v->{setupBottomDialog(getString(R.string.points_earning_title),
+            getString(R.string.points_earning_info)
             );});
     q3=rootView.findViewById(R.id.q3);
-    q3.setOnClickListener(v->{setupBottomDialog("Can i see other people's badge?",
-            "Yes! When you view someone’s profile or one of their posts, you’ll see the \uD83C\uDFC5 badge they’ve earned so far.\n" +
-                    "\n" +
-                    "It’s a fun and meaningful way to:\n" +
-                    "✦ Celebrate each other’s progress\n" +
-                    "✦ Recognize the effort others are putting in\n" +
-                    "✦ Feel more connected to the community\n" +
-                    "\n" +
-                    "Each badge tells a story — a reminder that we’re all growing \uD83C\uDF31, step by step, together \uD83E\uDD1D."
+    q3.setOnClickListener(v->{setupBottomDialog(getString(R.string.badges_see_title),
+            getString(R.string.badges_see_info)
             );});
     q4=rootView.findViewById(R.id.q4);
-    q4.setOnClickListener(v->{setupBottomDialog("Why do i need points?",
-            "Points are a way to track your growth and activity in the community. Every time you post, comment, like something, or get support from others, you earn points.\n" +
-                    "\n" +
-                    "▪ These points help you unlock badges, which represent different stages in your journey. They’re here to motivate you, show your progress, and remind you that even the small actions you take matter.\n" +
-                    "\n" +
-                    "▪ The more you interact, the more you grow — and your points reflect that."
+    q4.setOnClickListener(v->{setupBottomDialog(getString(R.string.points_need_title),
+            getString(R.string.points_info)
     );});
 
     nextBadge=rootView.findViewById(R.id.nextBadge);
@@ -119,7 +96,7 @@ setupRecycler();
             int progress=(int) (((float)(points.intValue() - previousPointsForBadge) /
                     (nextPointsForBadge- previousPointsForBadge)) * 100);
             pBar.setProgress(progress);
-            currPoints.setText(points.intValue()+" Points");
+            currPoints.setText(getString(R.string.points_display, points.intValue()));
 
         }
     });

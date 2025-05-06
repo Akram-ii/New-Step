@@ -31,7 +31,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Report This Comment"
+            android:text="@string/report_comment"
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -45,7 +45,7 @@
             android:id="@+id/textMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Are you sure you want to report this comment? This action cannot be undone."
+            android:text="@string/report_confirmation"
             android:textSize="14sp"
             android:textColor="@color/black"
             android:layout_below="@id/title"
@@ -74,7 +74,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 app:cornerRadius="20dp"
-                android:text="No"
+                android:text="@string/no"
                 android:textColor="@color/white" />
 
             <com.google.android.material.button.MaterialButton
@@ -84,7 +84,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="5dp"
                 android:backgroundTint="#b7251a"
-                android:text="Yes"
+                android:text="@string/yes"
                 android:textColor="@android:color/white"
                 app:cornerRadius="20dp" />
 

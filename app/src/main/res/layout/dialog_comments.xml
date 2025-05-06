@@ -67,7 +67,7 @@
             android:id="@+id/buttonSendComment"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
-            android:text="submit"
+            android:text="@string/submit"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:enabled="false"

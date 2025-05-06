@@ -1,5 +1,6 @@
 package com.example.newstep;
 
+import android.content.res.Configuration;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -72,6 +73,7 @@ import com.example.newstep.Util.FirebaseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ProfileActivity extends AppCompatActivity implements MyPostsFragment.CommentDialogListener {
@@ -158,16 +160,16 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
 
             if (position == 0) {
-                tab.setText("My Posts");
+                tab.setText(getString(R.string.setting2));
             } else if (position == 1) {
-                tab.setText("Liked Posts");
+                tab.setText(getString(R.string.setting3));
             }
 
         }).attach();
 
+
+
         getSupportActionBar().setTitle("");
-
-
 
     }
 
@@ -187,9 +189,6 @@ public class ProfileActivity extends AppCompatActivity implements MyPostsFragmen
 
 
     }
-
-
-
 
 
 

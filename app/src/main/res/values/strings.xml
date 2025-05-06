@@ -10,6 +10,163 @@
     <string name="default_web_client_id">513429518236-k1muk0q7sgdgosfjhcdmj6761q3r848l.apps.googleusercontent.com</string>
     <string name="facebook_client_token">your_client_token_here</string>
 
+
+
+    <string name="setting1">Edit Profile</string>
+    <string name="setting2">My Posts</string>
+    <string name="setting3">Liked Posts</string>
+    <string name="setting4">point</string>
+    <string name="setting5">Save</string>
+    <string name="setting6">Bio</string>
+    <string name="setting7">User Name</string>
+    <string name="setting8">Settings</string>
+    <string name="setting9">Logout</string>
+    <string name="setting10">Home</string>
+    <string name="setting11">Recovery</string>
+    <string name="setting12">Goals</string>
+    <string name="setting13">Community</string>
+    <string name="setting14">Chats</string>
+    <string name="setting15">My Badge</string>
+    <string name="setting16">Milo,Your AI Assistant</string>
+    <string name="setting17">Account &amp; Support</string>
+    <string name="setting18">Profile</string>
+    <string name="setting19">Account</string>
+    <string name="setting20">Settings</string>
+    <string name="setting21">Contact Us</string>
+    <string name="setting22">My Experience</string>
+    <string name="setting23">Ask for help</string>
+    <string name="setting24">Motivation</string>
+    <string name="setting25">Reflection</string>
+    <string name="setting26">Progress Update</string>
+    <string name="setting27">Challenges</string>
+    <string name="setting28">Advices</string>
+    <string name="setting29">Other</string>
+    <string name="setting30">What are you into today?</string>
+    <string name="setting31">All</string>
+    <string name="setting32">Filter Now</string>
+    <string name="setting33">We grow by lifting each other</string>
+    <string name="setting34">The Badges</string>
+    <string name="setting35">Frequently asked questions</string>
+    <string name="setting36">What are badges for?</string>
+    <string name="setting37">What actions give me points?</string>
+    <string name="setting38">Can i see other peoples s badge?</string>
+    <string name="setting39">Why do i need points?</string>
+    <string name="badges_description">Badges are special milestones you earn by being active in the community and supporting your own growth journey.\n\nThey re not just for show — they’re a way to track your progress, celebrate your consistency, and encourage positive habits.</string>
+    <string name="points_earning_info">You earn points by:\n\n✦ Liking posts or comments\n\n✦ Posting your own updates or reflections\n\n✦ Commenting on others’ posts\n\n✦ Receiving likes on your posts or comments\n\n✦ Being consistent in your activity</string>
+    <string name="badges_see_info">
+    Yes! When you view someone’s profile or one of their posts, you’ll see the \uD83C\uDFC5 badge they’ve earned so far.\n\nIt’s a fun and meaningful way to:\n✦ Celebrate each other’s progress\n✦ Recognize the effort others are putting in\n✦ Feel more connected to the community\n\nEach badge tells a story — a reminder that we’re all growing \uD83C\uDF31, step by step, together \uD83E\uDD1D.
+    </string>
+    <string name="points_info">
+    Points are a way to track your growth and activity in the community. Every time you post, comment, like something, or get support from others, you earn points.\n\n▪ These points help you unlock badges, which represent different stages in your journey. They’re here to motivate you, show your progress, and remind you that even the small actions you take matter.\n\n▪ The more you interact, the more you grow — and your points reflect that.
+    </string>
+    <string name="badges_title">What are Badges?</string>
+    <string name="points_earning_title">What actions give me points?</string>
+    <string name="badges_see_title">Can I see other people s badges?</string>
+    <string name="points_need_title">Why do I need points?</string>
+    <string name="in_progress">In-progress</string>
+    <string name="average_progress">Average progress</string>
+    <string name="completed">Completed</string>
+    <string name="goal_first_step">Your first goal is the first step toward greatness!</string>
+    <string name="ambition_looks_good">Ambition looks good on you!</string>
+    <string name="dedication_inspiring">Your dedication is inspiring!</string>
+    <string name="points_display">%1$d Points</string>
+    <string name="set_goal">Set a Goal</string>
+    <string name="goal_name_hint">Goal Name</string>
+    <string name="goal_description_hint">Give a description to the Goal</string>
+    <string name="progress_question">What s your progress so far?</string>
+    <string name="finish">Finish</string>
+    <string name="proud_of_progress">Proud of your progress</string>
+    <string name="better_habits">Better habits, better you</string>
+    <string name="no_data_text">No data yet, add a habit to view progress.</string>
+    <string name="center_text">Habits Progress</string>
+    <string name="resistance_days_label">Total Resistance Days</string>
+    <string name="day_singular">%1$d day</string>
+    <string name="day_plural">%1$d days</string>
+    <string name="your_goals">Your Goals</string>
+    <string name="small_steps">Small steps make big changes! Track your goals!</string>
+    <string name="milestones">Milestones</string>
+    <string name="keep_pushing">Keep pushing forward! You re doing great!💪</string>
+    <string name="your_badges">Your Badges</string>
+    <string name="collect_badges">Collect more badges as you make progress!</string>
+    <string name="connect_grow">Connect &amp; Grow</string>
+    <string name="see_others">See how others are doing, share your wins</string>
+    <string name="top_achievers">Top Achievers</string>
+    <string name="rank">Rank</string>
+    <string name="name">Name</string>
+    <string name="points">Points</string>
+    <string name="hint_bad_habit">What is your bad habit/addiction?</string>
+    <string name="hint_emergency_message">Emergency message (optional)</string>
+    <string name="hint_effect_on_life">What does it affect in your life?</string>
+    <string name="hint_last_time">When was the last time? (optional)</string>
+    <string name="hint_reminder_time">Reminder time (optional)</string>
+    <string name="text_all_done">All done</string>
+    <string name="title_my_health">My Health</string>
+    <string name="title_my_money">My Money</string>
+    <string name="title_everything">Everything</string>
+    <string name="title_something_else">Something else</string>
+    <string name="log_today">Log Today</string>
+    <string name="today">Today</string>
+    <string name="mood_hint">What was your mood ?</string>
+    <string name="happened_hint">What happened ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="progress_overview">Progress Overview</string>
+    <string name="report_comment">Report This Comment</string>
+    <string name="report_confirmation">Are you sure you want to report this comment? This action cannot be undone.</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="report_this_post">Report This Post</string>
+    <string name="are_you_sure_report_post">Are you sure you want to report this post? This action cannot be undone.</string>
+    <string name="post_hint">What s on your mind?...</string>
+    <string name="select_category">select a category :</string>
+    <string name="named">Named</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="cancel2">CANCEL</string>
+    <string name="post_it">POST IT</string>
+    <string name="who_can_message_me">Who can send me a message</string>
+    <string name="everyone">Everyone</string>
+    <string name="nobody">Nobody</string>
+    <string name="edit_credentials">Edit Credentials</string>
+    <string name="account_created_on">Account Created On</string>
+    <string name="logout">Logout</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="send_us_message">Send Us a Message</string>
+    <string name="message_title_hint">Title of your message</string>
+    <string name="message_details_hint">Please provide further details</string>
+    <string name="choose_message_type">Choose a message type</string>
+    <string name="send">Send</string>
+    <string name="submit">Submit</string>
+    <string name="my_chats">My Chats</string>
+    <string name="group_chats">Group Chats</string>
+    <string name="filter">Filter</string>
+    <string name="feeling_text">You were feeling %1$s</string>
+    <string name="create_group">Create a Group</string>
+    <string name="group_name_hint">Group name</string>
+    <string name="group_description_hint">Give a description to the group</string>
+    <string name="public_group">Public</string>
+    <string name="private_group">Private</string>
+    <string name="choose_group_icon">Choose an icon for the Group</string>
+    <string name="choose_icon_color">Choose the icon s color</string>
+    <string name="create">Create</string>
+    <string name="what_do_you_want">What do you want?</string>
+    <string name="search_group_hint">Search group by name</string>
+    <string name="filter_now">Filter Now</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <string-array name="languages">
         <item>العربية</item>
         <item>Français</item>

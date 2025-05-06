@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="What do you want?"
+            android:text="@string/what_do_you_want"
             android:textSize="18sp"
             android:textColor="@color/black" />
     </LinearLayout>
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
         android:layout_height="45dp"
-        android:hint="Search group by name"
+        android:hint="@string/search_group_hint"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:background="@drawable/quote_background"
@@ -159,7 +159,7 @@
         android:layout_marginTop="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Filter Now"
+        android:text="@string/filter_now"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:layout_centerHorizontal="true"

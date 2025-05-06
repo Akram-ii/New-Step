@@ -276,8 +276,8 @@ public class CommunityFragment extends Fragment {
     private void loadPosts(Map<String, UserModel> usersMap) {
         firestore.collection("posts")
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-                .get()
-                .addOnSuccessListener(value -> {
+                .addSnapshotListener((value, error) -> {
+                    if (error != null || value == null) return;
                     postList.clear();
 
                     for (DocumentSnapshot doc : value.getDocuments()) {

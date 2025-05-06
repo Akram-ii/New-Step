@@ -35,9 +35,9 @@ public class ChatsFragment extends Fragment {
 
         new TabLayoutMediator(tableLayout, viewPager, (tab, position) -> {
             if (position == 0) {
-                tab.setText("My Chats");
+                tab.setText(getString(R.string.my_chats));
             } else if (position == 1) {
-                tab.setText("Group Chats");
+                tab.setText(getString(R.string.group_chats));
             }
         }).attach();
 

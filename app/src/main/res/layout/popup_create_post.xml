@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="top"
-            android:hint="What's on your mind?..."
+            android:hint="@string/post_hint"
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textCapSentences"
             android:padding="16dp"
@@ -33,7 +33,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="select a category :"
+            android:text="@string/select_category"
             android:textColor="@color/purple"
             android:textSize="15sp"
             android:textStyle="italic"
@@ -59,7 +59,7 @@
                 android:checked="true"
                 android:buttonTint="@color/purple"
                 android:layout_height="wrap_content"
-                android:text="Named"
+                android:text="@string/named"
                 android:textColor="@color/black"/>
             <RadioButton
                 android:buttonTint="@color/purple"
@@ -67,7 +67,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Anonymous"
+                android:text="@string/anonymous"
                 android:textColor="@color/black"/>
         </RadioGroup>
         <LinearLayout
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="CANCEL"
+                android:text="@string/cancel2"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/darkGray"
                 app:cornerRadius="20dp" />
@@ -92,7 +92,7 @@
                 android:id="@+id/buttonPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="POST IT"
+                android:text="@string/post_it"
                 android:textColor="@color/white"
                 app:backgroundTint="@color/purple"
                 app:cornerRadius="20dp" />

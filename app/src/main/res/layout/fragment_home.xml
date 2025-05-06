@@ -91,7 +91,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Your Goals"
+                      android:text="@string/your_goals"
                       android:layout_gravity="center_horizontal"
                       android:textSize="16sp"
                       android:textStyle="bold"
@@ -103,7 +103,7 @@
               <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="Small steps make big changes! Track your goals!"
+                  android:text="@string/small_steps"
                   android:textSize="14sp"
                     style="@style/TextSec"
                   />
@@ -139,7 +139,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Milstones"
+                      android:text="@string/milestones"
                       android:layout_gravity="center_horizontal"
                       android:textSize="15sp"
                       android:textStyle="bold"
@@ -152,7 +152,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="8dp"
-                  android:text="Keep pushing forward! You're doing great!💪"
+                  android:text="@string/keep_pushing"
                   style="@style/TextSec"
                   android:textSize="14sp" />
 
@@ -187,7 +187,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Your Badges"
+                      android:text="@string/your_badges"
                       android:layout_gravity="center_horizontal"
                       android:textSize="18sp"
                       android:textStyle="bold"
@@ -199,7 +199,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="8dp"
-                  android:text="Collect more badges as you make progress! "
+                  android:text="@string/collect_badges"
                   style="@style/TextSec"
 
                   android:textSize="14sp" />
@@ -237,7 +237,7 @@
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="Connect &amp; Grow"
+                      android:text="@string/connect_grow"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
                       android:textStyle="bold"
@@ -249,7 +249,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="8dp"
-                  android:text="See how others are doing, share your wins"
+                  android:text="@string/see_others"
                   style="@style/TextSec"
                   android:textSize="14sp" />
 
@@ -276,7 +276,7 @@
               android:textStyle="bold"
               android:layout_marginVertical="5dp"
               android:layout_height="wrap_content"
-              android:text="Top Achievers"
+              android:text="@string/top_achievers"
               android:textSize="17sp"
 
               android:id="@+id/t1"
@@ -289,7 +289,7 @@
           <TextView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Rank"
+              android:text="@string/rank"
               android:layout_below="@+id/t1"
               android:textSize="15sp"
               android:layout_marginLeft="15dp"
@@ -300,7 +300,7 @@
               android:layout_below="@+id/t1"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Name"
+              android:text="@string/name"
               android:textSize="15sp"
               android:layout_toLeftOf="@+id/a1"
               style="@style/Text"
@@ -309,7 +309,7 @@
               android:layout_below="@+id/t1"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Points"
+              android:text="@string/points"
               android:textSize="15sp"
               style="@style/Text"
               android:layout_alignParentRight="true"
