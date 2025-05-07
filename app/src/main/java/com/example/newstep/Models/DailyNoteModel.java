@@ -5,8 +5,17 @@ package com.example.newstep.Models;
 public class DailyNoteModel {
     private int id, habitId;
     private String date, note, mood;
+    private Boolean resisted;
     private int number;
 
+
+    public Boolean getResisted() {
+        return resisted;
+    }
+
+    public void setResisted(Boolean resisted) {
+        this.resisted = resisted;
+    }
 
     public int getNumber() {
         return number;

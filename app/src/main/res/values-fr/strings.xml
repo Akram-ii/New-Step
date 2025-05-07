@@ -151,6 +151,9 @@
     <string name="milo_desc">✦ Milo est votre compagnon IA amical sur Alter, là pour vous accompagner face aux habitudes, aux difficultés et au développement personnel.&#10;✦ Que vous vous sentiez bloqué, ayez besoin de motivation ou simplement envie de parler, Milo est toujours là pour vous aider, sans jugement, 24h/24 et 7j/7.</string>
     <string name="chat_with_milo">Milo t’écoute</string>
     <string name="milo_card">Milo est là pour guider ta progression, pas à pas</string>
+    <string name="emergency">Urgence</string>
+    <string name="resisted">J\'ai résisté à l\'envie</string>
+    <string name="didnt_resist">J\'ai craqué</string>
 
 
 </resources>

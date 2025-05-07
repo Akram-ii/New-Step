@@ -30,7 +30,11 @@
             android:id="@+id/name"
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"/>
+
     </RelativeLayout>
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -54,6 +58,15 @@
             android:layout_centerHorizontal="true"
             android:backgroundTint="@color/purple"
             android:text="@string/log_today"
+            android:textColor="@color/white" />
+        <Button
+            android:id="@+id/emergency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="@color/red_for_buttons"
+            android:text="@string/emergency"
+            android:layout_marginTop="50dp"
             android:textColor="@color/white" />
     </RelativeLayout>
 </RelativeLayout>

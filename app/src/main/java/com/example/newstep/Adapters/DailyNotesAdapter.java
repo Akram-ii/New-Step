@@ -13,9 +13,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -48,12 +50,13 @@ public class DailyNotesAdapter extends RecyclerView.Adapter<DailyNotesAdapter.No
 
         DailyNoteModel dailyNoteModel=list.get(position);
         Log.d("CLICK_DE", "Opening LogActivity for habit ID: " + dailyNoteModel);
-
-        holder.day.setText(dailyNoteModel.getDate());
+        if(dailyNoteModel.getResisted()!=null && !dailyNoteModel.getResisted()){
+            holder.itemView.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.red_for_buttons));
+        }
+        holder.day.setText("Day "+position);
 
         //holder.mood.setText("You were feeling "+dailyNoteModel.getMood());
-        String moodText = context.getString(R.string.feeling_text, dailyNoteModel.getMood());
-        holder.mood.setText(moodText);
+        holder.mood.setText(dailyNoteModel.getMood());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +103,8 @@ popUpWindow(dailyNoteModel.getId(), dailyNoteModel.getMood(), dailyNoteModel.get
         Button cancel = popUpView.findViewById(R.id.cancel);
         mood.setText(inputMood);
         note.setText(inputNote);
-
+        RelativeLayout relativeLayout=popUpView.findViewById(R.id.l1);
+        relativeLayout.setVisibility(View.GONE);
         save.setOnClickListener(v -> {
             String txtMood = mood.getText().toString();
             String txtNote = note.getText().toString();

@@ -10,7 +10,7 @@
     android:background="@color/transparent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="340dp"
         android:layout_margin="20dp">
         <TextView
             android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
             android:layout_marginBottom="15dp"
             android:layout_width="match_parent"
             android:elevation="4dp"
-            android:layout_above="@+id/save"
+            android:layout_above="@id/l1"
             android:layout_height="wrap_content"
             android:id="@+id/note"
             android:inputType="textMultiLine"
@@ -59,6 +59,45 @@
             android:padding="15dp"
             android:background="@drawable/textview_background"
             />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:id="@+id/l1"
+            android:padding="4dp"
+            android:layout_marginBottom="10dp"
+            android:layout_above="@id/save"
+            android:background="@drawable/textview_background"
+            android:backgroundTint="?attr/backgroundColor"
+            >
+
+            <RadioGroup
+
+                android:layout_centerHorizontal="true"
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_marginRight="5dp"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/radioResisted"
+                    android:checked="true"
+                    android:buttonTint="@color/purple"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resisted"
+                    style="@style/Text"/>
+                <RadioButton
+                    android:buttonTint="@color/red_for_buttons"
+                    android:id="@+id/radioDidNotResist"
+                    android:layout_marginLeft="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/didnt_resist"
+                    style="@style/Text"/>
+            </RadioGroup>
+        </RelativeLayout>
 <Button
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

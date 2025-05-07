@@ -12,11 +12,13 @@ import com.example.newstep.Models.DailyNoteModel;
 import com.example.newstep.Models.HabitModel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "habit_tracker.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Habit Table
     private static final String TABLE_HABITS = "habits";
@@ -29,6 +31,7 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
     // Daily Entries Table
     private static final String TABLE_NOTES = "notes";
     private static final String COLUMN_NOTE_ID = "note_id";
+    private static final String COLUMN_RESISTED = "resisted";
 
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_NOTE = "note";
@@ -46,13 +49,14 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_HABIT_EMERGENCY_MSG + " TEXT, " +
                 COLUMN_HABIT_DAYS_RESISTED + " INTEGER DEFAULT 0)";
 
-        // Create Notes Table (with fixed Foreign Key)
+
         String createNotesTable = "CREATE TABLE " + TABLE_NOTES + " (" +
                 COLUMN_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_HABIT_ID + " INTEGER, " +
                 COLUMN_DATE + " TEXT, " +
                 COLUMN_NOTE + " TEXT, " +
                 COLUMN_MOOD + " TEXT, " +
+                "resisted INTEGER DEFAULT 0, " +
                 "FOREIGN KEY(" + COLUMN_HABIT_ID + ") REFERENCES " + TABLE_HABITS + "(" + COLUMN_HABIT_ID + ") ON DELETE CASCADE)";
 
         db.execSQL(createHabitsTable);
@@ -61,9 +65,9 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HABITS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTES);
-        onCreate(db);
+        if (oldVersion < 4) {
+            db.execSQL("ALTER TABLE " + TABLE_NOTES + " ADD COLUMN resisted INTEGER DEFAULT 0");
+        }
     }
     public void updateDailyNote(int noteId, String newNote, String newMood) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -84,6 +88,13 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
         long id = db.insert(TABLE_HABITS, null, values);
         db.close();
         return id;
+    }
+    public void allResisted(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("resisted", 1);
+        db.update("notes", values, null, null); // updates all rows
+        db.close();
     }
     public boolean hasNoteForToday(int habitId, String todayDate) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -119,23 +130,70 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
         writeDb.close();
     }
 
-    public void insertDailyNote(int habitId, String date, String note, String mood) {
+    public void insertDailyNote(int habitId, String date, String note, String mood, boolean resisted) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_HABIT_ID, habitId);
         values.put(COLUMN_DATE, date);
         values.put(COLUMN_NOTE, note);
         values.put(COLUMN_MOOD, mood);
+        values.put(COLUMN_RESISTED, resisted ? 1 : 0);  // store boolean as integer
+
         long result = db.insert(TABLE_NOTES, null, values);
         db.close();
 
         if (result == -1) {
-
             Log.e("DB_ERROR", "Failed to insert daily note!");
         } else {
-            updateDaysResisted(habitId);
+            if (resisted) updateDaysResisted(habitId);
             Log.d("DB_SUCCESS", "Note inserted for habit ID: " + habitId);
         }
+    }
+
+    public Set<String> getLoggedDatesForHabit(int habitId) {
+        Set<String> dates = new HashSet<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT DISTINCT date FROM notes WHERE id = ?",
+                new String[]{String.valueOf(habitId)}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                dates.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return dates;
+    }
+    public String getEmergencyMessage(int habitId) {
+        String message = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                TABLE_HABITS,
+                new String[]{COLUMN_HABIT_EMERGENCY_MSG},
+                COLUMN_HABIT_ID + " = ?",
+                new String[]{String.valueOf(habitId)},
+                null, null, null
+        );
+
+        if (cursor.moveToFirst()) {
+            message = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HABIT_EMERGENCY_MSG));
+        }
+
+        cursor.close();
+        db.close();
+        return message;
+    }
+    public void updateEmergencyMessage(int habitId, String newMessage) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_HABIT_EMERGENCY_MSG, newMessage);
+
+        db.update(TABLE_HABITS, values, COLUMN_HABIT_ID + " = ?", new String[]{String.valueOf(habitId)});
+        db.close();
     }
     public List<DailyNoteModel> getNotesForHabit(int habitId) {
         List<DailyNoteModel> notes = new ArrayList<>();
@@ -144,7 +202,7 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
         Log.d("DB_QUERY", "Fetching notes for habit ID: " + habitId);
 
         Cursor cursor = db.query(TABLE_NOTES,
-                new String[]{COLUMN_NOTE_ID, COLUMN_HABIT_ID, COLUMN_DATE, COLUMN_NOTE, COLUMN_MOOD},
+                new String[]{COLUMN_NOTE_ID, COLUMN_HABIT_ID, COLUMN_DATE, COLUMN_NOTE, COLUMN_MOOD, COLUMN_RESISTED},
                 COLUMN_HABIT_ID + "=?",
                 new String[]{String.valueOf(habitId)},
                 null, null, COLUMN_DATE + " DESC");
@@ -156,8 +214,11 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
                 String date = cursor.getString(2);
                 String note = cursor.getString(3);
                 String mood = cursor.getString(4);
+                boolean resisted = cursor.getInt(5) == 1;
 
-                notes.add(new DailyNoteModel(noteId, retrievedHabitId, date, note, mood));
+                DailyNoteModel model = new DailyNoteModel(noteId, retrievedHabitId, date, note, mood);
+                model.setResisted(resisted);
+                notes.add(model);
             } while (cursor.moveToNext());
         } else {
             Log.d("DB_DATA", "No notes found for habit ID: " + habitId);
@@ -167,6 +228,7 @@ public class MyHabitsDatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return notes;
     }
+
     public List<HabitModel> getAllHabits() {
         List<HabitModel> habits = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

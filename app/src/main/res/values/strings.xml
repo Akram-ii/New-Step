@@ -161,6 +161,9 @@
     <string name="milo_desc">✦ Milo is your friendly AI companion in Alter, here to support you through habits, struggles, and self-improvement.&#10;✦ Whether you are feeling stuck, need motivation, or just someone to talk to, Milo’s always here to help, judgment-free, 24/7</string>
     <string name="chat_with_milo">Chat with Milo</string>
     <string name="milo_card">Milo is here to guide your growth one step at a time.</string>
+    <string name="emergency">Emergency</string>
+    <string name="resisted">I resisted the urge</string>
+    <string name="didnt_resist">I slipped up</string>
 
 
 

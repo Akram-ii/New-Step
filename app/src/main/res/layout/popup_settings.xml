@@ -53,7 +53,7 @@
             android:id="@+id/langFrench"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Frensh"
+            android:text="French"
             style="@style/Text" />
         <RadioButton
             android:id="@+id/langArabic"

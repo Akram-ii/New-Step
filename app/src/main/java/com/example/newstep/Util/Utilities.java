@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Utilities {
+public class    Utilities {
     public static String hexCodeForColor(String colorName) {
         switch(colorName){
             case "pink":
@@ -222,7 +222,12 @@ public static int getMinBadge(int points){
         }
     }
 
-
+    public static String dateToString(LocalDate date) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        }
+        return "";
+    }
     public static void addPointsToUsers(String userId, int nbPoint) {
 
         FirebaseUtil.allUserCollectionRef().document(userId).get().addOnSuccessListener(documentSnapshot -> {
