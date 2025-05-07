@@ -222,23 +222,19 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
     }
 
     private void viewGroupDetails(String grpName,String grpDesc,String id) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View popUpView = inflater.inflate(R.layout.popup_view_group, null);
-        dimBackground(0.5f);
+        builder.setView(popUpView);
 
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
 
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        View rootLayout = ((Activity) context).findViewById(android.R.id.content);
-        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
-            layoutParams.alpha = 1.0f;
-            ((Activity) context).getWindow().setAttributes(layoutParams);
-        });
-        popupWindow.setOnDismissListener(() -> dimBackground(1.0f));
         TextView name=popUpView.findViewById(R.id.group_name);
         TextView desc=popUpView.findViewById(R.id.group_desc);
         ImageButton back=popUpView.findViewById(R.id.back);
@@ -248,10 +244,10 @@ holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public void onClick(View view) {
                 leaveGroup(id );
-                popupWindow.dismiss();
+                dialog.dismiss();
             }
         });
-        back.setOnClickListener(v->{popupWindow.dismiss();});
+        back.setOnClickListener(v->{dialog.dismiss();});
 name.setText(grpName);
 desc.setText(grpDesc);
 
@@ -260,32 +256,18 @@ desc.setText(grpDesc);
 
 
     private void editGroup(String id, String grpName, String grpDesc, String privacy, String grpIcon, String grpIconColor) {
-       LayoutInflater inflater = LayoutInflater.from(context);
-       View popUpView = inflater.inflate(R.layout.popup_create_group, null);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View popUpView = inflater.inflate(R.layout.popup_create_group, null);
+        builder.setView(popUpView);
 
-       int width = ViewGroup.LayoutParams.MATCH_PARENT;
-       int height = ViewGroup.LayoutParams.MATCH_PARENT;
-       final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, true);
- popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-
-       popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-
-       WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
-       layoutParams.alpha = 0.5f;
-       ((Activity) context).getWindow().setAttributes(layoutParams);
-
-
-       popupWindow.showAtLocation(((Activity) context).findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-
-
-       popupWindow.setOnDismissListener(() -> {
-           WindowManager.LayoutParams originalParams = ((Activity) context).getWindow().getAttributes();
-           originalParams.alpha = 1.0f;
-           ((Activity) context).getWindow().setAttributes(originalParams);
-       });
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
 
        RadioGroup radioGroup = popUpView.findViewById(R.id.radioGroup);
        ChipGroup chipGroupIcon = popUpView.findViewById(R.id.chipGroupIcon);
@@ -307,7 +289,7 @@ desc.setText(grpDesc);
             public void onClick(View view) {
 
                 deleteGroup(id);
-                popupWindow.dismiss();
+                dialog.dismiss();
             }
         });
 
@@ -378,19 +360,19 @@ desc.setText(grpDesc);
            }
            updateGroupInFirestore(id, groupName, groupDesc, privacySetting, iconName, colorHexCode);
 
-           popupWindow.dismiss();
+           dialog.dismiss();
        });
 
 
        popUpView.setOnTouchListener((v, event) -> {
            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-               popupWindow.dismiss();
+               dialog.dismiss();
                return true;
            }
            return false;
        });
 
-        btnCancel.setOnClickListener(v -> popupWindow.dismiss());
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
    }
 
     private void selectChipByColor(ChipGroup chipGroup, String colorHex) {

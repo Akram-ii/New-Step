@@ -7,6 +7,7 @@
         <item name="colorPrimaryVariant">@color/white</item>
         <item name="backgroundColor">@color/white</item>
         <item name="color">@color/blue</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="background">@color/light_blue</item>
         <item name="chipBackgroundColor">@color/blue</item>
         <item name="android:textColor">@color/black</item>
@@ -85,6 +86,10 @@
     <style name="blueText" >
         <item name="android:textColor">@color/blue</item>
     </style>
+    <style name="textLoginRegister" >
+        <item name="android:textColor">#3F51B5</item>
+    </style>
+
     <style name="BlueColorToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/blue</item>
         <item name="titleTextColor">@color/black</item>
@@ -142,13 +147,21 @@
         <item name="android:backgroundTint">@color/lavender2</item>
 
     </style>
+    <style name="milo">
+        <item name="android:src">@drawable/ai_2</item>
+    </style>
+    <style name="splash" >
+        <item name="android:background">@drawable/splash</item>
+    </style>
+    <style name="login_register" >
+        <item name="android:background">@drawable/login_background</item>
+    </style>
 
 
     <style name="PurpleBackg" >
         <item name="android:background">@color/purple</item>
 
     </style>
-
 
 
 

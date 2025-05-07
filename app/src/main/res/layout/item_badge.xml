@@ -7,7 +7,7 @@
     android:padding="20dp"
     app:cardElevation="10dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/white"
+    android:backgroundTint="?attr/backgroundTint"
     app:cardCornerRadius="40dp">
 <RelativeLayout
     android:layout_width="match_parent"
@@ -22,7 +22,7 @@
         android:text="Rookie"
         android:textSize="17sp"
         android:id="@+id/badgeName"
-        android:textColor="@color/black"
+        style="@style/Text"
             />
     <ImageView
         android:layout_marginVertical="5dp"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/badgeDesc"
-        android:textColor="@color/black"
+        style="@style/Text"
         android:textSize="15sp"
         android:layout_alignParentBottom="true"
         android:text="50 points"

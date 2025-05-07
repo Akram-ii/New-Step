@@ -5,6 +5,9 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,15 +70,18 @@ public class ConvAIActivity extends AppCompatActivity {
         milo = findViewById(R.id.milo);
         pfp = findViewById(R.id.pfp);
         pfp.setOnClickListener(v->{
-            setupBottomDialog("Meet Milo, Your Personal Support AI","✦ Milo is your friendly AI companion in Alter, here to support you through habits, struggles, and self-improvement.\n✦ Whether you're feeling stuck, need motivation, or just someone to talk to, Milo’s always here to help, judgment-free, 24/7.\n");
+
+
+            setupBottomDialog(getString(R.string.milo_title),getString(R.string.milo_desc));
         });
         milo.setOnClickListener(v->{
-            setupBottomDialog("Meet Milo, Your Personal Support AI","✦ Milo is your friendly AI companion in Alter, here to support you through habits, struggles, and self-improvement.\n✦ Whether you're feeling stuck, need motivation, or just someone to talk to, Milo’s always here to help, judgment-free, 24/7.\n");
+            setupBottomDialog(getString(R.string.milo_title),getString(R.string.milo_desc));
         });
         recyclerView = findViewById(R.id.msgsRecyclerView);
         back = findViewById(R.id.back_ImageButton);
         sendMSG = findViewById(R.id.send_ImageButton);
         messageList = new ArrayList<>();
+        back.setOnClickListener(v->{onBackPressed();});
         adapter = new MessageAdapterAI(messageList);
         intr = findViewById(R.id.intr);
         recyclerView.setAdapter(adapter);
@@ -122,9 +128,21 @@ public void addResponse(String msg){
             try {
                 JSONObject systemMsg = new JSONObject();
                 systemMsg.put("role", "system");
-                systemMsg.put("content", "You are an AI assistant named Milo in the app called Alter. " +
-                        "Alter is a social media app for people with bad habits/addictions. Be friendly, helpful, and motivating. " +
-                        "Never say you're from Llama or mention the model you are based on.");
+                SharedPreferences langPrefs = getSharedPreferences("Language", Context.MODE_PRIVATE);
+                String savedLang = langPrefs.getString("lang", "en");
+                if(savedLang.equals("en")){
+                    systemMsg.put("content", "You are an AI assistant named Milo in the app called Alter. " +
+                            "Alter is a social media app for people with bad habits/addictions. Be friendly, helpful, and motivating. " +
+                            "Never say you're from Llama or mention the model you are based on.");
+                }else if (savedLang.equals("fr")){
+                    systemMsg.put("content", "Tu es un assistant IA nommé Milo dans l'application appelée Alter. " +
+                            "Alter est une application de réseau social pour les personnes ayant de mauvaises habitudes ou des addictions. Sois amical, serviable et motivant. " +
+                            "Ne dis jamais que tu viens de Llama ni ne mentionne le modèle sur lequel tu es basé.");
+                }else{
+                    systemMsg.put("content", "أنت مساعد ذكي يُدعى ميلو في تطبيق يُدعى Alter " +
+                            ". Alter هو تطبيق تواصل اجتماعي مخصص للأشخاص الذين يعانون من عادات سيئة أو إدمان. كُن ودودًا، مُعينًا، ومُحفزًا" +
+                            "لا تذكر أبدًا أنك من Llama أو تشير إلى النموذج الذي تم تدريبك عليه..");
+                }
                 conversationHistory.add(systemMsg);
             } catch (JSONException e) {
                 e.printStackTrace();

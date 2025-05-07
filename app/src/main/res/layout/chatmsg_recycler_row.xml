@@ -12,7 +12,7 @@
         android:layout_height="26dp"
         android:id="@+id/pfp"
         android:layout_alignBottom="@id/left_chat_layout"
-        android:src="@drawable/pfp_purple" />
+        android:src="@drawable/pfp_blue" />
 
 
     <LinearLayout
@@ -22,7 +22,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="80dp"
         android:background="@drawable/received_message_background"
-        android:backgroundTint="@color/darkGray"
+        android:backgroundTint="@color/light_blue"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"

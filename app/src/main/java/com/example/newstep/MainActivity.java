@@ -364,28 +364,18 @@ popupAccount();
         return true;
     }
     private void popupAccount() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View popUpView = inflater.inflate(R.layout.popup_account, null);
+        builder.setView(popUpView);
 
-        PopupWindow popupWindow = new PopupWindow(
-                popUpView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-        layoutParams.alpha = 0.5f;
-        getWindow().setAttributes(layoutParams);
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
-            originalParams.alpha = 1.0f;
-            getWindow().setAttributes(originalParams);
-        });
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
 
         ImageView back = popUpView.findViewById(R.id.back);
         ImageButton editEmail=popUpView.findViewById(R.id.emailEdit),editPwd=popUpView.findViewById(R.id.passwordEdit);
@@ -590,32 +580,22 @@ popupAccount();
             }
         });
 
-        back.setOnClickListener(v -> popupWindow.dismiss());
+        back.setOnClickListener(v -> dialog.dismiss());
 
     }
     private void popupContact() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View popUpView = inflater.inflate(R.layout.contact_us_popup, null);
+        builder.setView(popUpView);
 
-        PopupWindow popupWindow = new PopupWindow(
-                popUpView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        layoutParams.alpha = 0.5f; // Reduce brightness
-        getWindow().setAttributes(layoutParams);
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
-            originalParams.alpha = 1.0f; // Restore full brightness
-            getWindow().setAttributes(originalParams);
-        });
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         ImageView back = popUpView.findViewById(R.id.back);
         EditText title=popUpView.findViewById(R.id.title),desc=popUpView.findViewById(R.id.desc);
         Spinner spinner=popUpView.findViewById(R.id.spinner);
@@ -668,45 +648,25 @@ popupAccount();
             }
         });
 
-        back.setOnClickListener(v -> popupWindow.dismiss());
+        back.setOnClickListener(v -> dialog.dismiss());
     }
 
     public void popupBan() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
         View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
+        builder.setView(popUpView);
 
-        // Create a PopupWindow
-        PopupWindow popupWindow = new PopupWindow(
-                popUpView,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                true
-        );
-
-        // Set transparent background
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-
-        // Dim the background
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        layoutParams.alpha = 0.5f; // Reduce brightness
-        getWindow().setAttributes(layoutParams);
-
-        // Show popup
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-
-        // Restore brightness when popup is dismissed
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
-            originalParams.alpha = 1.0f; // Restore full brightness
-            getWindow().setAttributes(originalParams);
-        });
-
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         // Close button
         ImageView closePopup = popUpView.findViewById(R.id.back_imageView);
-        closePopup.setOnClickListener(v -> popupWindow.dismiss());
+        closePopup.setOnClickListener(v -> dialog.dismiss());
     }
 
     @Override
@@ -766,14 +726,18 @@ popupAccount();
     }
 
     private void showSettingsPopup() {
-        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_settings, null);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        View popupView = inflater.inflate(R.layout.popup_settings, null);
+        builder.setView(popupView);
 
-        PopupWindow popupWindow = new PopupWindow(
-                popupView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
 
 
         Switch modeSwitch = popupView.findViewById(R.id.modeSwitch);
@@ -837,32 +801,9 @@ popupAccount();
 
             langPrefs.edit().putString("lang", langCode).apply();
             setLocale(langCode);
-            recreate();
+            startActivity(new Intent(MainActivity.this,SplashActivity.class));
+            finish();
         });
-
-
-
-
-
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-
-
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        layoutParams.alpha = 0.5f;
-        getWindow().setAttributes(layoutParams);
-
-
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
-            originalParams.alpha = 1.0f;
-            getWindow().setAttributes(originalParams);
-        });
-
-
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
     }
 
 
@@ -873,7 +814,4 @@ popupAccount();
         config.setLocale(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }
-
-
-
 }

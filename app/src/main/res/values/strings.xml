@@ -156,7 +156,11 @@
     <string name="select_language">Select Language</string>
     <string name="milo_intro">Hey, I\'m Milo! Feel free to chat with me about anything, I\'m here to help</string>
     <string name="hint_message">Message...</string>
-
+    <string name="milo_presentation">Hey, Im Milo! Feel free to chat with me about anything, I am here to help</string>
+    <string name="milo_title">Meet Milo, Your Personal Support AI</string>
+    <string name="milo_desc">✦ Milo is your friendly AI companion in Alter, here to support you through habits, struggles, and self-improvement.&#10;✦ Whether you are feeling stuck, need motivation, or just someone to talk to, Milo’s always here to help, judgment-free, 24/7</string>
+    <string name="chat_with_milo">Chat with Milo</string>
+    <string name="milo_card">Milo is here to guide your growth one step at a time.</string>
 
 
 

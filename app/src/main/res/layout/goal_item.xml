@@ -8,7 +8,7 @@
     android:elevation="10dp"
     android:padding="12dp"
     android:background="@drawable/goal_background_item"
-    android:backgroundTint="@color/blue">
+    android:backgroundTint="?attr/color">
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"

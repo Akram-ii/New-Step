@@ -1,6 +1,7 @@
 
     package com.example.newstep.Fragments;
 
+    import android.app.Dialog;
     import android.content.Context;
     import android.graphics.Color;
     import android.graphics.drawable.ColorDrawable;
@@ -338,27 +339,18 @@ public class CommunityFragment extends Fragment {
 
 
     private void showPopupWindowFilter() {
-        if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {
-            return;
-        }
-        LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
         View popUpView = inflater.inflate(R.layout.popup_filter_commu, null);
-        PopupWindow popupWindow = new PopupWindow(
-                popUpView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
-        layoutParams.alpha = 0.5f;
-        requireActivity().getWindow().setAttributes(layoutParams);
-        popupWindow.showAtLocation(requireView(), Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = requireActivity().getWindow().getAttributes();
-            originalParams.alpha = 1.0f;
-            requireActivity().getWindow().setAttributes(originalParams);
-        });
+        builder.setView(popUpView);
+
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         Button done;
         ImageView cancel;
         TextView text;
@@ -370,7 +362,7 @@ public class CommunityFragment extends Fragment {
         nothing=popUpView.findViewById(R.id.nothing);
         done=popUpView.findViewById(R.id.filterNow);
         cancel=popUpView.findViewById(R.id.backBtn);
-        cancel.setOnClickListener(v -> {popupWindow.dismiss();});
+        cancel.setOnClickListener(v -> {dialog.dismiss();});
         all.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -422,7 +414,7 @@ public class CommunityFragment extends Fragment {
             }
             if(!selectedCategories.isEmpty()){
                 setupRecycler(selectedCategories);
-                popupWindow.dismiss();
+                dialog.dismiss();
                 selectedCategories.clear();
             }
             else{
@@ -478,39 +470,18 @@ public class CommunityFragment extends Fragment {
     }
 
     private void showPopupWindow() {
-        // Vérifier que l'activité est toujours en cours d'exécution
-        if (getActivity() == null || getActivity().isFinishing() || getActivity().isDestroyed()) {
-            return; // Ne pas afficher la pop-up si l'activité est en train de se terminer
-        }
-
-        // Inflater le layout de la pop-up
-        LayoutInflater inflater = (LayoutInflater) requireContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
         View popUpView = inflater.inflate(R.layout.popup_create_post, null);
+        builder.setView(popUpView);
 
-        // Configurer la fenêtre pop-up
-        PopupWindow popupWindow = new PopupWindow(
-                popUpView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
-        );
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        // Diminuer l'opacité de l'arrière-plan de l'activité lorsque la pop-up est ouverte
-        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
-        layoutParams.alpha = 0.5f; // Réduire l'opacité à 50%
-        requireActivity().getWindow().setAttributes(layoutParams);
-
-        // Afficher la pop-up au centre de l'écran
-        popupWindow.showAtLocation(requireView(), Gravity.CENTER, 0, 0);
-
-        // Restaurer l'opacité de l'arrière-plan après la fermeture de la pop-up
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = requireActivity().getWindow().getAttributes();
-            originalParams.alpha = 1.0f; // Rétablir l'opacité à 100%
-            requireActivity().getWindow().setAttributes(originalParams);
-        });
-
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         // Initialiser les boutons de la pop-up
         Button buttonCancel = popUpView.findViewById(R.id.buttonCancel);
         Button buttonPost = popUpView.findViewById(R.id.buttonPost);
@@ -531,7 +502,7 @@ public class CommunityFragment extends Fragment {
         spinnerCategory.setAdapter(adapter);
 
         // Fermer la pop-up lorsqu'on clique sur Annuler
-        buttonCancel.setOnClickListener(v -> popupWindow.dismiss());
+        buttonCancel.setOnClickListener(v -> dialog.dismiss());
 
         // Gérer la publication du post lorsqu'on clique sur Publier
         buttonPost.setOnClickListener(v -> {
@@ -551,8 +522,8 @@ public class CommunityFragment extends Fragment {
                 }
 
                 String selectCategory = spinnerCategory.getSelectedItem().toString();
-                createPost(postContent,selectCategory,anon,popupWindow);
-                popupWindow.dismiss();
+                createPost(postContent,selectCategory,anon,dialog);
+                dialog.dismiss();
             }else {
                 // Afficher un message d'erreur si le post est vide
                 Toast.makeText(requireContext(), "Post cannot be empty", Toast.LENGTH_SHORT).show();
@@ -562,7 +533,7 @@ public class CommunityFragment extends Fragment {
 
 
 
-    private void createPost(String content,String category,Boolean anon, PopupWindow popupWindow) {
+    private void createPost(String content,String category,Boolean anon, Dialog popupWindow) {
         // Obtenir l'utilisateur actuel via Firebase Authentication
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = auth.getCurrentUser();
@@ -743,30 +714,23 @@ public class CommunityFragment extends Fragment {
 
     private void showPopupBanned() {
 
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
         View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
-        dimBackground(0.5f);
+        builder.setView(popUpView);
 
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-        View rootLayout = requireActivity().findViewById(android.R.id.content);
-        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams layoutParams = (getActivity()).getWindow().getAttributes();
-            layoutParams.alpha = 1.0f;
-            (getActivity()).getWindow().setAttributes(layoutParams);
-        });
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         ImageView back=popUpView.findViewById(R.id.back_imageView);
         ImageView imageView=popUpView.findViewById(R.id.warningIcon);
         TextView textView=popUpView.findViewById(R.id.textMessage1);
         TextView title=popUpView.findViewById(R.id.title);
-        back.setOnClickListener(v->{popupWindow.dismiss();});
+        back.setOnClickListener(v->{dialog.dismiss();});
         textView.setText("You have been temporarily suspended from commenting due to a violation of our community guidelines. This action was taken after a thorough review of your activity.");
         title.setText("Commenting Restricted");
         imageView.setImageResource(R.drawable.icon_restriction_red);
@@ -774,30 +738,23 @@ public class CommunityFragment extends Fragment {
 
     private void showPopupBannedFromPosting() {
 
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+        LayoutInflater inflater = LayoutInflater.from(getContext());
         View popUpView = inflater.inflate(R.layout.pop_up_banned, null);
-        dimBackground(0.5f);
+        builder.setView(popUpView);
 
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-        View rootLayout = requireActivity().findViewById(android.R.id.content);
-        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams layoutParams = (getActivity()).getWindow().getAttributes();
-            layoutParams.alpha = 1.0f;
-            (getActivity()).getWindow().setAttributes(layoutParams);
-        });
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         ImageView back=popUpView.findViewById(R.id.back_imageView);
         ImageView imageView=popUpView.findViewById(R.id.warningIcon);
         TextView textView=popUpView.findViewById(R.id.textMessage1);
         TextView title=popUpView.findViewById(R.id.title);
-        back.setOnClickListener(v->{popupWindow.dismiss();});
+        back.setOnClickListener(v->{dialog.dismiss();});
         textView.setText("You have been temporarily suspended from Posting due to a violation of our community guidelines. This action was taken after a thorough review of your activity.");
         title.setText("Posting Restricted");
         imageView.setImageResource(R.drawable.icon_restriction_red);

@@ -99,7 +99,7 @@
         android:layout_above="@id/input_layout"
         android:background="@drawable/chat_background"
         style="@style/Screan"
-        android:layout_margin="4dp">
+        android:layout_marginVertical="4dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/msgsRecyclerView"
@@ -125,11 +125,11 @@
             android:layout_height="45dp"
             android:layout_marginEnd="60dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/popupbg"
-            android:backgroundTint="@color/white"
+            android:background="@drawable/message_edit_text"
+            android:backgroundTint="@color/black"
             android:hint="Message..."
             android:padding="10dp"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:textColorHint="@color/darkGray" />
 
         <ImageButton

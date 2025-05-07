@@ -73,7 +73,7 @@
     <string name="day_singular">%1$d jour</string>
     <string name="day_plural">%1$d jours</string>
     <string name="your_goals">Vos objectifs</string>
-    <string name="small_steps">Les petits pas mènent à de grands changements ! Suivez vos objectifs !</string>
+    <string name="small_steps">De petits pas font de grands changements ! Suis tes objectifs !</string>
     <string name="milestones">Étapes clés</string>
     <string name="keep_pushing">Continuez d avancer ! Vous êtes génial·e ! 💪</string>
     <string name="your_badges">Vos badges</string>
@@ -146,6 +146,11 @@
     <string name="select_language">Sélectionner la langue</string>
     <string name="milo_intro">Salut, je suis Milo! N\'hésite pas à discuter avec moi de tout, je suis là pour t\'aider</string>
     <string name="hint_message">Message...</string>
+    <string name="milo_presentation">Salut, je suis Milo ! N hésite pas à discuter avec moi de tout ce que tu veux, je suis là pour t aider</string>
+    <string name="milo_title">Découvrez Milo, votre assistant personnel</string>
+    <string name="milo_desc">✦ Milo est votre compagnon IA amical sur Alter, là pour vous accompagner face aux habitudes, aux difficultés et au développement personnel.&#10;✦ Que vous vous sentiez bloqué, ayez besoin de motivation ou simplement envie de parler, Milo est toujours là pour vous aider, sans jugement, 24h/24 et 7j/7.</string>
+    <string name="chat_with_milo">Milo t’écoute</string>
+    <string name="milo_card">Milo est là pour guider ta progression, pas à pas</string>
 
 
 </resources>

@@ -135,24 +135,24 @@
         android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:drawableTint="@color/black"
-
-            android:layout_height="wrap_content"
-            android:text="@string/setting36"
-            android:padding="10dp"
-            android:drawableRight="@drawable/ic_arrow_right"
-            android:textAlignment="viewStart"
             android:id="@+id/q1"
-            android:elevation="10dp"
-            android:backgroundTint="@color/light_blue"
-            android:textColor="@color/black"
-            app:cornerRadius="10dp"
+            style="@style/Text"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
-            />
+            android:backgroundTint="?attr/background"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:drawableTint="?attr/android:textColorPrimary"
+            android:elevation="10dp"
+            android:padding="10dp"
+            android:text="@string/setting36"
+            android:textAlignment="viewStart"
+            app:cornerRadius="10dp" />
+
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
-            android:drawableTint="@color/black"
+            android:drawableTint="?attr/android:textColorPrimary"
 
             android:layout_height="wrap_content"
             android:text="@string/setting37"
@@ -161,14 +161,14 @@
             android:textAlignment="viewStart"
             android:id="@+id/q2"
             android:elevation="10dp"
-            android:backgroundTint="@color/light_blue"
-            android:textColor="@color/black"
+            android:backgroundTint="?attr/background"
+            style="@style/Text"
             app:cornerRadius="10dp"
             android:layout_marginHorizontal="8dp"
             />
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
-            android:drawableTint="@color/black"
+            android:drawableTint="?attr/android:textColorPrimary"
 
             android:layout_height="wrap_content"
             android:text="@string/setting38"
@@ -177,14 +177,14 @@
             android:textAlignment="viewStart"
             android:id="@+id/q3"
             android:elevation="10dp"
-            android:backgroundTint="@color/light_blue"
-            android:textColor="@color/black"
+            android:backgroundTint="?attr/background"
+            style="@style/Text"
             app:cornerRadius="10dp"
             android:layout_marginHorizontal="8dp"
             />
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
-            android:drawableTint="@color/black"
+            android:drawableTint="?attr/android:textColorPrimary"
 
             android:layout_height="wrap_content"
             android:text="@string/setting39"
@@ -193,8 +193,8 @@
             android:textAlignment="viewStart"
             android:id="@+id/q4"
             android:elevation="10dp"
-            android:backgroundTint="@color/light_blue"
-            android:textColor="@color/black"
+            android:backgroundTint="?attr/background"
+            style="@style/Text"
             app:cornerRadius="10dp"
             android:layout_marginHorizontal="8dp"
             />

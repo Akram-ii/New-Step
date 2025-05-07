@@ -146,5 +146,10 @@
     <string name="select_language">اختر اللغة</string>
     <string name="milo_intro">مرحبًا، أنا ميلو! لا تتردد في الدردشة معي عن أي شيء، أنا هنا للمساعدة</string>
     <string name="hint_message">رسالة...</string>
+    <string name="milo_presentation">مرحبًا، أنا Milo ! لا تتردد في التحدث معي عن أي شيء، أنا هنا لمساعدتك</string>
+    <string name="milo_title">Milo هو رفيقك الذكي الودود في</string>
+    <string name="milo_desc">تعرف على Milo، مساعدك الشخصي الذكيAlter، هنا لدعمك في عاداتك، صراعاتك، وتطوير ذاتك.&#10;✦ سواء كنت تشعر بأنك عالق، تحتاج إلى تحفيز، أو فقط ترغب في الحديث مع أحد، ميلو موجود دائمًا لمساعدتك، دون حكم، وعلى مدار الساعة</string>
+    <string name="chat_with_milo">التحدث مع ميلو</string>
+    <string name="milo_card">ميلو هنا ليرافقك في نموّك، خطوة بخطوة</string>
 
 </resources>

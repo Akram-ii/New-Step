@@ -3,6 +3,8 @@ package com.example.newstep.Fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -78,32 +80,25 @@ if(goals.size()==0){
     }
 
     private void addGoal() {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View popUpView = inflater.inflate(R.layout.add_goal_popup, null);
-        dimBackground(0.5f);
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
+        builder.setView(popUpView);
 
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-        View rootLayout = getActivity().findViewById(android.R.id.content);
-        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams layoutParams = getActivity().getWindow().getAttributes();
-            layoutParams.alpha = 1.0f;
-            getActivity().getWindow().setAttributes(layoutParams);
-        });
-        popupWindow.setOnDismissListener(() -> dimBackground(1.0f));
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         EditText goal_name=popUpView.findViewById(R.id.goal_name);
         EditText goal_desc=popUpView.findViewById(R.id.goal_desc);
         ChipGroup chipGroupIcon=popUpView.findViewById(R.id.chipGroupIcon);
         TextView progress_text_view=popUpView.findViewById(R.id.progress_text_view);
         SeekBar progress=popUpView.findViewById(R.id.progress);
         ImageView back=popUpView.findViewById(R.id.back);
-        back.setOnClickListener(v->{popupWindow.dismiss();});
+        back.setOnClickListener(v->{dialog.dismiss();});
         Button add_goal=popUpView.findViewById(R.id.btn_add_goal);
         progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -143,7 +138,7 @@ add_goal.setOnClickListener(new View.OnClickListener() {
             updateStatsAndMessage();
             goals.add(model);
             adapter.notifyItemInserted(goals.size() - 1);
-        popupWindow.dismiss();
+        dialog.dismiss();
         setupRecycler();
     }}
 });

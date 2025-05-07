@@ -8,7 +8,7 @@
     tools:context=".Fragments.GoalsFragment">
 
     <RelativeLayout
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/backgroundColor"
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:id="@+id/l1"
@@ -43,14 +43,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start now! Set a Goal"
-            android:textColor="@color/gray"
+            style="@style/TextSec"
             android:id="@+id/text_under_nb"
             android:layout_below="@id/nb_goals"
             android:layout_centerHorizontal="true"
             />
 
         <TextView
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/average_progress"
@@ -71,7 +71,7 @@
             />
 
         <TextView
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,6 +83,7 @@
             android:layout_alignEnd="@+id/t1"
             android:layout_alignStart="@+id/t1"
             android:textAlignment="center"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -95,7 +96,7 @@
             />
 
         <TextView
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
@@ -112,6 +113,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/blue"
+            android:gravity="center"
             android:id="@+id/nb_completed"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
@@ -123,7 +125,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:backgroundTint="@color/white"
+            android:backgroundTint="?attr/backgroundColor"
             android:layout_below="@+id/l1"
             android:layout_width="match_parent"
             android:layout_marginRight="10dp"

@@ -6,7 +6,7 @@
     android:padding="10dp"
     android:elevation="10dp"
     android:layout_margin="20dp"
-    android:backgroundTint="@color/light_blue"
+    android:backgroundTint="?attr/background"
     android:background="@drawable/goal_background_item"
     >
  <ImageView

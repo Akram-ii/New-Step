@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="@color/light_blue"
+    android:background="?attr/background"
     tools:context=".RulesActivity">
     <RelativeLayout
         android:layout_margin="10dp"
@@ -47,7 +47,7 @@
             android:text="Terms &amp; Conditions"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:layout_below="@id/infoIcon"
             android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true" />
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="4dp"
                 android:text="Welcome to our community!\n\nTo ensure a safe and respectful environment for everyone, please read and accept our Terms &amp; Conditions below:\n\n1. Respect and Safety\n• Be respectful to others.\n• Harassment, bullying, hate speech, or discrimination will not be tolerated.\n• Do not share violent, sexual, or illegal content.\n\n2. Private and Group Chats\n• Do not spam or send unsolicited messages.\n\n3. Posts and Comments\n• Avoid spreading misinformation.\n• Be constructive and respectful in discussions.\n• No self-promotion or advertising without permission.\n\n4. Community Guidelines\n• Follow local laws and app rules.\n• Repeated violations may lead to account suspension."
-                android:textColor="@color/black"
+                style="@style/Text"
                 android:textSize="14sp" />
 
 
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="I agree to the Terms &amp; Conditions"
-            android:textColor="@color/black"
+            style="@style/Text"
             android:textSize="14sp"
             android:buttonTint="@color/blue"
             android:layout_below="@id/rulesText"

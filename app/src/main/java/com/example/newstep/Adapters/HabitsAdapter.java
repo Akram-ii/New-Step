@@ -42,29 +42,21 @@ SQLiteDatabase notifDB;
 
     @Override
     public void onBindViewHolder(@NonNull HabitsViewHolder holder, int position) {
-        HabitModel habitModel=list.get(position);
+        HabitModel habitModel = list.get(position);
         holder.name.setText(habitModel.getHabit_name());
         holder.cat.setText(habitModel.getCat());
-        if(habitModel.getTotalDays()==1){
+        if (habitModel.getTotalDays() == 1) {
             holder.streak.setText("You resisted " + habitModel.getTotalDays() + " day");
-        }else {
+        } else {
             holder.streak.setText("You resisted " + habitModel.getTotalDays() + " days");
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, HabitDetailsActivity.class);
-                intent.putExtra("habit_id",habitModel.getId());
-                intent.putExtra("habitName",habitModel.getHabit_name());
+                Intent intent = new Intent(context, HabitDetailsActivity.class);
+                intent.putExtra("habit_id", habitModel.getId());
+                intent.putExtra("habitName", habitModel.getHabit_name());
                 context.startActivity(intent);
-            }
-        });
-
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                showDialog(holder.getAdapterPosition(),habitModel);
-                return true;
             }
         });
 

@@ -42,6 +42,7 @@ public class CurvedBottomNavigationView extends BottomNavigationView {
         ta.recycle();
 
         mPaint.setColor(backgroundColor);
+
     }
 
     public void setSelectedPosition(int index) {

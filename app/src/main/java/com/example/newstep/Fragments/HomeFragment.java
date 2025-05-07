@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.newstep.Adapters.LeaderBoardAdapter;
+import com.example.newstep.ConvAIActivity;
 import com.example.newstep.MainActivity;
 import com.example.newstep.Models.UserModel;
 import com.example.newstep.ProgressActivity;
@@ -54,7 +56,7 @@ public class HomeFragment extends Fragment {
     ImageView click;
     RecyclerView leaderBoard;
     LeaderBoardAdapter adapter;
-    CardView ProgressCard,BadgesCard,GoalsCard,CommunityCard;
+    CardView ProgressCard,BadgesCard,GoalsCard,AiCard;
     long lastUpdatedTime;
     FirebaseFirestore fdb;
     @Override
@@ -67,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         GoalsCard=rootView.findViewById(R.id.goals_card);
         leaderBoard=rootView.findViewById(R.id.leader_board);
-        CommunityCard=rootView.findViewById(R.id.commu_card);
+        AiCard=rootView.findViewById(R.id.commu_card);
         BadgesCard=rootView.findViewById(R.id.badges_card);
         ProgressCard =rootView.findViewById(R.id.progress_card);
         fdb=FirebaseFirestore.getInstance();
@@ -120,29 +122,11 @@ loadUsersLeaderBoard();
                 transaction.commitAllowingStateLoss();
             }
         });
-        CommunityCard.setOnClickListener(new View.OnClickListener() {
+        AiCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+               startActivity(new Intent(getActivity(), ConvAIActivity.class));
 
-                Fragment existingFragment = fragmentManager.findFragmentByTag(GoalsFragment.class.getSimpleName());
-                if (existingFragment != null) {
-                    fragmentManager.beginTransaction().remove(existingFragment).commit();
-                }
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
-                    CommunityFragment communityFragment = new CommunityFragment();
-                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                    transaction.replace(R.id.fragment_container, communityFragment, CommunityFragment.class.getSimpleName());
-                    transaction.addToBackStack(null);
-                    transaction.commitAllowingStateLoss();
-                }else{
-                    LoginFragment loginFragment = new LoginFragment();
-                    transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
-                    transaction.replace(R.id.fragment_container, loginFragment, LoginFragment.class.getSimpleName());
-                    transaction.addToBackStack(null);
-                    transaction.commitAllowingStateLoss();
-                }
             }
         });
         ProgressCard.setOnClickListener(new View.OnClickListener() {

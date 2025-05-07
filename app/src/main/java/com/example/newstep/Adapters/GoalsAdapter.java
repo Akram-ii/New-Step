@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
@@ -114,32 +115,25 @@ holder.itemView.setOnLongClickListener(v->{Toast.makeText(context,"Swipe left or
 
 
     private void popupWindowEdit(int id,String title1,String desc1,int progress1,String icon) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            View popUpView = inflater.inflate(R.layout.add_goal_popup, null);
-            dimBackground(0.5f);
-            int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            boolean focusable = true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View popUpView = inflater.inflate(R.layout.add_goal_popup, null);
+        builder.setView(popUpView);
 
-            final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-            View rootLayout = ((Activity) context).findViewById(android.R.id.content);
-            popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-            popupWindow.setOnDismissListener(() -> {
-                WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
-                layoutParams.alpha = 1.0f;
-                ((Activity) context).getWindow().setAttributes(layoutParams);
-            });
-            popupWindow.setOnDismissListener(() -> dimBackground(1.0f));
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
             EditText name=popUpView.findViewById(R.id.goal_name),desc=popUpView.findViewById(R.id.goal_desc);
             TextView title=popUpView.findViewById(R.id.title),progress_text_view=popUpView.findViewById(R.id.progress_text_view);
         ChipGroup chipGroup=popUpView.findViewById(R.id.chipGroupIcon);
             Button save=popUpView.findViewById(R.id.btn_add_goal);
             SeekBar progress=popUpView.findViewById(R.id.progress);
             ImageView back=popUpView.findViewById(R.id.back);
-            back.setOnClickListener(v->{popupWindow.dismiss();});
+            back.setOnClickListener(v->{dialog.dismiss();});
             title.setText("Update Your Goal");
             name.setText(title1);
             desc.setText(desc1);
@@ -201,7 +195,7 @@ holder.itemView.setOnLongClickListener(v->{Toast.makeText(context,"Swipe left or
                         }
                         notifyDataSetChanged();
                         Toast.makeText(context,"Goal Updated",Toast.LENGTH_SHORT).show();
-                        popupWindow.dismiss();
+                        dialog.dismiss();
                 }}
             });
     }

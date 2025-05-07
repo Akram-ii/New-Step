@@ -499,33 +499,20 @@ private void fetchUsers(List<String> userIds){
         });
     }
     private void editGroup(String id, String grpName, String grpDesc, String privacy, String grpIcon, String grpIconColor, boolean isOwner) {
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ConvGroupActivity.this);
         LayoutInflater inflater = LayoutInflater.from(ConvGroupActivity.this);
         View popUpView = inflater.inflate(R.layout.popup_create_group, null);
+        builder.setView(popUpView);
 
-        int width = ViewGroup.LayoutParams.MATCH_PARENT;
-        int height = ViewGroup.LayoutParams.MATCH_PARENT;
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
- popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-
-        WindowManager.LayoutParams layoutParams = ConvGroupActivity.this.getWindow().getAttributes();
-        layoutParams.alpha = 0.5f;
-        ConvGroupActivity.this.getWindow().setAttributes(layoutParams);
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
 
 
-        popupWindow.showAtLocation(ConvGroupActivity.this.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-
-
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = ConvGroupActivity.this.getWindow().getAttributes();
-            originalParams.alpha = 1.0f;
-            ConvGroupActivity.this.getWindow().setAttributes(originalParams);
-        });
 
         RadioGroup radioGroup = popUpView.findViewById(R.id.radioGroup);
         ChipGroup chipGroupIcon = popUpView.findViewById(R.id.chipGroupIcon);
@@ -583,7 +570,7 @@ private void fetchUsers(List<String> userIds){
             title.setText("Edit your Group");
         }
 
-        btnCancel.setOnClickListener(v -> popupWindow.dismiss());
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         btnSave.setOnClickListener(v -> {
 
@@ -636,12 +623,12 @@ private void fetchUsers(List<String> userIds){
             updateGroupInFirestore(id, groupName, groupDesc, privacySetting, iconName, colorHexCode);
 
 
-            popupWindow.dismiss();
+            dialog.dismiss();
         });
 
         popUpView.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                popupWindow.dismiss();
+                dialog.dismiss();
                 return true;
             }
             return false;

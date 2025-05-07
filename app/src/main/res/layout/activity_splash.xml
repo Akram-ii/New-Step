@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@drawable/splash"
+    style="@style/splash"
     android:layout_height="match_parent"
     tools:context=".SplashActivity">
 
@@ -14,8 +14,8 @@
         android:layout_gravity="center"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/icon_community"
-        app:tint="@color/offWhite" />
+        android:src="@drawable/ic_launcher_foreground"
+         />
 
     <ProgressBar
         android:layout_width="50dp"

@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingTop="20dp"
-    android:background="@drawable/login_background"
+    style="@style/login_register"
     tools:context=".Fragments.LoginFragment">
 
     <ImageView
         android:layout_width="100dp"
+        android:layout_marginVertical="20dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_launcher_foreground" />
@@ -34,7 +35,7 @@
             android:inputType="textEmailAddress"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:textColor="#000000"
+            style="@style/Text"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -49,8 +50,9 @@
         app:passwordToggleTint="@android:color/black"
         android:hint="Password"
         android:textColorHint="#999999"
+        app:boxBackgroundMode="outline"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxBackgroundMode="none">
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password"
@@ -59,7 +61,7 @@
             android:inputType="textPassword"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:textColor="#000000"
+            style="@style/Text"
             android:background="@drawable/input_background"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:text="Forgot your password?"
-        android:textColor="#3F51B5"
+        style="@style/textLoginRegister"
         android:textSize="14sp"
         android:layout_marginRight="20dp"
         android:textStyle="bold"
@@ -91,7 +93,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Dont have an account yet?"
-        android:textColor="#3F51B5"
+        style="@style/textLoginRegister"
         android:textSize="14sp"
 
         android:layout_marginTop="30dp" />
@@ -102,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Create your account"
-        android:textColor="#3F51B5"
+        style="@style/textLoginRegister"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_marginTop="5dp"/>

@@ -198,12 +198,11 @@
               <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
+                  android:layout_marginTop="6dp"
                   android:text="@string/collect_badges"
                   style="@style/TextSec"
 
                   android:textSize="14sp" />
-
 
 
 
@@ -230,14 +229,14 @@
                   <ImageView
                       android:layout_width="50dp"
                       android:layout_height="50dp"
-                      android:src="@drawable/commu_icon_home"
+                      android:src="@drawable/ai"
                       android:layout_gravity="center_horizontal"
                       />
 
                   <TextView
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="@string/connect_grow"
+                      android:text="@string/chat_with_milo"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
                       android:textStyle="bold"
@@ -248,8 +247,8 @@
               <TextView
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layout_marginTop="8dp"
-                  android:text="@string/see_others"
+                  android:layout_marginTop="6dp"
+                  android:text="@string/milo_card"
                   style="@style/TextSec"
                   android:textSize="14sp" />
 
@@ -323,7 +322,6 @@
           android:layout_alignParentBottom="true"
           android:paddingHorizontal="5dp"
           android:paddingTop="5dp"
-          android:elevation="10dp"
           style="@style/Screan"
           android:id="@+id/leader_board"/>
       </RelativeLayout>

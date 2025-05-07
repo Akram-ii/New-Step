@@ -1,5 +1,7 @@
 package com.example.newstep;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -80,24 +82,18 @@ public class HabitDetailsActivity extends AppCompatActivity {
     }
  
     private void popUpWindow() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(HabitDetailsActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(HabitDetailsActivity.this);
         View popUpView = inflater.inflate(R.layout.log_day, null);
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        layoutParams.alpha = 0.5f;
-        getWindow().setAttributes(layoutParams);
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = getWindow().getAttributes();
-            originalParams.alpha = 1.0f;
-            getWindow().setAttributes(originalParams);
-        });
+        builder.setView(popUpView);
+
+        android.app.AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         EditText mood = popUpView.findViewById(R.id.mood);
         EditText note = popUpView.findViewById(R.id.note);
         Button save = popUpView.findViewById(R.id.save);
@@ -110,10 +106,10 @@ public class HabitDetailsActivity extends AppCompatActivity {
             String date = Utilities.timestampToStringNoDetail(timestamp);
             db.insertDailyNote(habitId, date, txtNote, txtMood);
             loadAdapter();
-            popupWindow.dismiss();
+            dialog.dismiss();
 
         });
-        cancel.setOnClickListener(v -> popupWindow.dismiss());
+        cancel.setOnClickListener(v -> dialog.dismiss());
     }
 
     private void loadAdapter() {

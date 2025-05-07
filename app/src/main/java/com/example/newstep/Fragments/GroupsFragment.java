@@ -2,6 +2,7 @@ package com.example.newstep.Fragments;
 
 import static com.example.newstep.Util.Utilities.hexCodeForColor;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -139,7 +140,7 @@ public class GroupsFragment extends Fragment {
         popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
         // Diminuer l'opacité de l'arrière-plan de l'activité lorsque la pop-up est ouverte
         WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
-        layoutParams.alpha = 0.5f; // Réduire l'opacité à 50%
+
         requireActivity().getWindow().setAttributes(layoutParams);
 
         // Afficher la pop-up au centre de l'écran
@@ -257,36 +258,27 @@ public class GroupsFragment extends Fragment {
 
 
     private void showFilterGroupsPopup() {
-        if (getActivity() == null) return;
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View view = inflater.inflate(R.layout.popup_filter_groups, null);
+        builder.setView(view);
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View popUpView = inflater.inflate(R.layout.popup_filter_groups, null);
-
-        EditText searchGroupName = popUpView.findViewById(R.id.searchGroupName);
-        ChipGroup privacyChipGroup = popUpView.findViewById(R.id.privacyChipGroup);
-        MaterialButton filter = popUpView.findViewById(R.id.btnFilterNow);
-        ImageView back= popUpView.findViewById(R.id.back_popup);
-
-        final PopupWindow popupWindow = new PopupWindow(popUpView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setAnimationStyle(R.style.PopupWindowAnimation);
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
+        EditText searchGroupName = view.findViewById(R.id.searchGroupName);
+        ChipGroup privacyChipGroup = view.findViewById(R.id.privacyChipGroup);
+        MaterialButton filter = view.findViewById(R.id.btnFilterNow);
+        ImageView back= view.findViewById(R.id.back_popup);
 
 
-        WindowManager.LayoutParams layoutParams = requireActivity().getWindow().getAttributes();
-        layoutParams.alpha = 0.5f;
-        requireActivity().getWindow().setAttributes(layoutParams);
 
-        popupWindow.showAtLocation(getActivity().findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
 
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams originalParams = requireActivity().getWindow().getAttributes();
-            originalParams.alpha = 1.0f;
-            requireActivity().getWindow().setAttributes(originalParams);
-        });
+
 
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,7 +286,7 @@ public class GroupsFragment extends Fragment {
                 String searchName = searchGroupName.getText().toString().trim();
                 List<String> selectedFilters = getSelectedPrivacy(privacyChipGroup);
                 applyFilters(searchName, selectedFilters);
-                popupWindow.dismiss();
+                dialog.dismiss();
             }
         });
         searchGroupName.setOnTouchListener((v, event) -> {
@@ -319,7 +311,7 @@ public class GroupsFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupWindow.dismiss();
+                dialog.dismiss();
             }
         });
 

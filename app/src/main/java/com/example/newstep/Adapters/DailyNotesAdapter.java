@@ -1,6 +1,9 @@
 package com.example.newstep.Adapters;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -56,8 +59,8 @@ public class DailyNotesAdapter extends RecyclerView.Adapter<DailyNotesAdapter.No
             @Override
             public void onClick(View view){
                 WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
-                layoutParams.alpha = 0.5f;
-                ((Activity) context).getWindow().setAttributes(layoutParams);
+
+
 popUpWindow(dailyNoteModel.getId(), dailyNoteModel.getMood(), dailyNoteModel.getNote(), dailyNoteModel.getDate(),holder.getAdapterPosition());
             }
         });
@@ -77,21 +80,18 @@ popUpWindow(dailyNoteModel.getId(), dailyNoteModel.getMood(), dailyNoteModel.get
         }
     }
     private void popUpWindow(int noteId,String inputMood,String inputNote,String date,int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View popUpView = inflater.inflate(R.layout.log_day, null);
+        builder.setView(popUpView);
 
-        int width = ViewGroup.LayoutParams.WRAP_CONTENT;
-        int height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-
-        final PopupWindow popupWindow = new PopupWindow(popUpView, width, height, focusable);
-        View rootLayout = ((Activity) context).findViewById(android.R.id.content);
-        popupWindow.showAtLocation(rootLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOnDismissListener(() -> {
-            WindowManager.LayoutParams layoutParams = ((Activity) context).getWindow().getAttributes();
-            layoutParams.alpha = 1.0f;
-            ((Activity) context).getWindow().setAttributes(layoutParams);
-        });
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().getAttributes().windowAnimations = R.style.PopupWindowAnimation;
+        }
+        dialog.show();
         TextView info=popUpView.findViewById(R.id.info);
         info.setText(date);
         EditText mood = popUpView.findViewById(R.id.mood);
@@ -109,10 +109,10 @@ popUpWindow(dailyNoteModel.getId(), dailyNoteModel.getMood(), dailyNoteModel.get
             list.get(position).setMood(txtMood);
             db.updateDailyNote(noteId, txtNote, txtMood);
 
-            popupWindow.dismiss();
+            dialog.dismiss();
             notifyItemChanged(position);
         });
 
-        cancel.setOnClickListener(v -> popupWindow.dismiss());
+        cancel.setOnClickListener(v -> dialog.dismiss());
     }
 }

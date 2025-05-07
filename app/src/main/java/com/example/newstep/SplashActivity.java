@@ -3,6 +3,7 @@ package com.example.newstep;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,10 +26,18 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Locale;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Mode", Context.MODE_PRIVATE);
+        boolean nightMODE = sharedPreferences.getBoolean("night", false);
+        if (nightMODE) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
@@ -54,7 +63,11 @@ public class SplashActivity extends AppCompatActivity {
                     if(nightMODE){
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     }
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    SharedPreferences langPrefs = getSharedPreferences("Language", Context.MODE_PRIVATE);
+                    String savedLang = langPrefs.getString("lang", "en");
+                    setLocale(savedLang);
+
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();}
                 else{
                 startActivity(new Intent(SplashActivity.this, WelcomeActivity.class) );
@@ -82,5 +95,13 @@ public class SplashActivity extends AppCompatActivity {
                 Log.d( "token curr ",""+task.getResult());
             }
         });
+
+    }
+    private void setLocale(String langCode) {
+        Locale locale = new Locale(langCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
     }}
 
